@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flo-js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/css/master.css" media="screen" title="no title" charset="utf-8" />
+    <script charset="utf-8" type="text/javascript" src="flo.js"></script>
+    <script charset="utf-8" type="text/javascript">
+        var canvasElement, canvas;
+
+        var init = function () {
+          canvasElement = document.getElementById('canvas');
+          canvas = canvasElement.getContext('2d');
+        };
+
+        var enterFullscreen = function () {
+          flo().enterFullscreen(document.getElementById('canvas'));
+        };
+
+        flo().onDocumentReady(init);
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Flo-js</h1>
+
+        <p>Animation library for use with HTML5 canvas</p>
+
+        <canvas id="canvas" width="640" height="480"></canvas>
+
+        <p>
+            <button name="button" onclick="enterFullscreen()">Fullscreen</button>
+        </p>
+    </div>
+
+</body>
+</html>
