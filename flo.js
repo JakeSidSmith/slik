@@ -4,10 +4,13 @@ var flo = function (canvas, position) {
 
   var floObject = {
     animations: {},
-    requestAnimationFrame: window.requestAnimationFrame ||
+    requestAnimationFrame: function (func) {
+      var requestAnimationFrame = window.requestAnimationFrame ||
       window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame,
+      window.msRequestAnimationFrame;
+      requestAnimationFrame(func);
+    },
     isFullscreen: function () {
       return document.fullscreenElement ||
         document.msFullscreenElement ||
