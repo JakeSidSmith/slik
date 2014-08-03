@@ -4,10 +4,13 @@ var flo = function (canvas, position) {
 
   var floObject = {
     animations: {},
-    requestAnimationFrame: window.requestAnimationFrame ||
+    requestAnimationFrame: function (func) {
+      var requestAnimationFrame = window.requestAnimationFrame ||
       window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame,
+      window.msRequestAnimationFrame;
+      requestAnimationFrame(func);
+    },
     isFullscreen: function () {
       return document.fullscreenElement ||
         document.msFullscreenElement ||
@@ -57,33 +60,53 @@ var flo = function (canvas, position) {
   floObject.position = position;
   floObject.canvas = canvas;
 
-  floObject.addAnimation = function (name, nextPosition, previousPosition, onComplete) {
-    floObject.aniimations[name] = {};
-    floObject.aniimations[name].nextPosition = nextPosition;
-    floObject.aniimations[name].previousPosition = function () {
-      var position = {};
-      if (previousPosition) {
-        for (key in floObject.position) {
-          position[key] = previousPosition[key] || position[key];
-        }
-        return position;
-      }
-      for (key in floObject.position) {
-        position[key] = position[key];
-      }
-      return position;
-    };
-    floObject.onComplete = onComplete;
+  floObject.addAnimation = function (name, duration, nextPosition, previousPosition, onComplete) {
+    floObject.animations[name] = {};
+    floObject.animations[name].duration = duration;
+    floObject.animations[name].nextPosition = nextPosition;
+    floObject.animations[name].previousPosition = previousPosition;
+    floObject.animations[name].onComplete = onComplete;
   };
 
-  floObject.doAnimation = function (name, duration) {
-    floObject.duration = duration;
-    floObject.currentAnimation = name;
+  floObject.doAnimation = function (name, duration, onComplete) {
+    if (name === undefined) {
+      floObject.currentAnimation === undefined;
+    } else {
+      floObject.startTime = new Date().getTime();
+      floObject.currentAnimation = name;
+      floObject.duration = duration || floObject.animations[name] ? floObject.animations[name].duration : undefined;
+      floObject.animations[name].onComplete = onComplete || floObject.animations[name] ? floObject.animations[name].onComplete : undefined;
+
+      floObject.previousPosition = function () {
+        var newPosition = {};
+        var animation = floObject.animations[name];
+        if (animation.previousPosition) {
+          for (key in floObject.position) {
+            newPosition[key] = animation.previousPosition[key] ? animation.previousPosition[key] : floObject.position[key];
+          }
+          return newPosition;
+        }
+        for (key in floObject.position) {
+          newPosition[key] = floObject.position[key];
+        }
+        return newPosition;
+      }();
+    }
   };
 
   floObject.animate = function () {
-    if (floObject.currentAnimation) {
+    var multiplier = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
 
+    if (floObject.currentAnimation) {
+      var animation = floObject.animations[floObject.currentAnimation];
+
+      for (key in animation.nextPosition) {
+        floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+      }
+
+      if (multiplier === 1) {
+        floObject.doAnimation(animation.onComplete);
+      }
     }
   };
 
