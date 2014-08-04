@@ -10,22 +10,43 @@
 
         var initialDate = new Date().getTime();
 
-        var drawBody = function () {
-          canvas.save();
-          canvas.translate(cWidth / 2, cHeight - 100);
+        var drawUpperBody = function () {
           canvas.rotate(person.position.bodyRotation * Math.PI / 180);
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, -65);
           canvas.closePath();
           canvas.stroke();
+          canvas.translate(0, -65);
+          drawHead();
+          drawRightArm();
+          canvas.restore();
         };
 
         var drawHead = function () {
-          canvas.translate(0, -65);
+          canvas.save();
           canvas.rotate(person.position.headRotation * Math.PI / 180);
           canvas.beginPath();
           canvas.arc(0,-15,15,0,2*Math.PI);
+          canvas.closePath();
+          canvas.stroke();
+          canvas.restore();
+        };
+
+        var drawRightArm = function () {
+          canvas.save();
+          canvas.rotate(person.position.upperRightArmRotation * Math.PI / 180);
+          canvas.beginPath();
+          canvas.moveTo(0, 0);
+          canvas.lineTo(0, 40);
+          canvas.closePath();
+          canvas.stroke();
+          canvas.translate(0, 40);
+          // Lower right
+          canvas.rotate(person.position.lowerRightArmRotation * Math.PI / 180);
+          canvas.beginPath();
+          canvas.moveTo(0, 0);
+          canvas.lineTo(0, 40);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -78,8 +99,8 @@
 
           // Draw upper body
           canvas.save();
-          drawBody();
-          drawHead();
+          canvas.translate(cWidth / 2, cHeight - 100);
+          drawUpperBody();
           canvas.restore();
           // Draw legs
           canvas.save();
@@ -106,6 +127,10 @@
             position: {
               bodyRotation: 0,
               headRotation: 0,
+              upperRightArmRotation: 0,
+              lowerRightArmRotation: 0,
+              upperLeftArmRotation: 0,
+              lowerLeftArmRotation: 0,
               upperRightLegRotation: 0,
               lowerRightLegRotation: 0,
               upperLeftLegRotation: 0,
@@ -115,25 +140,13 @@
 
           person.animation = flo(canvas, person.position);
 
-          person.animation.addAnimation('rightLegForward',
-            500,
-            {
-              bodyRotation: 10,
-              headRotation: 20,
-              upperRightLegRotation: -10,
-              lowerRightLegRotation: 0,
-              upperLeftLegRotation: 30,
-              lowerLeftLegRotation: 55,
-            },
-            undefined,
-            'leftLegUp'
-          );
-
           person.animation.addAnimation('rightLegUp',
             500,
             {
               bodyRotation: 5,
               headRotation: 10,
+              upperRightArmRotation: 70,
+              lowerRightArmRotation: -100,
               upperRightLegRotation: -40,
               lowerRightLegRotation: 50,
               upperLeftLegRotation: 20,
@@ -143,18 +156,20 @@
             'rightLegForward'
           );
 
-          person.animation.addAnimation('leftLegForward',
+          person.animation.addAnimation('rightLegForward',
             500,
             {
               bodyRotation: 10,
               headRotation: 20,
-              upperRightLegRotation: 30,
-              lowerRightLegRotation: 55,
-              upperLeftLegRotation: -10,
-              lowerLeftLegRotation: 0,
+              upperRightArmRotation: 45,
+              lowerRightArmRotation: -70,
+              upperRightLegRotation: -10,
+              lowerRightLegRotation: 0,
+              upperLeftLegRotation: 30,
+              lowerLeftLegRotation: 55,
             },
             undefined,
-            'rightLegUp'
+            'leftLegUp'
           );
 
           person.animation.addAnimation('leftLegUp',
@@ -162,6 +177,8 @@
             {
               bodyRotation: 5,
               headRotation: 10,
+              upperRightArmRotation: -45,
+              lowerRightArmRotation: -100,
               upperRightLegRotation: 20,
               lowerRightLegRotation: 25,
               upperLeftLegRotation: -40,
@@ -169,6 +186,22 @@
             },
             undefined,
             'leftLegForward'
+          );
+
+          person.animation.addAnimation('leftLegForward',
+            500,
+            {
+              bodyRotation: 10,
+              headRotation: 20,
+              upperRightArmRotation: -30,
+              lowerRightArmRotation: -45,
+              upperRightLegRotation: 30,
+              lowerRightLegRotation: 55,
+              upperLeftLegRotation: -10,
+              lowerLeftLegRotation: 0,
+            },
+            undefined,
+            'rightLegUp'
           );
 
           flo().requestAnimationFrame(render);
