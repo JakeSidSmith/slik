@@ -20,7 +20,7 @@
           canvas.translate(0, -65);
           drawHead();
           drawRightArm();
-          canvas.restore();
+          drawLeftArm();
         };
 
         var drawHead = function () {
@@ -44,6 +44,25 @@
           canvas.translate(0, 40);
           // Lower right
           canvas.rotate(person.position.lowerRightArmRotation * Math.PI / 180);
+          canvas.beginPath();
+          canvas.moveTo(0, 0);
+          canvas.lineTo(0, 40);
+          canvas.closePath();
+          canvas.stroke();
+          canvas.restore();
+        };
+
+        var drawLeftArm = function () {
+          canvas.save();
+          canvas.rotate(person.position.upperLeftArmRotation * Math.PI / 180);
+          canvas.beginPath();
+          canvas.moveTo(0, 0);
+          canvas.lineTo(0, 40);
+          canvas.closePath();
+          canvas.stroke();
+          canvas.translate(0, 40);
+          // Lower right
+          canvas.rotate(person.position.lowerLeftArmRotation * Math.PI / 180);
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 40);
@@ -147,6 +166,8 @@
               headRotation: 10,
               upperRightArmRotation: 70,
               lowerRightArmRotation: -100,
+              upperLeftArmRotation: -45,
+              lowerLeftArmRotation: -100,
               upperRightLegRotation: -40,
               lowerRightLegRotation: 50,
               upperLeftLegRotation: 20,
@@ -163,6 +184,8 @@
               headRotation: 20,
               upperRightArmRotation: 45,
               lowerRightArmRotation: -70,
+              upperLeftArmRotation: -30,
+              lowerLeftArmRotation: -45,
               upperRightLegRotation: -10,
               lowerRightLegRotation: 0,
               upperLeftLegRotation: 30,
@@ -179,6 +202,8 @@
               headRotation: 10,
               upperRightArmRotation: -45,
               lowerRightArmRotation: -100,
+              upperLeftArmRotation: 70,
+              lowerLeftArmRotation: -100,
               upperRightLegRotation: 20,
               lowerRightLegRotation: 25,
               upperLeftLegRotation: -40,
@@ -195,6 +220,8 @@
               headRotation: 20,
               upperRightArmRotation: -30,
               lowerRightArmRotation: -45,
+              upperLeftArmRotation: 45,
+              lowerLeftArmRotation: -70,
               upperRightLegRotation: 30,
               lowerRightLegRotation: 55,
               upperLeftLegRotation: -10,
