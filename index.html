@@ -3,10 +3,12 @@
 <head>
     <title>Flo-js</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <link rel="stylesheet" href="/css/master.css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="css/master.css" media="screen" title="no title" charset="utf-8" />
     <script charset="utf-8" type="text/javascript" src="flo.js"></script>
     <script charset="utf-8" type="text/javascript">
-        var canvasElement, canvas, cWidth, cHeight, person;
+        var canvasElement, canvas, cWidth, cHeight, person, speed;
+
+        speed = 0.2;
 
         var initialDate = new Date().getTime();
 
@@ -160,7 +162,7 @@
           person.animation = flo(canvas, person.position);
 
           person.animation.addAnimation('rightLegUp',
-            700,
+            700 * speed,
             {
               bodyRotation: 5,
               headRotation: 10,
@@ -178,7 +180,7 @@
           );
 
           person.animation.addAnimation('rightLegForward',
-            500,
+            500 * speed,
             {
               bodyRotation: 10,
               headRotation: 20,
@@ -196,7 +198,7 @@
           );
 
           person.animation.addAnimation('leftLegUp',
-            700,
+            700 * speed,
             {
               bodyRotation: 5,
               headRotation: 10,
@@ -214,7 +216,7 @@
           );
 
           person.animation.addAnimation('leftLegForward',
-            500,
+            500 * speed,
             {
               bodyRotation: 10,
               headRotation: 20,
