@@ -38,6 +38,18 @@ person.flo.add(
   }
 );
 
+person.flo.add('animation2')
+  .duration(500)
+  .nextPosition({})
+  .ease('dip');
+
+person.flo.nextPosition('animation1', {});
+person.flo.duration('animation1', 250);
+person.flo.ease('animation1', 'both');
+person.flo.onComplete('animation1', 'animation2');
+person.flo.invert('animation1');
+
+
 person.flo.do(
   'animation1',
   {
