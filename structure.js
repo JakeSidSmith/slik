@@ -15,6 +15,7 @@ var person = {
 
 person.flo = flo(person.position);
 
+// Add animation or set an animation's properties
 person.flo.set(
   'animation1',
   {
@@ -55,6 +56,9 @@ person.flo.clear('animation3');
 // Remove property of animation
 person.flo.clear('animation1', 'onComplete');
 
+// Do animation
+person.flo.do('animation1');
+// Do animation and adjust properties
 person.flo.do(
   'animation1',
   {
