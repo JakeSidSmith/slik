@@ -16,8 +16,8 @@ var person = {
 person.flo = flo(person.position);
 
 person.flo.add(
+  'animation1',
   {
-    name: 'animation1',
     nextPosition: {
 
     },
@@ -48,6 +48,7 @@ person.flo.duration('animation1', 250);
 person.flo.ease('animation1', 'both');
 person.flo.onComplete('animation1', 'animation2');
 person.flo.invert('animation1');
+person.flo.reverse('animation1');
 
 
 person.flo.do(
@@ -69,7 +70,3 @@ person.flo.edit(
     }
   }
 );
-
-person.flo.reverse('animation1');
-
-person.flo.invert('animation1');
