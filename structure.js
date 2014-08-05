@@ -26,6 +26,9 @@ person.flo.add(
     },
     duration: 500,
     ease: 'both', // in, out, both, dip
+    /*
+      Use Math.cos & Math.sin for easing
+    */
     onComplete: 'nextAnimation' || function () {
 
     },
