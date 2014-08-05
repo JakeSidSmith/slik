@@ -50,6 +50,10 @@ person.flo.onComplete('animation1', 'animation2');
 person.flo.invert('animation1');
 person.flo.reverse('animation1');
 
+// Remove animation
+person.flo.clear('animation3');
+// Remove property of animation
+person.flo.clear('animation1', 'onComplete');
 
 person.flo.do(
   'animation1',
