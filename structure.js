@@ -15,7 +15,7 @@ var person = {
 
 person.flo = flo(person.position);
 
-person.flo.add(
+person.flo.set(
   'animation1',
   {
     nextPosition: {
@@ -58,15 +58,5 @@ person.flo.do(
     invert: function () {
       return xVelocity < 0;
     },
-  }
-);
-
-person.flo.edit(
-  'animation1',
-  {
-    duration: 1000,
-    nextPosition: {
-
-    }
   }
 );
