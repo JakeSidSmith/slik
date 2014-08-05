@@ -1,6 +1,6 @@
 'user strict';
 
-var flo = function (canvas, position) {
+var flo = function (position) {
 
   var floObject = {
     animations: {},
@@ -58,7 +58,6 @@ var flo = function (canvas, position) {
   };
 
   floObject.position = position;
-  floObject.canvas = canvas;
 
   floObject.addAnimation = function (name, duration, nextPosition, previousPosition, onComplete) {
     floObject.animations[name] = {};
