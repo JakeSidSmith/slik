@@ -39,7 +39,7 @@ person.flo.set(
   }
 );
 
-person.flo.add('animation2')
+person.flo.set('animation2')
   .duration(500)
   .nextPosition({})
   .ease('dip');
