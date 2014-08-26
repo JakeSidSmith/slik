@@ -92,7 +92,8 @@ myFlo.position(position2);
 // Set animation
 myFlo.animation('animation')
   // Set animation attributes
-  .duration(500);
+  .duration(500)
+  .nextPosition(myNextPosition);
 
 // Get animation attributes
 var animationDuration = myFlo.animation('animation').duration();
