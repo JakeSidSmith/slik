@@ -132,7 +132,7 @@
 
           person.flo.animate();
           if (person.flo.currentAnimation === undefined) {
-            var rightLegUp = person.flo.do('rightLegUp');
+            person.flo.do('rightLegUp');
           }
 
           flo().requestAnimationFrame(render);
@@ -195,7 +195,7 @@
                 lowerLeftLegRotation: 55,
               }
             )
-            onComplete('leftLegUp');
+            .onComplete('leftLegUp');
 
           person.flo.animation('leftLegUp')
             .duration(700 * speed)

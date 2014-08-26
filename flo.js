@@ -3,6 +3,7 @@
 var flo = function (position) {
 
   var floObject = {
+    position: position,
     animations: {},
     requestAnimationFrame: function (func) {
       var requestAnimationFrame = window.requestAnimationFrame ||
@@ -48,40 +49,95 @@ var flo = function (position) {
         }
       };
       if (document.addEventListener) {
-        document.addEventListener("DOMContentLoaded", runFunction, false);
+        document.addEventListener('DOMContentLoaded', runFunction, false);
       }
       if (document.attachEvent) {
-        document.attachEvent("onreadystatechange", runFunction);
+        document.attachEvent('onreadystatechange', runFunction);
       }
       document.onload = runFunction;
     }
   };
 
-  floObject.position = position;
+  floObject.animation = function (name) {
+    if (floObject.animations[name] === undefined) {
+      floObject.animations[name] = {};
+    }
 
-  floObject.addAnimation = function (name, duration, nextPosition, previousPosition, onComplete) {
-    floObject.animations[name] = {};
-    floObject.animations[name].duration = duration;
-    floObject.animations[name].nextPosition = nextPosition;
-    floObject.animations[name].previousPosition = previousPosition;
-    floObject.animations[name].onComplete = onComplete;
+    var animation = {
+      duration: function (name) {
+        return function (time) {
+          floObject.animations[name].duration = time;
+          return animation;
+        };
+      }(name),
+      nextPosition: function (name) {
+        return function (obj) {
+          floObject.animations[name].nextPosition = {};
+          for (key in obj) {
+            floObject.animations[name].nextPosition[key] = obj[key];
+          }
+          return animation;
+        };
+      }(name),
+      previousPosition: function (name) {
+        return function (obj) {
+          floObject.animations[name].previousPosition = obj;
+          return animation;
+        };
+      }(name),
+      ease: function (name) {
+        return function (easing) {
+          floObject.animations[name].ease = easing;
+          return animation;
+        };
+      }(name),
+      onComplete: function (name) {
+        return function (func) {
+          floObject.animations[name].onComplete = func;
+          return animation;
+        };
+      }(name),
+      invert: function (name) {
+        return animation;
+      },
+      reverse: function (name) {
+        return animation;
+      },
+      clear: function (name) {
+        return function (attr) {
+          if (attr !== undefined) {
+            floObject.animations[name][attr] = undefined;
+          } else {
+            floObject.animations[name] = undefined;
+          }
+          return animation;
+        };
+      }(name),
+      do: function (name) {
+        return function () {
+          floObject.do(name);
+        };
+        return animation;
+      }
+    };
+
+    return animation;
   };
 
-  floObject.doAnimation = function (name, duration, onComplete) {
+  floObject.do = function (name) {
     if (name === undefined) {
       floObject.currentAnimation === undefined;
     } else {
       floObject.startTime = new Date().getTime();
       floObject.currentAnimation = name;
-      floObject.duration = duration || floObject.animations[name] ? floObject.animations[name].duration : undefined;
-      floObject.animations[name].onComplete = onComplete || floObject.animations[name] ? floObject.animations[name].onComplete : undefined;
+      floObject.duration = floObject.animations[floObject.currentAnimation].duration;
 
       floObject.previousPosition = function () {
         var newPosition = {};
         var animation = floObject.animations[name];
-        if (animation.previousPosition) {
+        if (animation.previousPosition !== undefined) {
           for (key in floObject.position) {
-            newPosition[key] = animation.previousPosition[key] ? animation.previousPosition[key] : floObject.position[key];
+            newPosition[key] = animation.previousPosition[key] !== undefined ? animation.previousPosition[key] : floObject.position[key];
           }
           return newPosition;
         }
@@ -104,7 +160,7 @@ var flo = function (position) {
       }
 
       if (multiplier === 1) {
-        floObject.doAnimation(animation.onComplete);
+        floObject.do(animation.onComplete);
       }
     }
   };
