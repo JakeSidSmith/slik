@@ -98,8 +98,14 @@ var flo = function (position) {
         };
       }(name),
       invert: function (name) {
-        return animation;
-      },
+        return function () {
+          var currentAnimation = floObject.animations[name].nextPosition;
+          for (key in currentAnimation) {
+            currentAnimation[key] *= -1;
+          }
+          return animation;
+        };
+      }(name),
       reverse: function (name) {
         return animation;
       },
