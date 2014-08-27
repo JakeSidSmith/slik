@@ -112,12 +112,16 @@
             return animation;
           };
         })(name),
-        do: function (name) {
-          return function () {
-            floObject.do(name);
+        do: (function (name) {
+          return function (newName) {
+            if (newName !== undefined) {
+              floObject.do(newName);
+            } else {
+              floObject.do(name);
+            }
             return animation;
           };
-        }
+        })(name)
       };
 
       return animation;
