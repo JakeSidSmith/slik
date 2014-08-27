@@ -160,7 +160,11 @@
         }
 
         if (multiplier === 1) {
-          floObject.do(animation.onComplete);
+          if (typeof animation.onComplete === 'function') {
+            animation.onComplete();
+          } else if (typeof animation.onComplete === 'string') {
+            floObject.do(animation.onComplete);
+          }
         }
       }
     };

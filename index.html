@@ -215,6 +215,8 @@
             )
             .onComplete('leftLegForward');
 
+          var steps = 0;
+
           person.flo.animation('leftLegForward')
             .duration(500 * speed)
             .nextPosition(
@@ -231,7 +233,16 @@
                 lowerLeftLegRotation: 0,
               }
             )
-            .onComplete('rightLegUp');
+            .onComplete(function () {
+              steps += 1;
+              if (steps % 3 === 0) {
+                person.flo.animation('rightLegUp').invert();
+                person.flo.animation('rightLegForward').invert();
+                person.flo.animation('leftLegUp').invert();
+                person.flo.animation('leftLegForward').invert();
+              }
+              person.flo.do('rightLegUp');
+            });
 
           flo().requestAnimationFrame(render);
         };
