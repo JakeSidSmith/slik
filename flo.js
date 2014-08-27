@@ -87,12 +87,6 @@
             return animation;
           };
         })(name),
-        ease: (function (name) {
-          return function (easing) {
-            floObject.animations[name].ease = easing;
-            return animation;
-          };
-        })(name),
         onComplete: (function (name) {
           return function (func) {
             floObject.animations[name].onComplete = func;
@@ -108,9 +102,6 @@
             return animation;
           };
         })(name),
-        reverse: function () {
-          return animation;
-        },
         clear: (function (name) {
           return function (attr) {
             if (attr !== undefined) {
