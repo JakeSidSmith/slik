@@ -8,7 +8,7 @@
     <script charset="utf-8" type="text/javascript">
         var canvasElement, canvas, cWidth, cHeight, person, speed;
 
-        speed = 0.2;
+        speed = 0.3;
 
         var initialDate = new Date().getTime();
 
@@ -130,9 +130,9 @@
           drawLeftLeg();
           canvas.restore();
 
-          person.animation.animate();
-          if (person.animation.currentAnimation === undefined) {
-            var rightLegUp = person.animation.doAnimation('rightLegUp');
+          person.flo.animate();
+          if (person.flo.currentAnimation === undefined) {
+            person.flo.do('rightLegUp');
           }
 
           flo().requestAnimationFrame(render);
@@ -159,79 +159,79 @@
             }
           };
 
-          person.animation = flo(canvas, person.position);
+          person.flo = flo(person.position);
 
-          person.animation.addAnimation('rightLegUp',
-            700 * speed,
-            {
-              bodyRotation: 5,
-              headRotation: 10,
-              upperRightArmRotation: 70,
-              lowerRightArmRotation: -100,
-              upperLeftArmRotation: -45,
-              lowerLeftArmRotation: -100,
-              upperRightLegRotation: -40,
-              lowerRightLegRotation: 50,
-              upperLeftLegRotation: 20,
-              lowerLeftLegRotation: 25,
-            },
-            undefined,
-            'rightLegForward'
-          );
+          person.flo.animation('rightLegUp')
+            .duration(700 * speed)
+            .nextPosition(
+              {
+                bodyRotation: 5,
+                headRotation: 10,
+                upperRightArmRotation: 70,
+                lowerRightArmRotation: -100,
+                upperLeftArmRotation: -45,
+                lowerLeftArmRotation: -100,
+                upperRightLegRotation: -40,
+                lowerRightLegRotation: 50,
+                upperLeftLegRotation: 20,
+                lowerLeftLegRotation: 25,
+              }
+            )
+            .onComplete('rightLegForward');
 
-          person.animation.addAnimation('rightLegForward',
-            500 * speed,
-            {
-              bodyRotation: 10,
-              headRotation: 20,
-              upperRightArmRotation: 45,
-              lowerRightArmRotation: -70,
-              upperLeftArmRotation: -30,
-              lowerLeftArmRotation: -45,
-              upperRightLegRotation: -10,
-              lowerRightLegRotation: 0,
-              upperLeftLegRotation: 30,
-              lowerLeftLegRotation: 55,
-            },
-            undefined,
-            'leftLegUp'
-          );
+          person.flo.animation('rightLegForward')
+            .duration(500 * speed)
+            .nextPosition(
+              {
+                bodyRotation: 10,
+                headRotation: 20,
+                upperRightArmRotation: 45,
+                lowerRightArmRotation: -70,
+                upperLeftArmRotation: -30,
+                lowerLeftArmRotation: -45,
+                upperRightLegRotation: -10,
+                lowerRightLegRotation: 0,
+                upperLeftLegRotation: 30,
+                lowerLeftLegRotation: 55,
+              }
+            )
+            .onComplete('leftLegUp');
 
-          person.animation.addAnimation('leftLegUp',
-            700 * speed,
-            {
-              bodyRotation: 5,
-              headRotation: 10,
-              upperRightArmRotation: -45,
-              lowerRightArmRotation: -100,
-              upperLeftArmRotation: 70,
-              lowerLeftArmRotation: -100,
-              upperRightLegRotation: 20,
-              lowerRightLegRotation: 25,
-              upperLeftLegRotation: -40,
-              lowerLeftLegRotation: 50,
-            },
-            undefined,
-            'leftLegForward'
-          );
+          person.flo.animation('leftLegUp')
+            .duration(700 * speed)
+            .nextPosition(
+              {
+                bodyRotation: 5,
+                headRotation: 10,
+                upperRightArmRotation: -45,
+                lowerRightArmRotation: -100,
+                upperLeftArmRotation: 70,
+                lowerLeftArmRotation: -100,
+                upperRightLegRotation: 20,
+                lowerRightLegRotation: 25,
+                upperLeftLegRotation: -40,
+                lowerLeftLegRotation: 50,
+              }
+            )
+            .onComplete('leftLegForward');
 
-          person.animation.addAnimation('leftLegForward',
-            500 * speed,
-            {
-              bodyRotation: 10,
-              headRotation: 20,
-              upperRightArmRotation: -30,
-              lowerRightArmRotation: -45,
-              upperLeftArmRotation: 45,
-              lowerLeftArmRotation: -70,
-              upperRightLegRotation: 30,
-              lowerRightLegRotation: 55,
-              upperLeftLegRotation: -10,
-              lowerLeftLegRotation: 0,
-            },
-            undefined,
-            'rightLegUp'
-          );
+          person.flo.animation('leftLegForward')
+            .duration(500 * speed)
+            .nextPosition(
+              {
+                bodyRotation: 10,
+                headRotation: 20,
+                upperRightArmRotation: -30,
+                lowerRightArmRotation: -45,
+                upperLeftArmRotation: 45,
+                lowerLeftArmRotation: -70,
+                upperRightLegRotation: 30,
+                lowerRightLegRotation: 55,
+                upperLeftLegRotation: -10,
+                lowerLeftLegRotation: 0,
+              }
+            )
+            .onComplete('rightLegUp');
 
           flo().requestAnimationFrame(render);
         };
@@ -250,7 +250,11 @@
 
         <p>Animation library for use with HTML5 canvas</p>
 
-        <canvas id="canvas" width="640" height="480"></canvas>
+        <canvas id="canvas" width="640" height="480">
+            <p>
+                Sorry, it looks like your browser doesn't support the canvas element.
+            </p>
+        </canvas>
 
         <p>
             <button name="button" onclick="enterFullscreen()">Fullscreen</button>
