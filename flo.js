@@ -93,6 +93,12 @@
             return animation;
           };
         })(name),
+        ease: (function (name) {
+          return function (easing) {
+            floObject.animations[name].ease = easing;
+            return animation;
+          };
+        })(name),
         invert: (function (name) {
           return function () {
             var currentAnimation = floObject.animations[name].nextPosition;
