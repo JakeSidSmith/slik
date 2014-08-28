@@ -178,7 +178,9 @@
         multiplier = Math.min(Math.max(multiplier, 0), 1);
 
         for (var key in animation.nextPosition) {
-          floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+          if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
+            floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+          }
         }
 
         if (progress === 1) {
