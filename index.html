@@ -142,7 +142,7 @@
           additionalAnimations.animate();
 
           canvas.fillStyle = 'black';
-          canvas.rect(additionalPositions.x - 5, additionalPositions.y - 10, 10, 10);
+          canvas.rect(additionalPositions[0] - 5, additionalPositions[1] - 10, 10, 10);
           canvas.fill();
 
           if (person.flo.currentAnimation === undefined) {
@@ -175,23 +175,20 @@
 
           person.flo = flo(person.position);
 
-          additionalPositions = {
-            x: 120,
-            y: 240
-          };
+          additionalPositions = [120, 240];
 
           additionalAnimations = flo(additionalPositions);
 
           additionalAnimations.animation('moveDown')
             .duration(1000)
-            .nextPosition({y: 480})
+            .nextPosition([120, 480])
             .ease('in')
             .onComplete('moveUp')
             .do();
 
           additionalAnimations.animation('moveUp')
             .duration(1000)
-            .nextPosition({y: 240})
+            .nextPosition([120, 240])
             .ease('out')
             .onComplete('moveDown');
 
