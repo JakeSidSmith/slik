@@ -160,16 +160,28 @@
     };
 
     floObject.animate = function () {
-      var multiplier = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
-
       if (floObject.currentAnimation) {
+        var multiplier;
+        var progress = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
         var animation = floObject.animations[floObject.currentAnimation];
+
+        if (animation.ease === 'in') {
+          multiplier = (1 - Math.cos(progress * Math.PI / 2));
+        } else if (animation.ease === 'out') {
+          multiplier = Math.cos((1 - progress) * Math.PI / 2);
+        } else if (animation.ease === 'inout' || animation.ease === 'both') {
+          multiplier = (1 - Math.cos(progress * Math.PI)) / 2;
+        } else {
+          multiplier = progress;
+        }
+
+        multiplier = Math.min(Math.max(multiplier, 0), 1);
 
         for (var key in animation.nextPosition) {
           floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
         }
 
-        if (multiplier === 1) {
+        if (progress === 1) {
           if (typeof animation.onComplete === 'function') {
             animation.onComplete();
           } else if (typeof animation.onComplete === 'string') {

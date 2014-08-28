@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/master.css" media="screen" title="no title" charset="utf-8" />
     <script charset="utf-8" type="text/javascript" src="flo.js"></script>
     <script charset="utf-8" type="text/javascript">
-        var canvasElement, canvas, cWidth, cHeight, person, speed;
+        var canvasElement, canvas, cWidth, cHeight, person, speed, additionalPositions, additionalAnimations;
 
         speed = 0.3;
 
@@ -131,6 +131,12 @@
           canvas.restore();
 
           person.flo.animate();
+          additionalAnimations.animate();
+
+          canvas.fillStyle = 'black';
+          canvas.rect(additionalPositions.x, additionalPositions.y, 10, 10);
+          canvas.fill();
+
           if (person.flo.currentAnimation === undefined) {
             person.flo.do('rightLegUp');
           }
@@ -160,6 +166,26 @@
           };
 
           person.flo = flo(person.position);
+
+          additionalPositions = {
+            x: 0,
+            y: 0
+          };
+
+          additionalAnimations = flo(additionalPositions);
+
+          additionalAnimations.animation('moveDown')
+            .duration(1000)
+            .nextPosition({y: 240})
+            .ease('in')
+            .onComplete('moveUp')
+            .do();
+
+          additionalAnimations.animation('moveUp')
+            .duration(1000)
+            .nextPosition({y: 0})
+            .ease('out')
+            .onComplete('moveDown');
 
           person.flo.animation('rightLegUp')
             .duration(700 * speed)
