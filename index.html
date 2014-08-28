@@ -17,6 +17,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, -65);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.translate(0, -65);
@@ -29,7 +30,7 @@
           canvas.save();
           canvas.rotate(person.position.headRotation * Math.PI / 180);
           canvas.beginPath();
-          canvas.arc(0,-15,15,0,2*Math.PI);
+          canvas.arc(0,-17,15,0,2*Math.PI);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -41,6 +42,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 40);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.translate(0, 40);
@@ -49,6 +51,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 40);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -60,6 +63,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 40);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.translate(0, 40);
@@ -68,6 +72,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 40);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -80,6 +85,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 50);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           // Lower right
@@ -88,6 +94,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 50);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -100,6 +107,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 50);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           // Lower left
@@ -108,6 +116,7 @@
           canvas.beginPath();
           canvas.moveTo(0, 0);
           canvas.lineTo(0, 50);
+          canvas.moveTo(0, 0);
           canvas.closePath();
           canvas.stroke();
           canvas.restore();
@@ -117,6 +126,7 @@
           canvas.clearRect(0, 0, cWidth, cHeight);
           canvas.strokeStyle = 'black';
           canvas.lineWidth = 4;
+          canvas.lineCap = 'round';
 
           // Draw upper body
           canvas.save();
