@@ -93,6 +93,12 @@
             return animation;
           };
         })(name),
+        ease: (function (name) {
+          return function (easing) {
+            floObject.animations[name].ease = easing;
+            return animation;
+          };
+        })(name),
         invert: (function (name) {
           return function () {
             var currentAnimation = floObject.animations[name].nextPosition;
@@ -154,16 +160,30 @@
     };
 
     floObject.animate = function () {
-      var multiplier = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
-
       if (floObject.currentAnimation) {
+        var multiplier;
+        var progress = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
         var animation = floObject.animations[floObject.currentAnimation];
 
-        for (var key in animation.nextPosition) {
-          floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+        if (animation.ease === 'in') {
+          multiplier = (1 - Math.cos(progress * Math.PI / 2));
+        } else if (animation.ease === 'out') {
+          multiplier = Math.cos((1 - progress) * Math.PI / 2);
+        } else if (animation.ease === 'inout' || animation.ease === 'both') {
+          multiplier = (1 - Math.cos(progress * Math.PI)) / 2;
+        } else {
+          multiplier = progress;
         }
 
-        if (multiplier === 1) {
+        multiplier = Math.min(Math.max(multiplier, 0), 1);
+
+        for (var key in animation.nextPosition) {
+          if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
+            floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+          }
+        }
+
+        if (progress === 1) {
           if (typeof animation.onComplete === 'function') {
             animation.onComplete();
           } else if (typeof animation.onComplete === 'string') {
