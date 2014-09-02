@@ -123,9 +123,14 @@
       }
 
       var animation = {
-        animation: function (name) {
-          return floObject.animation(name);
-        },
+        animation: (function (name) {
+          return function (animName) {
+            if (animName !== undefined) {
+              return floObject.animation(animName);
+            }
+            return floObject.animation(name);
+          };
+        })(name),
         duration: (function (name) {
           return function (time) {
             floObject.animations[name].duration = time;
