@@ -150,8 +150,9 @@
           };
         })(name),
         onComplete: (function (name) {
-          return function (func) {
+          return function (func, delay) {
             floObject.animations[name].onComplete = func;
+            floObject.animations[name].delay = delay || 0;
             return animation;
           };
         })(name),
