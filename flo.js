@@ -2,6 +2,63 @@
 
 (function () {
 
+  var hasChildren = function (obj) {
+    return typeof obj === 'object';
+  };
+
+  var deepCopy = function (obj) {
+    var newObj = {};
+    for (var key in obj) {
+      if (hasChildren(obj[key])) {
+        newObj[key] = deepCopy(obj[key]);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+    return newObj;
+  };
+
+  var deepInvert = function (obj) {
+    var newObj = {};
+    for (var key in obj) {
+      if (hasChildren(obj[key])) {
+        newObj[key] = deepInvert(obj[key]);
+      } else {
+        newObj[key] = obj[key] * -1;
+      }
+    }
+    return newObj;
+  };
+
+  var deepFillGaps = function (filler, base) {
+    var newObj = {};
+    for (var key in base) {
+      if (hasChildren(base[key])) {
+        newObj[key] = deepFillGaps(filler[key], base[key]);
+      } else {
+        newObj[key] = filler[key] !== undefined ? filler[key] : base[key];
+      }
+    }
+    return newObj;
+  };
+
+  var deepLoopTransform = function (base, mult) {
+    return function (next, prev) {
+      for (var key in next) {
+        if (hasChildren(next[key])) {
+          base[key] = deepLoopTransform(base[key], mult)(next[key], prev[key]);
+        } else {
+          if (next[key] === prev[key]) {
+            base[key] = next[key];
+          } else {
+            base[key] = next[key] * mult + prev[key] * (1 - mult);
+          }
+        }
+      }
+      return base;
+    };
+  };
+
   var flo = function (position) {
 
     var floObject = {
@@ -66,6 +123,9 @@
       }
 
       var animation = {
+        animation: function (name) {
+          return floObject.animation(name);
+        },
         duration: (function (name) {
           return function (time) {
             floObject.animations[name].duration = time;
@@ -74,16 +134,13 @@
         })(name),
         nextPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].nextPosition = {};
-            for (var key in obj) {
-              floObject.animations[name].nextPosition[key] = obj[key];
-            }
+            floObject.animations[name].nextPosition = deepCopy(obj);
             return animation;
           };
         })(name),
         previousPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].previousPosition = obj;
+            floObject.animations[name].previousPosition = deepCopy(obj);
             return animation;
           };
         })(name),
@@ -101,10 +158,7 @@
         })(name),
         invert: (function (name) {
           return function () {
-            var currentAnimation = floObject.animations[name].nextPosition;
-            for (var key in currentAnimation) {
-              currentAnimation[key] *= -1;
-            }
+            floObject.animations[name].nextPosition = deepInvert(floObject.animations[name].nextPosition);
             return animation;
           };
         })(name),
@@ -142,19 +196,11 @@
         floObject.duration = floObject.animations[floObject.currentAnimation].duration;
 
         floObject.previousPosition = (function () {
-          var key;
-          var newPosition = {};
           var animation = floObject.animations[name];
           if (animation.previousPosition !== undefined) {
-            for (key in floObject.position) {
-              newPosition[key] = animation.previousPosition[key] !== undefined ? animation.previousPosition[key] : floObject.position[key];
-            }
-            return newPosition;
+            return deepFillGaps(animation.previousPosition, floObject.position);
           }
-          for (key in floObject.position) {
-            newPosition[key] = floObject.position[key];
-          }
-          return newPosition;
+          return deepCopy(floObject.position);
         })();
       }
     };
@@ -176,12 +222,9 @@
         }
 
         multiplier = Math.min(Math.max(multiplier, 0), 1);
+        var bakedDeepLoopTransform = deepLoopTransform(floObject.position, multiplier);
 
-        for (var key in animation.nextPosition) {
-          if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
-            floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
-          }
-        }
+        bakedDeepLoopTransform(animation.nextPosition, floObject.previousPosition);
 
         if (progress === 1) {
           if (typeof animation.onComplete === 'function') {
