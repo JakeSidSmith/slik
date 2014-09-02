@@ -233,11 +233,13 @@
         bakedDeepLoopTransform(animation.nextPosition, floObject.previousPosition);
 
         if (progress === 1) {
-          if (typeof animation.onComplete === 'function') {
-            animation.onComplete();
-          } else if (typeof animation.onComplete === 'string') {
-            floObject.do(animation.onComplete);
-          }
+          setTimeout(function () {
+            if (typeof animation.onComplete === 'function') {
+              animation.onComplete();
+            } else {
+              floObject.do(animation.onComplete);
+            }
+          }, animation.delay);
         }
       }
     };
