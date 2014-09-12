@@ -50,3 +50,52 @@ __Animation library for use with HTML5 canvas__
             .onComplete('leftLegForward')
             .do(); // Trigger animation
 
+#### Animation Properties
+
+1. Duration - In milliseconds.
+
+        myFlo.animation('rightLegForward')
+            .duration(500)
+
+2. Next position - object containing the values you want to animate to.
+
+        .nextPosition({
+            rightLegRotation: 45
+        })
+
+    **Note: you don't have to animate every value.**
+
+3. Previous position - you can manually set the position at the start of the animation. This is especially useful when animating full rotations. This example would be suitable for having a character perform a flip without ending up rotated 360 degrees.
+
+        .previousPosition({
+            bodyRotation: -360
+        })
+
+    **Note: you don't have to animate every value.**
+
+4. On complete - action to perform once animation completes. onComplete can take a string (the name of the next animation to perform) or a function (which you may want to trigger the next animation in also).
+
+        .onComplete('leftLegForward')
+
+5. Ease - define the easing of the animation. In, out, both (inout) or none (linear). The default easing is none.
+
+        .ease('in')
+
+6. Invert - invert an animation's values at any point
+
+        .invert()
+
+7. Clear - used to clear an entire animation, or a specific property of an animation if one is specified.
+
+        .clear('duration');
+
+8. Do - trigger an animation. This can be called on an individual animation or directly on your flo object and specifying the name of the animation to trigger.
+
+        // On flo object
+        myFlo.do('rightLegForward');
+
+        // On animation
+        myFlo.animation('rightLegForward').do();
+
+        // Trigger separate animation from animation
+        myFlo.animation('rightLegForward').do('leftLegForward');
