@@ -1,4 +1,4 @@
-# Flo-js v 0.0.0
+# Flo-js v 1.0.0
 
 __Animation library for use with HTML5 canvas__
 
