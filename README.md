@@ -1,4 +1,4 @@
-# Flo-js v 1.0.0
+# Flo-js
 
 __Animation library for use with HTML5 canvas__
 
@@ -6,17 +6,23 @@ __Animation library for use with HTML5 canvas__
 
 ### Installation
 
-1. Use bower to import flo-js into your project, or manually download and copy flo.js to your desired location.
+1. Use npm or bower to install flo-js.
 
-        bower install flo-js#1.0.0 -S
+    1. Using npm
 
-    I'd recommend pinning to a specific version and using `-S` to add this to your bower.json automatically.
+            npm install flo-js --save
 
-2. Link to flo.js in your main HTML / template file.
+        I'd recommend pinning to a specific version and using `--save` to add this to your package.json automatically.
 
-        <script type="text/javascript" src="bower_components/flo-js/flo.js"></script>
+    1. Using bower
 
-    Replace `bower_components/flo-js/flo.js` with the appropriate link to flo.js.
+            bower install flo-js -S
+
+        I'd recommend pinning to a specific version and using `-S` to add this to your bower.json automatically.
+
+1. Require flo-js in your main HTML / template file.
+
+        var flo = require('flo-js');
 
 ### Getting started
 
@@ -30,17 +36,17 @@ __Animation library for use with HTML5 canvas__
             rightLegRotation: 0
         };
 
-2. Create a flo object. You'll be passing the position-object you want to animate here. You can create as many flo objects as you like (preferably for entirely different animation groups).
+1. Create a flo object. You'll be passing the position-object you want to animate here. You can create as many flo objects as you like (preferably for entirely different animation groups).
 
         var myFlo = flo(myPosition);
 
-3. Add some animations to your flo objects (this is where it gets a bit more complicated). You'll first want to name an animation. In this example we'll do a multi-step walking animation.
+1. Add some animations to your flo objects (this is where it gets a bit more complicated). You'll first want to name an animation. In this example we'll do a multi-step walking animation.
 
         myFlo.animation('rightLegForward')
 
     Animation names must not contain special characters or spaces, and should be camelcase.
 
-4. Start adjusting the properties of this animation. There's a full list of methods below.
+1. Start adjusting the properties of this animation. There's a full list of methods below.
 
         myFlo.animation('rightLegForward')
             .duration(500)
@@ -57,7 +63,7 @@ __Animation library for use with HTML5 canvas__
         myFlo.animation('rightLegForward')
             .duration(500)
 
-2. Next position - object containing the values you want to animate to.
+1. Next position - object containing the values you want to animate to.
 
         .nextPosition({
             rightLegRotation: 45
@@ -65,7 +71,7 @@ __Animation library for use with HTML5 canvas__
 
     **Note: you don't have to animate every value.**
 
-3. Previous position - you can manually set the position at the start of the animation. This is especially useful when animating full rotations. This example would be suitable for having a character perform a flip without ending up rotated 360 degrees.
+1. Previous position - you can manually set the position at the start of the animation. This is especially useful when animating full rotations. This example would be suitable for having a character perform a flip without ending up rotated 360 degrees.
 
         .previousPosition({
             bodyRotation: -360
@@ -73,23 +79,23 @@ __Animation library for use with HTML5 canvas__
 
     **Note: you don't have to animate every value.**
 
-4. On complete - action to perform once animation completes. onComplete can take a string (the name of the next animation to perform) or a function (which you may want to trigger the next animation in also).
+1. On complete - action to perform once animation completes. onComplete can take a string (the name of the next animation to perform) or a function (which you may want to trigger the next animation in also).
 
         .onComplete('leftLegForward')
 
-5. Ease - define the easing of the animation. In, out, both (inout) or none (linear). The default easing is none.
+1. Ease - define the easing of the animation. In, out, both (inout) or none (linear). The default easing is none.
 
         .ease('in')
 
-6. Invert - invert an animation's values at any point
+1. Invert - invert an animation's values at any point
 
         .invert()
 
-7. Clear - used to clear an entire animation, or a specific property of an animation if one is specified.
+1. Clear - used to clear an entire animation, or a specific property of an animation if one is specified.
 
         .clear('duration');
 
-8. Do - trigger an animation. This can be called on an individual animation or directly on your flo object and specifying the name of the animation to trigger.
+1. Do - trigger an animation. This can be called on an individual animation or directly on your flo object and specifying the name of the animation to trigger.
 
         // On flo object
         myFlo.do('rightLegForward');
