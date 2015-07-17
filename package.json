@@ -43,9 +43,6 @@
     "watch": "0.16.0",
     "watchify": "3.2.3"
   },
-  "dependencies": {
-    "underscore": "1.8.3"
-  },
   "jshintConfig": {
     "browserify": true,
     "unused": true,
