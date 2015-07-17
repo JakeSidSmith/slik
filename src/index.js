@@ -196,6 +196,6 @@
     return floObject;
   };
 
-  window.flo = flo;
+  module.exports = flo;
 
 })();
