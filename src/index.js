@@ -9,9 +9,9 @@
       animations: {},
       requestAnimationFrame: function (func) {
         var requestAnimationFrame = window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.msRequestAnimationFrame;
+          window.mozRequestAnimationFrame ||
+          window.webkitRequestAnimationFrame ||
+          window.msRequestAnimationFrame;
         requestAnimationFrame(func);
       },
       isFullscreen: function () {
