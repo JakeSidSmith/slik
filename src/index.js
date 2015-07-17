@@ -213,7 +213,10 @@
     floObject.animate = function () {
       if (floObject.currentAnimation) {
         var multiplier;
-        var progress = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
+        var progress = Math.min(
+          (new Date().getTime() - floObject.startTime) / floObject.duration,
+          1
+        );
         var animation = floObject.animations[floObject.currentAnimation];
 
         if (animation.ease === 'in') {
@@ -244,6 +247,6 @@
     return floObject;
   };
 
-  window.flo = flo;
+  module.exports = flo;
 
 })();
