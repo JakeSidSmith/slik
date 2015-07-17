@@ -147,7 +147,8 @@
           var animation = floObject.animations[name];
           if (animation.previousPosition !== undefined) {
             for (key in floObject.position) {
-              newPosition[key] = animation.previousPosition[key] !== undefined ? animation.previousPosition[key] : floObject.position[key];
+              newPosition[key] = animation.previousPosition[key] !== undefined ?
+                animation.previousPosition[key] : floObject.position[key];
             }
             return newPosition;
           }
@@ -162,7 +163,10 @@
     floObject.animate = function () {
       if (floObject.currentAnimation) {
         var multiplier;
-        var progress = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
+        var progress = Math.min(
+          (new Date().getTime() - floObject.startTime) / floObject.duration,
+          1
+        );
         var animation = floObject.animations[floObject.currentAnimation];
 
         if (animation.ease === 'in') {
@@ -179,7 +183,8 @@
 
         for (var key in animation.nextPosition) {
           if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
-            floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+            floObject.position[key] = animation.nextPosition[key] * multiplier +
+              floObject.previousPosition[key] * (1 - multiplier);
           }
         }
 
