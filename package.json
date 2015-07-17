@@ -1,0 +1,33 @@
+{
+  "name": "flo-js",
+  "version": "0.0.0",
+  "description": "Animation library for use with HTML5 canvas",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "jshint 'src/' 'examples/src/js' && jscs 'src/' 'examples/src/js'",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JakeSidSmith/flo-js.git"
+  },
+  "keywords": [
+    "animation",
+    "tween",
+    "flow",
+    "flo",
+    "library",
+    "html5",
+    "canvas"
+  ],
+  "author": "Jake 'Sid' Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JakeSidSmith/flo-js/issues"
+  },
+  "homepage": "https://github.com/JakeSidSmith/flo-js",
+  "devDependencies": {
+    "jscs": "1.13.1",
+    "jshint": "2.8.0"
+  }
+}
