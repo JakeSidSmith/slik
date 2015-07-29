@@ -16,6 +16,12 @@
     "canvas"
   ],
   "main": "src/index.js",
+  "authors": [
+    {
+      "name": "Jake 'Sid' Smith",
+      "homepage": "https://githib.com/JakeSidSmith"
+    }
+  ],
   "moduleType": [
     "amd",
     "globals",
