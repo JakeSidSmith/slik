@@ -201,6 +201,25 @@
     return slikObject;
   };
 
-  module.exports = slik;
+  // Establish the root object, `window` in the browser, or `exports` on the server.
+  var root = this || window;
+
+  // Export for commonjs / browserify
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = slik;
+    }
+    exports.Reorderable = slik;
+  } else if (typeof root !== 'undefined') {
+    // Add to root object
+    root.Reorderable = slik;
+  }
+
+  // Define for requirejs
+  if (root && typeof root.define === 'function' && root.define.amd) {
+    root.define(function () {
+      return slik;
+    });
+  }
 
 })();
