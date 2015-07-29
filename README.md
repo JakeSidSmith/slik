@@ -26,7 +26,7 @@ __Animation library for use with HTML5 canvas__
 
 ### Getting started
 
-1. Setup an object containing the positions you want to animate. These values can be nested, and can be contained in arrays but I'd highly recommend using objects as it makes it easier to refer to your values later.
+1. Setup an object containing the positions you want to animate. These values can be contained in arrays but I'd highly recommend using objects as it makes it easier to refer to your values later.
 
         var myPosition = {
             headRotation: 0,
