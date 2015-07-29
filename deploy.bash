@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BRANCH=gh-pages
-TARGET_REPO=jakesidsmith/flo-js
+TARGET_REPO=jakesidsmith/slik
 DIST_FOLDER=examples
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then

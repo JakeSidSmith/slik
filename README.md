@@ -1,4 +1,4 @@
-# Flo-js
+# Slik
 
 __Animation library for use with HTML5 canvas__
 
@@ -6,23 +6,23 @@ __Animation library for use with HTML5 canvas__
 
 ### Installation
 
-1. Use npm or bower to install flo-js.
+1. Use npm or bower to install slik.
 
     1. Using npm
 
-            npm install flo-js --save
+            npm install slik --save
 
         I'd recommend pinning to a specific version and using `--save` to add this to your package.json automatically.
 
     1. Using bower
 
-            bower install flo-js -S
+            bower install slik -S
 
         I'd recommend pinning to a specific version and using `-S` to add this to your bower.json automatically.
 
-1. Require flo-js in your main HTML / template file.
+1. Require slik in your main HTML / template file.
 
-        var flo = require('flo-js');
+        var slik = require('slik');
 
 ### Getting started
 
@@ -36,19 +36,19 @@ __Animation library for use with HTML5 canvas__
             rightLegRotation: 0
         };
 
-1. Create a flo object. You'll be passing the position-object you want to animate here. You can create as many flo objects as you like (preferably for entirely different animation groups).
+1. Create a slik object. You'll be passing the position-object you want to animate here. You can create as many slik objects as you like (preferably for entirely different animation groups).
 
-        var myFlo = flo(myPosition);
+        var mySlik = slik(myPosition);
 
-1. Add some animations to your flo objects (this is where it gets a bit more complicated). You'll first want to name an animation. In this example we'll do a multi-step walking animation.
+1. Add some animations to your slik objects (this is where it gets a bit more complicated). You'll first want to name an animation. In this example we'll do a multi-step walking animation.
 
-        myFlo.animation('rightLegForward')
+        mySlik.animation('rightLegForward')
 
     Animation names must not contain special characters or spaces, and should be camelcase.
 
 1. Start adjusting the properties of this animation. There's a full list of methods below.
 
-        myFlo.animation('rightLegForward')
+        mySlik.animation('rightLegForward')
             .duration(500)
             .nextPosition({
                 rightLegRotation: 45
@@ -60,7 +60,7 @@ __Animation library for use with HTML5 canvas__
 
 1. Duration - In milliseconds.
 
-        myFlo.animation('rightLegForward')
+        mySlik.animation('rightLegForward')
             .duration(500)
 
 1. Next position - object containing the values you want to animate to.
@@ -95,13 +95,13 @@ __Animation library for use with HTML5 canvas__
 
         .clear('duration');
 
-1. Do - trigger an animation. This can be called on an individual animation or directly on your flo object and specifying the name of the animation to trigger.
+1. Do - trigger an animation. This can be called on an individual animation or directly on your slik object and specifying the name of the animation to trigger.
 
-        // On flo object
-        myFlo.do('rightLegForward');
+        // On slik object
+        mySlik.do('rightLegForward');
 
         // On animation
-        myFlo.animation('rightLegForward').do();
+        mySlik.animation('rightLegForward').do();
 
         // Trigger separate animation from animation
-        myFlo.animation('rightLegForward').do('leftLegForward');
+        mySlik.animation('rightLegForward').do('leftLegForward');
