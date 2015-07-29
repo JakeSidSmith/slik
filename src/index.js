@@ -2,9 +2,9 @@
 
 (function () {
 
-  var flo = function (position) {
+  var slik = function (position) {
 
-    var floObject = {
+    var slikObject = {
       position: position,
       animations: {},
       requestAnimationFrame: function (func) {
@@ -60,48 +60,48 @@
       }
     };
 
-    floObject.animation = function (name) {
-      if (floObject.animations[name] === undefined) {
-        floObject.animations[name] = {};
+    slikObject.animation = function (name) {
+      if (slikObject.animations[name] === undefined) {
+        slikObject.animations[name] = {};
       }
 
       var animation = {
         duration: (function (name) {
           return function (time) {
-            floObject.animations[name].duration = time;
+            slikObject.animations[name].duration = time;
             return animation;
           };
         })(name),
         nextPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].nextPosition = {};
+            slikObject.animations[name].nextPosition = {};
             for (var key in obj) {
-              floObject.animations[name].nextPosition[key] = obj[key];
+              slikObject.animations[name].nextPosition[key] = obj[key];
             }
             return animation;
           };
         })(name),
         previousPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].previousPosition = obj;
+            slikObject.animations[name].previousPosition = obj;
             return animation;
           };
         })(name),
         onComplete: (function (name) {
           return function (func) {
-            floObject.animations[name].onComplete = func;
+            slikObject.animations[name].onComplete = func;
             return animation;
           };
         })(name),
         ease: (function (name) {
           return function (easing) {
-            floObject.animations[name].ease = easing;
+            slikObject.animations[name].ease = easing;
             return animation;
           };
         })(name),
         invert: (function (name) {
           return function () {
-            var currentAnimation = floObject.animations[name].nextPosition;
+            var currentAnimation = slikObject.animations[name].nextPosition;
             for (var key in currentAnimation) {
               currentAnimation[key] *= -1;
             }
@@ -111,9 +111,9 @@
         clear: (function (name) {
           return function (attr) {
             if (attr !== undefined) {
-              floObject.animations[name][attr] = undefined;
+              slikObject.animations[name][attr] = undefined;
             } else {
-              floObject.animations[name] = undefined;
+              slikObject.animations[name] = undefined;
             }
             return animation;
           };
@@ -121,9 +121,9 @@
         do: (function (name) {
           return function (newName) {
             if (newName !== undefined) {
-              floObject.do(newName);
+              slikObject.do(newName);
             } else {
-              floObject.do(name);
+              slikObject.do(name);
             }
             return animation;
           };
@@ -133,41 +133,41 @@
       return animation;
     };
 
-    floObject.do = function (name) {
+    slikObject.do = function (name) {
       if (name === undefined) {
-        floObject.currentAnimation = undefined;
+        slikObject.currentAnimation = undefined;
       } else {
-        floObject.startTime = new Date().getTime();
-        floObject.currentAnimation = name;
-        floObject.duration = floObject.animations[floObject.currentAnimation].duration;
+        slikObject.startTime = new Date().getTime();
+        slikObject.currentAnimation = name;
+        slikObject.duration = slikObject.animations[slikObject.currentAnimation].duration;
 
-        floObject.previousPosition = (function () {
+        slikObject.previousPosition = (function () {
           var key;
           var newPosition = {};
-          var animation = floObject.animations[name];
+          var animation = slikObject.animations[name];
           if (animation.previousPosition !== undefined) {
-            for (key in floObject.position) {
+            for (key in slikObject.position) {
               newPosition[key] = animation.previousPosition[key] !== undefined ?
-                animation.previousPosition[key] : floObject.position[key];
+                animation.previousPosition[key] : slikObject.position[key];
             }
             return newPosition;
           }
-          for (key in floObject.position) {
-            newPosition[key] = floObject.position[key];
+          for (key in slikObject.position) {
+            newPosition[key] = slikObject.position[key];
           }
           return newPosition;
         })();
       }
     };
 
-    floObject.animate = function () {
-      if (floObject.currentAnimation) {
+    slikObject.animate = function () {
+      if (slikObject.currentAnimation) {
         var multiplier;
         var progress = Math.min(
-          (new Date().getTime() - floObject.startTime) / floObject.duration,
+          (new Date().getTime() - slikObject.startTime) / slikObject.duration,
           1
         );
-        var animation = floObject.animations[floObject.currentAnimation];
+        var animation = slikObject.animations[slikObject.currentAnimation];
 
         if (animation.ease === 'in') {
           multiplier = (1 - Math.cos(progress * Math.PI / 2));
@@ -182,9 +182,9 @@
         multiplier = Math.min(Math.max(multiplier, 0), 1);
 
         for (var key in animation.nextPosition) {
-          if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
-            floObject.position[key] = animation.nextPosition[key] * multiplier +
-              floObject.previousPosition[key] * (1 - multiplier);
+          if (animation.nextPosition[key] !== slikObject.previousPosition[key]) {
+            slikObject.position[key] = animation.nextPosition[key] * multiplier +
+              slikObject.previousPosition[key] * (1 - multiplier);
           }
         }
 
@@ -192,15 +192,15 @@
           if (typeof animation.onComplete === 'function') {
             animation.onComplete();
           } else if (typeof animation.onComplete === 'string') {
-            floObject.do(animation.onComplete);
+            slikObject.do(animation.onComplete);
           }
         }
       }
     };
 
-    return floObject;
+    return slikObject;
   };
 
-  module.exports = flo;
+  module.exports = slik;
 
 })();
