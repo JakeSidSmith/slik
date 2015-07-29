@@ -217,7 +217,7 @@
 
   // Define for requirejs
   if (root && typeof root.define === 'function' && root.define.amd) {
-    root.define(function() {
+    root.define(function () {
       return slik;
     });
   }
