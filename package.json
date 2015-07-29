@@ -34,6 +34,12 @@
     "url": "https://github.com/JakeSidSmith/slik/issues"
   },
   "homepage": "https://github.com/JakeSidSmith/slik",
+  "contributors": [
+    {
+      "name": "Jake 'Sid' Smith",
+      "url": "https://githib.com/JakeSidSmith"
+    }
+  ],
   "engines": {
     "node": "*",
     "npm": "*"
