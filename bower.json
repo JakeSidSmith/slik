@@ -15,5 +15,10 @@
     "html5",
     "canvas"
   ],
-  "main": "src/index.js"
+  "main": "src/index.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ]
 }
