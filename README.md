@@ -22,11 +22,11 @@ __Animation library for use with HTML5 canvas__
 
         I'd recommend pinning to a specific version and using `-S` to add this to your bower.json automatically.
 
-1. Require slik in your main HTML / template file.
+### Getting started
+
+1. Require slik in the file where you'll be animating.
 
         var slik = require('slik');
-
-### Getting started
 
 1. Setup an object containing the positions you want to animate. These values can be contained in arrays but I'd highly recommend using objects as it makes it easier to refer to your values later.
 
