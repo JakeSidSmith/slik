@@ -2,7 +2,7 @@
 
 (function () {
 
-  var flo = require('../../../src/index.js');
+  var slik = require('../../../src/index.js');
 
   var canvasElement,
   canvas,
@@ -143,18 +143,18 @@
     drawLeftLeg();
     canvas.restore();
 
-    person.flo.animate();
+    person.slik.animate();
     additionalAnimations.animate();
 
     canvas.fillStyle = 'black';
     canvas.rect(additionalPositions[0] - 5, additionalPositions[1] - 10, 10, 10);
     canvas.fill();
 
-    if (person.flo.currentAnimation === undefined) {
-      person.flo.do('rightLegUp');
+    if (person.slik.currentAnimation === undefined) {
+      person.slik.do('rightLegUp');
     }
 
-    flo().requestAnimationFrame(render);
+    slik().requestAnimationFrame(render);
   };
 
   var init = function () {
@@ -178,11 +178,11 @@
       }
     };
 
-    person.flo = flo(person.position);
+    person.slik = slik(person.position);
 
     additionalPositions = [120, 240];
 
-    additionalAnimations = flo(additionalPositions);
+    additionalAnimations = slik(additionalPositions);
 
     additionalAnimations.animation('moveDown')
       .duration(1000)
@@ -197,7 +197,7 @@
       .ease('out')
       .onComplete('moveDown');
 
-    person.flo.animation('rightLegUp')
+    person.slik.animation('rightLegUp')
       .duration(700 * speed)
       .nextPosition(
         {
@@ -215,7 +215,7 @@
       )
       .onComplete('rightLegForward');
 
-    person.flo.animation('rightLegForward')
+    person.slik.animation('rightLegForward')
       .duration(500 * speed)
       .nextPosition(
         {
@@ -233,7 +233,7 @@
       )
       .onComplete('leftLegUp');
 
-    person.flo.animation('leftLegUp')
+    person.slik.animation('leftLegUp')
       .duration(700 * speed)
       .nextPosition(
         {
@@ -253,7 +253,7 @@
 
     var steps = 0;
 
-    person.flo.animation('leftLegForward')
+    person.slik.animation('leftLegForward')
       .duration(500 * speed)
       .nextPosition(
         {
@@ -272,24 +272,24 @@
       .onComplete(function () {
         steps += 1;
         if (steps % 5 === 0) {
-          person.flo.animation('rightLegUp').invert();
-          person.flo.animation('rightLegForward').invert();
-          person.flo.animation('leftLegUp').invert();
-          person.flo.animation('leftLegForward').invert();
+          person.slik.animation('rightLegUp').invert();
+          person.slik.animation('rightLegForward').invert();
+          person.slik.animation('leftLegUp').invert();
+          person.slik.animation('leftLegForward').invert();
         }
-        person.flo.do('rightLegUp');
+        person.slik.do('rightLegUp');
       });
 
-    flo().requestAnimationFrame(render);
+    slik().requestAnimationFrame(render);
   };
 
   var enterFullscreen = function () {
-    flo().enterFullscreen(document.getElementById('canvas'));
+    slik().enterFullscreen(document.getElementById('canvas'));
   };
 
   var fullScreenButton = document.getElementById('full-screen');
   fullScreenButton.addEventListener('click', enterFullscreen);
 
-  flo().onDocumentReady(init);
+  slik().onDocumentReady(init);
 
 })();

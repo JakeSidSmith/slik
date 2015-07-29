@@ -3,7 +3,7 @@
 
 (function () {
 
-  var flo = require('../../../src/index.js');
+  var slik = require('../../../src/index.js');
 
   var canvasElement, canvas, cWidth, cHeight, person, speed, additionalPositions, additionalAnimations;
 
@@ -137,18 +137,18 @@
     drawLeftLeg();
     canvas.restore();
 
-    person.flo.animate();
+    person.slik.animate();
     additionalAnimations.animate();
 
     canvas.fillStyle = 'black';
     canvas.rect(additionalPositions[0] - 5, additionalPositions[1] - 10, 10, 10);
     canvas.fill();
 
-    if (person.flo.currentAnimation === undefined) {
-      person.flo['do']('rightLegUp');
+    if (person.slik.currentAnimation === undefined) {
+      person.slik['do']('rightLegUp');
     }
 
-    flo().requestAnimationFrame(render);
+    slik().requestAnimationFrame(render);
   };
 
   var init = function init() {
@@ -172,17 +172,17 @@
       }
     };
 
-    person.flo = flo(person.position);
+    person.slik = slik(person.position);
 
     additionalPositions = [120, 240];
 
-    additionalAnimations = flo(additionalPositions);
+    additionalAnimations = slik(additionalPositions);
 
     additionalAnimations.animation('moveDown').duration(1000).nextPosition([120, 480]).ease('in').onComplete('moveUp')['do']();
 
     additionalAnimations.animation('moveUp').duration(1000).nextPosition([120, 240]).ease('out').onComplete('moveDown');
 
-    person.flo.animation('rightLegUp').duration(700 * speed).nextPosition({
+    person.slik.animation('rightLegUp').duration(700 * speed).nextPosition({
       bodyRotation: 5,
       headRotation: 10,
       upperRightArmRotation: 70,
@@ -195,7 +195,7 @@
       lowerLeftLegRotation: 25
     }).onComplete('rightLegForward');
 
-    person.flo.animation('rightLegForward').duration(500 * speed).nextPosition({
+    person.slik.animation('rightLegForward').duration(500 * speed).nextPosition({
       bodyRotation: 10,
       headRotation: 20,
       upperRightArmRotation: 45,
@@ -208,7 +208,7 @@
       lowerLeftLegRotation: 55
     }).onComplete('leftLegUp');
 
-    person.flo.animation('leftLegUp').duration(700 * speed).nextPosition({
+    person.slik.animation('leftLegUp').duration(700 * speed).nextPosition({
       bodyRotation: 5,
       headRotation: 10,
       upperRightArmRotation: -45,
@@ -223,7 +223,7 @@
 
     var steps = 0;
 
-    person.flo.animation('leftLegForward').duration(500 * speed).nextPosition({
+    person.slik.animation('leftLegForward').duration(500 * speed).nextPosition({
       bodyRotation: 10,
       headRotation: 20,
       upperRightArmRotation: -30,
@@ -237,25 +237,25 @@
     }).onComplete(function () {
       steps += 1;
       if (steps % 5 === 0) {
-        person.flo.animation('rightLegUp').invert();
-        person.flo.animation('rightLegForward').invert();
-        person.flo.animation('leftLegUp').invert();
-        person.flo.animation('leftLegForward').invert();
+        person.slik.animation('rightLegUp').invert();
+        person.slik.animation('rightLegForward').invert();
+        person.slik.animation('leftLegUp').invert();
+        person.slik.animation('leftLegForward').invert();
       }
-      person.flo['do']('rightLegUp');
+      person.slik['do']('rightLegUp');
     });
 
-    flo().requestAnimationFrame(render);
+    slik().requestAnimationFrame(render);
   };
 
   var enterFullscreen = function enterFullscreen() {
-    flo().enterFullscreen(document.getElementById('canvas'));
+    slik().enterFullscreen(document.getElementById('canvas'));
   };
 
   var fullScreenButton = document.getElementById('full-screen');
   fullScreenButton.addEventListener('click', enterFullscreen);
 
-  flo().onDocumentReady(init);
+  slik().onDocumentReady(init);
 })();
 
 },{"../../../src/index.js":2}],2:[function(require,module,exports){
@@ -263,9 +263,9 @@
 
 (function () {
 
-  var flo = function flo(position) {
+  var slik = function slik(position) {
 
-    var floObject = {
+    var slikObject = {
       position: position,
       animations: {},
       requestAnimationFrame: function requestAnimationFrame(func) {
@@ -315,48 +315,48 @@
       }
     };
 
-    floObject.animation = function (name) {
-      if (floObject.animations[name] === undefined) {
-        floObject.animations[name] = {};
+    slikObject.animation = function (name) {
+      if (slikObject.animations[name] === undefined) {
+        slikObject.animations[name] = {};
       }
 
       var animation = {
         duration: (function (name) {
           return function (time) {
-            floObject.animations[name].duration = time;
+            slikObject.animations[name].duration = time;
             return animation;
           };
         })(name),
         nextPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].nextPosition = {};
+            slikObject.animations[name].nextPosition = {};
             for (var key in obj) {
-              floObject.animations[name].nextPosition[key] = obj[key];
+              slikObject.animations[name].nextPosition[key] = obj[key];
             }
             return animation;
           };
         })(name),
         previousPosition: (function (name) {
           return function (obj) {
-            floObject.animations[name].previousPosition = obj;
+            slikObject.animations[name].previousPosition = obj;
             return animation;
           };
         })(name),
         onComplete: (function (name) {
           return function (func) {
-            floObject.animations[name].onComplete = func;
+            slikObject.animations[name].onComplete = func;
             return animation;
           };
         })(name),
         ease: (function (name) {
           return function (easing) {
-            floObject.animations[name].ease = easing;
+            slikObject.animations[name].ease = easing;
             return animation;
           };
         })(name),
         invert: (function (name) {
           return function () {
-            var currentAnimation = floObject.animations[name].nextPosition;
+            var currentAnimation = slikObject.animations[name].nextPosition;
             for (var key in currentAnimation) {
               currentAnimation[key] *= -1;
             }
@@ -366,9 +366,9 @@
         clear: (function (name) {
           return function (attr) {
             if (attr !== undefined) {
-              floObject.animations[name][attr] = undefined;
+              slikObject.animations[name][attr] = undefined;
             } else {
-              floObject.animations[name] = undefined;
+              slikObject.animations[name] = undefined;
             }
             return animation;
           };
@@ -376,9 +376,9 @@
         'do': (function (name) {
           return function (newName) {
             if (newName !== undefined) {
-              floObject['do'](newName);
+              slikObject['do'](newName);
             } else {
-              floObject['do'](name);
+              slikObject['do'](name);
             }
             return animation;
           };
@@ -388,37 +388,37 @@
       return animation;
     };
 
-    floObject['do'] = function (name) {
+    slikObject['do'] = function (name) {
       if (name === undefined) {
-        floObject.currentAnimation = undefined;
+        slikObject.currentAnimation = undefined;
       } else {
-        floObject.startTime = new Date().getTime();
-        floObject.currentAnimation = name;
-        floObject.duration = floObject.animations[floObject.currentAnimation].duration;
+        slikObject.startTime = new Date().getTime();
+        slikObject.currentAnimation = name;
+        slikObject.duration = slikObject.animations[slikObject.currentAnimation].duration;
 
-        floObject.previousPosition = (function () {
+        slikObject.previousPosition = (function () {
           var key;
           var newPosition = {};
-          var animation = floObject.animations[name];
+          var animation = slikObject.animations[name];
           if (animation.previousPosition !== undefined) {
-            for (key in floObject.position) {
-              newPosition[key] = animation.previousPosition[key] !== undefined ? animation.previousPosition[key] : floObject.position[key];
+            for (key in slikObject.position) {
+              newPosition[key] = animation.previousPosition[key] !== undefined ? animation.previousPosition[key] : slikObject.position[key];
             }
             return newPosition;
           }
-          for (key in floObject.position) {
-            newPosition[key] = floObject.position[key];
+          for (key in slikObject.position) {
+            newPosition[key] = slikObject.position[key];
           }
           return newPosition;
         })();
       }
     };
 
-    floObject.animate = function () {
-      if (floObject.currentAnimation) {
+    slikObject.animate = function () {
+      if (slikObject.currentAnimation) {
         var multiplier;
-        var progress = Math.min((new Date().getTime() - floObject.startTime) / floObject.duration, 1);
-        var animation = floObject.animations[floObject.currentAnimation];
+        var progress = Math.min((new Date().getTime() - slikObject.startTime) / slikObject.duration, 1);
+        var animation = slikObject.animations[slikObject.currentAnimation];
 
         if (animation.ease === 'in') {
           multiplier = 1 - Math.cos(progress * Math.PI / 2);
@@ -433,8 +433,8 @@
         multiplier = Math.min(Math.max(multiplier, 0), 1);
 
         for (var key in animation.nextPosition) {
-          if (animation.nextPosition[key] !== floObject.previousPosition[key]) {
-            floObject.position[key] = animation.nextPosition[key] * multiplier + floObject.previousPosition[key] * (1 - multiplier);
+          if (animation.nextPosition[key] !== slikObject.previousPosition[key]) {
+            slikObject.position[key] = animation.nextPosition[key] * multiplier + slikObject.previousPosition[key] * (1 - multiplier);
           }
         }
 
@@ -442,16 +442,16 @@
           if (typeof animation.onComplete === 'function') {
             animation.onComplete();
           } else if (typeof animation.onComplete === 'string') {
-            floObject['do'](animation.onComplete);
+            slikObject['do'](animation.onComplete);
           }
         }
       }
     };
 
-    return floObject;
+    return slikObject;
   };
 
-  module.exports = flo;
+  module.exports = slik;
 })();
 
 },{}]},{},[1]);
