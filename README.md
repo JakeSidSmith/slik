@@ -1,8 +1,6 @@
-# Slik
+# Slik [![Build Status](https://travis-ci.org/JakeSidSmith/slik.svg?branch=master)](https://travis-ci.org/JakeSidSmith/slik)
 
-[![Build Status](https://travis-ci.org/JakeSidSmith/slik.svg?branch=master)](https://travis-ci.org/JakeSidSmith/slik)
-
-__Animation library for use with HTML5 canvas__
+### __Animation library for use with HTML5 canvas__ - [Demo](http://jakesidsmith.github.io/slik/)
 
 ## Setup
 
