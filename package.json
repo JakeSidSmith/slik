@@ -34,6 +34,8 @@
     "url": "https://github.com/JakeSidSmith/slik/issues"
   },
   "homepage": "https://github.com/JakeSidSmith/slik",
+  "dependencies": {
+  },
   "devDependencies": {
     "babelify": "6.1.3",
     "browserify": "11.0.0",
