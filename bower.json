@@ -1,18 +1,19 @@
 {
-  "name": "flo-js",
+  "name": "slik",
   "description": "Animation library for use with HTML5 canvas",
   "version": "0.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/JakeSidSmith/flo-js",
+  "homepage": "https://github.com/JakeSidSmith/slik",
   "ignore": [],
   "keywords": [
-    "flo-js",
-    "flo",
-    "flow",
     "animation",
-    "motion",
+    "tween",
+    "flow",
+    "slik",
+    "smooth",
+    "library",
     "html5",
-    "tween"
+    "canvas"
   ],
-  "main": "flo.js"
+  "main": "src/index.js"
 }
