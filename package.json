@@ -40,11 +40,9 @@
       "url": "https://githib.com/JakeSidSmith"
     }
   ],
-  "engines": {
-    "node": "*",
-    "npm": "*"
+  "dependencies": {
+    "immutable": ">=3.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
     "browserify": "14.1.0",
     "eslint-config-jakesidsmith": "git+https://github.com/JakeSidSmith/eslint-config-jakesidsmith.git#v2.1.0",
