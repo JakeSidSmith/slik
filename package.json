@@ -4,14 +4,14 @@
   "description": "Animation library for use with HTML5 canvas",
   "main": "src/index.js",
   "scripts": {
-    "start": "npm run build && http-server examples -o -c-1 & npm run watch",
+    "start": "npm run build && http-server examples -o -c-1",
     "watch-less": "watch 'npm run build-less' examples/src/less/",
-    "watch-js": "watchify -t babelify examples/src/js/index.js -o examples/build/js/index.js -v",
+    "watch-js": "watchify examples/src/js/index.js -o examples/build/js/index.js -v",
     "watch": "npm run watch-js & npm run watch-less",
     "build-less": "mkdir -p examples/build/css && lessc examples/src/less/index.less > examples/build/css/index.css && echo 'Less compiled'",
-    "build-js": "mkdir -p examples/build/js && browserify -t babelify examples/src/js/index.js -o examples/build/js/index.js",
+    "build-js": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
     "build": "ulimit -n 512 && npm install && npm run build-less && npm run build-js",
-    "lint": "jshint 'src/' 'examples/src/js' && jscs 'src/' 'examples/src/js'",
+    "lint": "eslint src/ examples/",
     "test": "npm run lint"
   },
   "repository": {
@@ -44,69 +44,13 @@
     "node": "*",
     "npm": "*"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "babelify": "6.1.3",
-    "browserify": "11.0.0",
-    "http-server": "0.8.0",
-    "jscs": "1.13.1",
-    "jshint": "2.8.0",
-    "less": "2.5.1",
-    "watch": "0.16.0",
-    "watchify": "3.2.3"
-  },
-  "jshintConfig": {
-    "browserify": true,
-    "unused": true,
-    "undef": true,
-    "globals": {
-      "console": false
-    }
-  },
-  "jscsConfig": {
-    "disallowMultipleVarDecl": "exceptUndefined",
-    "validateQuoteMarks": {
-      "mark": "'",
-      "escape": false
-    },
-    "validateParameterSeparator": ", ",
-    "validateIndentation": 2,
-    "requireSpacesInFunction": {
-      "beforeOpeningRoundBrace": true,
-      "beforeOpeningCurlyBrace": true
-    },
-    "requireSpacesInConditionalExpression": {
-      "afterTest": true,
-      "beforeConsequent": true,
-      "afterConsequent": true,
-      "beforeAlternate": true
-    },
-    "disallowTrailingWhitespace": true,
-    "maximumLineLength": 100,
-    "requireCurlyBraces": [
-      "if",
-      "else",
-      "for",
-      "while",
-      "do",
-      "try",
-      "catch"
-    ],
-    "disallowMixedSpacesAndTabs": true,
-    "requireSpaceBeforeBinaryOperators": true,
-    "safeContextKeyword": [
-      "self"
-    ],
-    "disallowMultipleLineBreaks": true,
-    "disallowMultipleLineStrings": true,
-    "disallowSpaceAfterObjectKeys": true,
-    "disallowNewlineBeforeBlockStatements": true,
-    "disallowTrailingComma": true,
-    "requireCommaBeforeLineBreak": true,
-    "requireSpaceBetweenArguments": true,
-    "requireSpaceBeforeBlockStatements": true,
-    "requireSpaceBeforeObjectValues": true,
-    "requireSpacesInForStatement": true
+    "browserify": "14.1.0",
+    "eslint-config-jakesidsmith": "git+https://github.com/JakeSidSmith/eslint-config-jakesidsmith.git#v2.1.0",
+    "http-server": "0.9.0",
+    "less": "2.7.2",
+    "watch": "1.0.2",
+    "watchify": "3.9.0"
   }
 }
