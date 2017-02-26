@@ -11,7 +11,7 @@
     "build-less": "mkdir -p examples/build/css && lessc examples/src/less/index.less > examples/build/css/index.css && echo 'Less compiled'",
     "build-js": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
     "build": "ulimit -n 512 && npm install && npm run build-less && npm run build-js",
-    "lint": "eslint src/ examples/",
+    "lint": "eslint src/ && eslint -c .eslintrc-examples.json examples/src/js/",
     "test": "npm run lint"
   },
   "repository": {
