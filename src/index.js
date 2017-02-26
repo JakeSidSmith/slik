@@ -38,12 +38,29 @@
 
   function getSlik (Immutable) {
 
+    function Linear (fromValue, toValue, progress) {
+
+    }
+
+    function Ease (fromValue, toValue, progress) {
+
+    }
+
+    function EaseIn (fromValue, toValue, progress) {
+
+    }
+
+    function EaseOut (fromValue, toValue, progress) {
+
+    }
+
     function Animation (initial) {
       var self = this;
 
       var fromValues = Immutable.fromJS(initial);
       var toValues = Immutable.Map();
       var frameRate = 1000 / 30;
+      var easing = Linear;
 
       var events = {
         start: [],
@@ -60,19 +77,20 @@
       }
 
       // Set from values
-      function from (values) {
-        fromValues = Immutable.fromJS(values);
+      function from (input) {
+        fromValues = Immutable.fromJS(input);
         return self;
       }
 
       // Set to values
-      function to (values) {
-        toValues = Immutable.fromJS(values);
+      function to (input) {
+        toValues = Immutable.fromJS(input);
         return self;
       }
 
       // Set easing
-      function ease () {
+      function ease (input) {
+        easing = input;
         return self;
       }
 
@@ -139,6 +157,11 @@
         return self;
       }
 
+      // Run on complete, automatically unbind
+      function then () {
+        return self;
+      }
+
       self.fps = self.frameRate = fps;
       self.from = from;
       self.to = to;
@@ -151,10 +174,17 @@
       self.update = update;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
+      self.then = then;
     }
 
     return {
-      Animation: Animation
+      Animation: Animation,
+      Easing: {
+        Linear: Linear,
+        Ease: Ease,
+        EaseIn: EaseIn,
+        EaseOut: EaseOut
+      }
     };
 
   }
