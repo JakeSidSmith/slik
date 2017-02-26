@@ -2,62 +2,45 @@
 
 (function () {
 
+  function setupRequestAnimationFrame () {
+    var lastTime = 0;
+    var vendors = ['webkit', 'moz', 'ms', 'o'];
+
+    for (var i = 0; !window.requestAnimationFrame && i < vendors.length; i += 1) {
+      var vendor = vendors[i];
+      window.requestAnimationFrame = window[vendor + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendor + 'CancelAnimationFrame'] ||
+        window[vendor + 'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = function (callback) {
+        var now = new Date().getTime();
+        var nextTime = Math.max(0, 16 - (now - lastTime));
+
+        var id = window.setTimeout(function () {
+          callback(now + nextTime);
+        }, nextTime);
+
+        lastTime = now + nextTime;
+        return id;
+      };
+    }
+
+    if (!window.cancelAnimationFrame) {
+      window.cancelAnimationFrame = function (id) {
+        clearTimeout(id);
+      };
+    }
+  }
+
+  setupRequestAnimationFrame();
+
   function Slik (position) {
 
     var slikObject = {
       position: position,
-      animations: {},
-      requestAnimationFrame: function (func) {
-        var requestAnimationFrame = window.requestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.msRequestAnimationFrame;
-        requestAnimationFrame(func);
-      },
-      isFullscreen: function () {
-        return document.fullscreenElement ||
-          document.msFullscreenElement ||
-          document.mozFullScreenElement ||
-          document.webkitFullscreenElement;
-      },
-      enterFullscreen: function (element) {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.msRequestFullscreen) {
-          element.msRequestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-          element.webkitRequestFullscreen();
-        }
-      },
-      exitFullscreen: function () {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        }
-      },
-      onDocumentReady: function (func) {
-        var domContentLoaded = false;
-        var runFunction = function () {
-          if (!domContentLoaded) {
-            domContentLoaded = true;
-            func();
-          }
-        };
-        if (document.addEventListener) {
-          document.addEventListener('DOMContentLoaded', runFunction, false);
-        }
-        if (document.attachEvent) {
-          document.attachEvent('onreadystatechange', runFunction);
-        }
-        document.onload = runFunction;
-      }
+      animations: {}
     };
 
     slikObject.animation = function (name) {
