@@ -1,6 +1,6 @@
 {
   "name": "slik",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Animation library for use with HTML5 canvas",
   "main": "src/index.js",
   "scripts": {
