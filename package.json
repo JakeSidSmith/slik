@@ -4,8 +4,8 @@
   "description": "Animation library for use with HTML5 canvas",
   "main": "src/index.js",
   "scripts": {
-    "start": "npm run build && http-server examples -o -c-1",
-    "watch": "watchify examples/src/js/index.js -o examples/build/js/index.js -v",
+    "start": "http-server examples/ -c-0 -o",
+    "watch": "mkdir -p examples/build/js && watchify examples/src/js/index.js -o examples/build/js/index.js -v",
     "build": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
     "lint": "eslint src/ && eslint -c .eslintrc-examples.json examples/src/js/",
     "test": "npm run lint"
