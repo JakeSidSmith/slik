@@ -2,7 +2,7 @@
 
 (function () {
 
-  var slik = function (position) {
+  function Slik (position) {
 
     var slikObject = {
       position: position,
@@ -199,27 +199,31 @@
     };
 
     return slikObject;
-  };
-
-  // Establish the root object, `window` in the browser, or `exports` on the server.
-  var root = this || window;
-
-  // Export for commonjs / browserify
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = slik;
-    }
-    exports.Reorderable = slik;
-  } else if (typeof root !== 'undefined') {
-    // Add to root object
-    root.Reorderable = slik;
   }
 
-  // Define for requirejs
-  if (root && typeof root.define === 'function' && root.define.amd) {
-    root.define(function () {
-      return slik;
+  // Export for commonjs / browserify
+  if (typeof exports === 'object' && typeof module !== 'undefined') {
+    module.exports = Slik; // eslint-disable-line no-undef
+  // Export for amd / require
+  } else if (typeof define === 'function' && define.amd) { // eslint-disable-line no-undef
+    define([], function () { // eslint-disable-line no-undef
+      return Slik;
     });
+  // Export globally
+  } else {
+    var root;
+
+    if (typeof window !== 'undefined') {
+      root = window;
+    } else if (typeof global !== 'undefined') {
+      root = global; // eslint-disable-line no-undef
+    } else if (typeof self !== 'undefined') {
+      root = self; // eslint-disable-line no-undef
+    } else {
+      root = this;
+    }
+
+    root.Slik = Slik;
   }
 
 })();
