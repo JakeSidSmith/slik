@@ -36,161 +36,136 @@
 
   setupRequestAnimationFrame();
 
-  function Slik (position) {
+  function getSlik (Immutable) {
 
-    var slikObject = {
-      position: position,
-      animations: {}
-    };
+    function Animation (initial) {
+      var self = this;
 
-    slikObject.animation = function (name) {
-      if (slikObject.animations[name] === undefined) {
-        slikObject.animations[name] = {};
-      }
+      var fromValues = Immutable.fromJS(initial);
+      var toValues = Immutable.Map();
+      var frameRate = 1000 / 30;
 
-      var animation = {
-        duration: (function (name) {
-          return function (time) {
-            slikObject.animations[name].duration = time;
-            return animation;
-          };
-        })(name),
-        nextPosition: (function (name) {
-          return function (obj) {
-            slikObject.animations[name].nextPosition = {};
-            for (var key in obj) {
-              slikObject.animations[name].nextPosition[key] = obj[key];
-            }
-            return animation;
-          };
-        })(name),
-        previousPosition: (function (name) {
-          return function (obj) {
-            slikObject.animations[name].previousPosition = obj;
-            return animation;
-          };
-        })(name),
-        onComplete: (function (name) {
-          return function (func) {
-            slikObject.animations[name].onComplete = func;
-            return animation;
-          };
-        })(name),
-        ease: (function (name) {
-          return function (easing) {
-            slikObject.animations[name].ease = easing;
-            return animation;
-          };
-        })(name),
-        invert: (function (name) {
-          return function () {
-            var currentAnimation = slikObject.animations[name].nextPosition;
-            for (var key in currentAnimation) {
-              currentAnimation[key] *= -1;
-            }
-            return animation;
-          };
-        })(name),
-        clear: (function (name) {
-          return function (attr) {
-            if (attr !== undefined) {
-              slikObject.animations[name][attr] = undefined;
-            } else {
-              slikObject.animations[name] = undefined;
-            }
-            return animation;
-          };
-        })(name),
-        do: (function (name) {
-          return function (newName) {
-            if (newName !== undefined) {
-              slikObject.do(newName);
-            } else {
-              slikObject.do(name);
-            }
-            return animation;
-          };
-        })(name)
+      var events = {
+        start: [],
+        stop: [],
+        pause: [],
+        end: [],
+        update: []
       };
 
-      return animation;
-    };
-
-    slikObject.do = function (name) {
-      if (name === undefined) {
-        slikObject.currentAnimation = undefined;
-      } else {
-        slikObject.startTime = new Date().getTime();
-        slikObject.currentAnimation = name;
-        slikObject.duration = slikObject.animations[slikObject.currentAnimation].duration;
-
-        slikObject.previousPosition = (function () {
-          var key;
-          var newPosition = {};
-          var animation = slikObject.animations[name];
-          if (animation.previousPosition !== undefined) {
-            for (key in slikObject.position) {
-              newPosition[key] = animation.previousPosition[key] !== undefined ?
-                animation.previousPosition[key] : slikObject.position[key];
-            }
-            return newPosition;
-          }
-          for (key in slikObject.position) {
-            newPosition[key] = slikObject.position[key];
-          }
-          return newPosition;
-        })();
+      // Set the frameRate
+      function fps (input) {
+        frameRate = 1000 / input;
+        return self;
       }
-    };
 
-    slikObject.animate = function () {
-      if (slikObject.currentAnimation) {
-        var multiplier;
-        var progress = Math.min(
-          (new Date().getTime() - slikObject.startTime) / slikObject.duration,
-          1
-        );
-        var animation = slikObject.animations[slikObject.currentAnimation];
-
-        if (animation.ease === 'in') {
-          multiplier = (1 - Math.cos(progress * Math.PI / 2));
-        } else if (animation.ease === 'out') {
-          multiplier = Math.cos((1 - progress) * Math.PI / 2);
-        } else if (animation.ease === 'inout' || animation.ease === 'both') {
-          multiplier = (1 - Math.cos(progress * Math.PI)) / 2;
-        } else {
-          multiplier = progress;
-        }
-
-        multiplier = Math.min(Math.max(multiplier, 0), 1);
-
-        for (var key in animation.nextPosition) {
-          if (animation.nextPosition[key] !== slikObject.previousPosition[key]) {
-            slikObject.position[key] = animation.nextPosition[key] * multiplier +
-              slikObject.previousPosition[key] * (1 - multiplier);
-          }
-        }
-
-        if (progress === 1) {
-          if (typeof animation.onComplete === 'function') {
-            animation.onComplete();
-          } else if (typeof animation.onComplete === 'string') {
-            slikObject.do(animation.onComplete);
-          }
-        }
+      // Set from values
+      function from (values) {
+        fromValues = Immutable.fromJS(values);
+        return self;
       }
+
+      // Set to values
+      function to (values) {
+        toValues = Immutable.fromJS(values);
+        return self;
+      }
+
+      // Set easing
+      function ease () {
+        return self;
+      }
+
+      // Invert animation values
+      function invert () {
+        return self;
+      }
+
+      // Play animation in reverse
+      function reverse () {
+        var temp = fromValues;
+        fromValues = toValues;
+        toValues = temp;
+        return self;
+      }
+
+      // Start or resume animation
+      function start () {
+        return self;
+      }
+
+      // Stop animation and resume from beginning
+      function stop () {
+        return self;
+      }
+
+      // Pause animation and resume from this point
+      function pause () {
+        return self;
+      }
+
+      // Manually start the animation / step forward in time
+      function update () {
+        return self;
+      }
+
+      // Add event listener
+      function bind (type, callback) {
+        if (!(type in events)) {
+          throw new Error('Unknown event: ' + type);
+        }
+
+        var index = events[type].indexOf(callback);
+
+        if (index < 0) {
+          events[type].push(callback);
+        }
+
+        return self;
+      }
+
+      // Remove event listener
+      function unbind (type, callback) {
+        if (!(type in events)) {
+          throw new Error('Unknown event: ' + type);
+        }
+
+        var index = events[type].indexOf(callback);
+
+        if (index >= 0) {
+          events[type].splice(index, 1);
+        }
+
+        return self;
+      }
+
+      self.fps = self.frameRate = fps;
+      self.from = from;
+      self.to = to;
+      self.ease = ease;
+      self.invert = invert;
+      self.reverse = reverse;
+      self.start = start;
+      self.stop = self.reset = stop;
+      self.pause = pause;
+      self.update = update;
+      self.bind = self.on = bind;
+      self.unbind = self.off = unbind;
+    }
+
+    return {
+      Animation: Animation
     };
 
-    return slikObject;
   }
 
   // Export for commonjs / browserify
   if (typeof exports === 'object' && typeof module !== 'undefined') {
-    module.exports = Slik; // eslint-disable-line no-undef
+    module.exports = getSlik(require('immutable')); // eslint-disable-line no-undef
   // Export for amd / require
   } else if (typeof define === 'function' && define.amd) { // eslint-disable-line no-undef
-    define([], function () { // eslint-disable-line no-undef
-      return Slik;
+    define(['immutable'], function (Immutable) { // eslint-disable-line no-undef
+      return getSlik(Immutable);
     });
   // Export globally
   } else {
@@ -206,7 +181,7 @@
       root = this;
     }
 
-    root.Slik = Slik;
+    root.Slik = getSlik(root.Immutable);
   }
 
 })();
