@@ -215,11 +215,6 @@
         return self;
       }
 
-      // Manually start the animation / step forward in time
-      function update () {
-        return self;
-      }
-
       // Add event listener
       function bind (type, callback) {
         if (!(type in events)) {
@@ -285,7 +280,6 @@
       self.start = start;
       self.stop = self.reset = stop;
       self.pause = pause;
-      self.update = update;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
       self.then = then;
