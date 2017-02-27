@@ -115,7 +115,13 @@
       });
 
       function triggerEvent (type) {
+        events.get(type, Immutable.List()).forEach(function (callback) {
+          callback(currentValues);
+        });
 
+        events.get('all', Immutable.List()).forEach(function (callback) {
+          callback(currentValues);
+        });
       }
 
       function easeValues () {
