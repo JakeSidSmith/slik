@@ -91,7 +91,9 @@
     function Animation (initial) {
       var self = this;
 
+      var raf, startTime, pausedAfter;
       var fromValues = Immutable.fromJS(initial);
+      var currentValues = fromValues;
       var toValues = Immutable.Map();
       var durationMillis = 500;
       var frameRate = 1000 / 30;
@@ -107,6 +109,25 @@
         update: [],
         loop: []
       };
+
+      function easeValues () {
+        cancelAnimationFrame(raf);
+
+        var now = performance.now();
+        var progress = (now - startTime) / durationMillis;
+
+        function mapValues (value, key) {
+          if (Immutable.Iterable.isIterable(value)) {
+            return value.map(mapValues);
+          }
+
+          return easing(value, toValues.get(key), progress);
+        }
+
+        currentValues = currentValues.map(mapValues);
+
+        raf = requestAnimationFrame(easeValues);
+      }
 
       // Set the frameRate
       function fps (input) {
@@ -163,16 +184,34 @@
 
       // Start or resume animation
       function start () {
+        cancelAnimationFrame(raf);
+
+        if (typeof pausedAfter !== 'undefined') {
+          startTime = performance.now() - pausedAfter;
+        } else {
+          startTime = performance.now();
+        }
+
+        pausedAfter = undefined;
+
+        raf = requestAnimationFrame(easeValues);
+
         return self;
       }
 
       // Stop animation and resume from beginning
       function stop () {
+        cancelAnimationFrame(raf);
+        pausedAfter = undefined;
+        startTime = undefined;
         return self;
       }
 
       // Pause animation and resume from this point
       function pause () {
+        cancelAnimationFrame(raf);
+        pausedAfter = startTime - performance.now();
+        startTime = undefined;
         return self;
       }
 
@@ -238,7 +277,7 @@
       self.fps = self.frameRate = fps;
       self.from = from;
       self.to = to;
-      seld.duration = duration;
+      self.duration = duration;
       self.ease = ease;
       self.loop = loop;
       self.invert = invert;
