@@ -120,7 +120,7 @@
         cancelAnimationFrame(raf);
 
         var now = performance.now();
-        var progress = (now - startTime) / durationMillis;
+        var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
         if (lastTime - now >= frameRate) {
           function mapValues (fromValue, key) {
