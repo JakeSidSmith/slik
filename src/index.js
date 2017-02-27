@@ -98,7 +98,7 @@
       var fromValues = Immutable.fromJS(getDefault(initial.from, {}));
       var toValues = Immutable.Map(getDefault(initial.to, {}));
       var durationMillis = getDefault(initial.duration, 500);
-      var frameRate = 1000 / getDefault(initial.fps, 60);
+      var frameRate = 1000 / getDefault(initial.fps, 120);
       var easing = getDefault(initial.easing, Linear);
       var shouldLoop = getDefault(initial.loop, false);
 
