@@ -99,7 +99,7 @@
       var toValues = Immutable.Map(getDefault(initial.to, {}));
       var durationMillis = getDefault(initial.duration, 500);
       var frameRate = 1000 / getDefault(initial.fps, 120);
-      var easing = getDefault(initial.easing, Linear);
+      var easing = getDefault(initial.ease, Linear);
       var shouldLoop = getDefault(initial.loop, false);
 
       var currentValues = fromValues;
