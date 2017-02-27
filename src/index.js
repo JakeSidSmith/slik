@@ -38,20 +38,29 @@
 
   function getSlik (Immutable) {
 
-    function Linear (fromValue, toValue, progress) {
+    function multiply (fromValue, toValue, multiplier) {
+      multiplier = Math.min(Math.max(multiplier, 0), 1);
+      return fromValue * multiplier + toValue * (1 - multiplier);
+    }
 
+    function Linear (fromValue, toValue, progress) {
+      var multiplier = progress;
+      return multiply(fromValue, toValue, multiplier);
     }
 
     function Ease (fromValue, toValue, progress) {
-
+      var multiplier = (1 - Math.cos(progress * Math.PI)) / 2;
+      return multiply(fromValue, toValue, multiplier);
     }
 
     function EaseIn (fromValue, toValue, progress) {
-
+      var multiplier = (1 - Math.cos(progress * Math.PI / 2));
+      return multiply(fromValue, toValue, multiplier);
     }
 
     function EaseOut (fromValue, toValue, progress) {
-
+      var multiplier = Math.cos((1 - progress) * Math.PI / 2);
+      return multiply(fromValue, toValue, multiplier);
     }
 
     function Animation (initial) {
