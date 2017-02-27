@@ -114,6 +114,10 @@
         loop: Immutable.List()
       });
 
+      function triggerEvent (type) {
+
+      }
+
       function easeValues () {
         cancelAnimationFrame(raf);
 
@@ -143,6 +147,8 @@
             // Ease individual value
             currentValues = easing(fromValues, toValues, progress);
           }
+
+          triggerEvent('update');
         }
 
         lastTime = now;
@@ -150,8 +156,10 @@
         if (progress >= 1) {
           if (shouldLoop) {
             startTime = now;
+            triggerEvent('loop');
             raf = requestAnimationFrame(easeValues);
           } else {
+            triggerEvent('end');
             cancelAnimationFrame(raf);
           }
         } else {
@@ -225,6 +233,8 @@
         lastTime = startTime;
         pausedAfter = undefined;
 
+        triggerEvent('start');
+
         raf = requestAnimationFrame(easeValues);
 
         return self;
@@ -232,6 +242,7 @@
 
       // Stop animation and resume from beginning
       function stop () {
+        triggerEvent('stop');
         cancelAnimationFrame(raf);
         pausedAfter = undefined;
         startTime = undefined;
@@ -240,6 +251,7 @@
 
       // Pause animation and resume from this point
       function pause () {
+        triggerEvent('pause');
         cancelAnimationFrame(raf);
         pausedAfter = startTime - performance.now();
         startTime = undefined;
