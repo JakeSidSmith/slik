@@ -320,7 +320,7 @@
         return self;
       }
 
-      self.fps = self.frameRate = fps;
+      self.fps = fps;
       self.from = from;
       self.to = to;
       self.duration = duration;
