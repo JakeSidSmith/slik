@@ -13,7 +13,7 @@
     person,
     additionalPositions;
 
-  var SPEED = 1;
+  var SPEED = 0.3;
 
   function drawHead () {
     canvas.save();
@@ -235,6 +235,7 @@
       animation
         .to(rightLegUp)
         .duration(700 * SPEED)
+        .ease(Slik.Easing.EaseOut)
         .then(function (result) {
           animation
             .from(result);
@@ -248,6 +249,7 @@
       animation
         .to(rightLegForward)
         .duration(500 * SPEED)
+        .ease(Slik.Easing.EaseIn)
         .then(function (result) {
           animation
             .from(result);
@@ -261,6 +263,7 @@
       animation
         .to(leftLegUp)
         .duration(700 * SPEED)
+        .ease(Slik.Easing.EaseOut)
         .then(function (result) {
           animation
             .from(result);
@@ -274,6 +277,7 @@
       animation
         .to(leftLegForward)
         .duration(500 * SPEED)
+        .ease(Slik.Easing.EaseIn)
         .then(function (result) {
           animation
             .from(result);
