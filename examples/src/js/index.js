@@ -144,7 +144,7 @@
     canvas.restore();
 
     canvas.fillStyle = 'black';
-    canvas.rect(additionalPositions[0] - 5, additionalPositions[1] - 10, 10, 10);
+    canvas.rect(additionalPositions.get(0) - 5, additionalPositions.get(1) - 10, 10, 10);
     canvas.fill();
   }
 
@@ -153,8 +153,6 @@
     canvas = canvasElement.getContext('2d');
     cWidth = canvasElement.width;
     cHeight = canvasElement.height;
-
-    additionalPositions = [120, 240];
 
     var initialPerson = {
       bodyRotation: 0,
@@ -226,10 +224,31 @@
     var animation = new Slik.Animation({
       from: initialPerson
     })
-    .on('update', function (result) {
-      person = result;
+    .on('start', function (values) {
+      person = values;
+    })
+    .on('update', function (values) {
+      person = values;
       render();
     });
+
+    var additionalAnimation = new Slik.Animation({
+      from: [120, 240],
+      to: [120, 480],
+      ease: Slik.Easing.Ease,
+      loop: true
+    })
+    .on('start', function (values) {
+      person = values;
+    })
+    .on('update', function (values) {
+      additionalPositions = values;
+      render();
+    })
+    .on('loop', function () {
+      additionalAnimation.reverse();
+    })
+    .start();
 
     var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
 
@@ -296,21 +315,6 @@
     };
 
     moveRightLegUp();
-
-    // additionalAnimations = slik(additionalPositions);
-    //
-    // additionalAnimations.animation('moveDown')
-    //   .duration(1000)
-    //   .nextPosition([120, 480])
-    //   .ease('in')
-    //   .onComplete('moveUp')
-    //   .do();
-    //
-    // additionalAnimations.animation('moveUp')
-    //   .duration(1000)
-    //   .nextPosition([120, 240])
-    //   .ease('out')
-    //   .onComplete('moveDown');
 
   }
 
