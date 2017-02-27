@@ -91,12 +91,12 @@
     function Animation (initial) {
       var self = this;
 
-      var raf, startTime, pausedAfter;
+      var raf, startTime, lastTime, pausedAfter;
       var fromValues = Immutable.fromJS(initial);
       var currentValues = fromValues;
       var toValues = Immutable.Map();
       var durationMillis = 500;
-      var frameRate = 1000 / 30;
+      var frameRate = 1000 / 60;
       var easing = Linear;
       var shouldLoop = false;
 
@@ -116,15 +116,19 @@
         var now = performance.now();
         var progress = (now - startTime) / durationMillis;
 
-        function mapValues (value, key) {
-          if (Immutable.Iterable.isIterable(value)) {
-            return value.map(mapValues);
+        if (lastTime - now >= frameRate) {
+          function mapValues (value, key) {
+            if (Immutable.Iterable.isIterable(value)) {
+              return value.map(mapValues);
+            }
+
+            return easing(value, toValues.get(key), progress);
           }
 
-          return easing(value, toValues.get(key), progress);
+          currentValues = currentValues.map(mapValues);
         }
 
-        currentValues = currentValues.map(mapValues);
+        lastTime = now;
 
         raf = requestAnimationFrame(easeValues);
       }
@@ -192,6 +196,7 @@
           startTime = performance.now();
         }
 
+        lastTime = startTime;
         pausedAfter = undefined;
 
         raf = requestAnimationFrame(easeValues);
