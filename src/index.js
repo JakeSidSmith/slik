@@ -126,6 +126,10 @@
 
       // Set easing
       function ease (input) {
+        if (typeof input !== 'function') {
+          throw new Error('Ease must be a function, instead got: ' + (typeof input));
+        }
+
         easing = input;
         return self;
       }
