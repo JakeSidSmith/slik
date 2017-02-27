@@ -5,13 +5,13 @@
   var slik = require('../../../src/index.js');
 
   var canvasElement,
-  canvas,
-  cWidth,
-  cHeight,
-  person,
-  speed,
-  additionalPositions,
-  additionalAnimations;
+    canvas,
+    cWidth,
+    cHeight,
+    person,
+    speed,
+    additionalPositions,
+    additionalAnimations;
 
   speed = 0.3;
 
@@ -199,84 +199,78 @@
 
     person.slik.animation('rightLegUp')
       .duration(700 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 5,
-          headRotation: 10,
-          upperRightArmRotation: 70,
-          lowerRightArmRotation: -100,
-          upperLeftArmRotation: -45,
-          lowerLeftArmRotation: -100,
-          upperRightLegRotation: -40,
-          lowerRightLegRotation: 50,
-          upperLeftLegRotation: 20,
-          lowerLeftLegRotation: 25
-        }
-      )
+      .nextPosition({
+        bodyRotation: 5,
+        headRotation: 10,
+        upperRightArmRotation: 70,
+        lowerRightArmRotation: -100,
+        upperLeftArmRotation: -45,
+        lowerLeftArmRotation: -100,
+        upperRightLegRotation: -40,
+        lowerRightLegRotation: 50,
+        upperLeftLegRotation: 20,
+        lowerLeftLegRotation: 25
+      })
       .onComplete('rightLegForward');
 
     person.slik.animation('rightLegForward')
       .duration(500 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 10,
-          headRotation: 20,
-          upperRightArmRotation: 45,
-          lowerRightArmRotation: -70,
-          upperLeftArmRotation: -30,
-          lowerLeftArmRotation: -45,
-          upperRightLegRotation: -10,
-          lowerRightLegRotation: 0,
-          upperLeftLegRotation: 30,
-          lowerLeftLegRotation: 55
-        }
-      )
+      .nextPosition({
+        bodyRotation: 10,
+        headRotation: 20,
+        upperRightArmRotation: 45,
+        lowerRightArmRotation: -70,
+        upperLeftArmRotation: -30,
+        lowerLeftArmRotation: -45,
+        upperRightLegRotation: -10,
+        lowerRightLegRotation: 0,
+        upperLeftLegRotation: 30,
+        lowerLeftLegRotation: 55
+      })
       .onComplete('leftLegUp');
 
     person.slik.animation('leftLegUp')
       .duration(700 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 5,
-          headRotation: 10,
-          upperRightArmRotation: -45,
-          lowerRightArmRotation: -100,
-          upperLeftArmRotation: 70,
-          lowerLeftArmRotation: -100,
-          upperRightLegRotation: 20,
-          lowerRightLegRotation: 25,
-          upperLeftLegRotation: -40,
-          lowerLeftLegRotation: 50
-        }
-      )
+      .nextPosition({
+        bodyRotation: 5,
+        headRotation: 10,
+        upperRightArmRotation: -45,
+        lowerRightArmRotation: -100,
+        upperLeftArmRotation: 70,
+        lowerLeftArmRotation: -100,
+        upperRightLegRotation: 20,
+        lowerRightLegRotation: 25,
+        upperLeftLegRotation: -40,
+        lowerLeftLegRotation: 50
+      })
       .onComplete('leftLegForward');
 
     var steps = 0;
 
     person.slik.animation('leftLegForward')
       .duration(500 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 10,
-          headRotation: 20,
-          upperRightArmRotation: -30,
-          lowerRightArmRotation: -45,
-          upperLeftArmRotation: 45,
-          lowerLeftArmRotation: -70,
-          upperRightLegRotation: 30,
-          lowerRightLegRotation: 55,
-          upperLeftLegRotation: -10,
-          lowerLeftLegRotation: 0
-        }
-      )
+      .nextPosition({
+        bodyRotation: 10,
+        headRotation: 20,
+        upperRightArmRotation: -30,
+        lowerRightArmRotation: -45,
+        upperLeftArmRotation: 45,
+        lowerLeftArmRotation: -70,
+        upperRightLegRotation: 30,
+        lowerRightLegRotation: 55,
+        upperLeftLegRotation: -10,
+        lowerLeftLegRotation: 0
+      })
       .onComplete(function () {
         steps += 1;
+
         if (steps % 5 === 0) {
           person.slik.animation('rightLegUp').invert();
           person.slik.animation('rightLegForward').invert();
           person.slik.animation('leftLegUp').invert();
           person.slik.animation('leftLegForward').invert();
         }
+
         person.slik.do('rightLegUp');
       });
 
