@@ -61,13 +61,15 @@
       var toValues = Immutable.Map();
       var frameRate = 1000 / 30;
       var easing = Linear;
+      var shouldLoop = false;
 
       var events = {
         start: [],
         stop: [],
         pause: [],
         end: [],
-        update: []
+        update: [],
+        loop: []
       };
 
       // Set the frameRate
@@ -91,6 +93,12 @@
       // Set easing
       function ease (input) {
         easing = input;
+        return self;
+      }
+
+      // Set whether the animation should loop
+      function loop (input) {
+        shouldLoop = input;
         return self;
       }
 
@@ -166,6 +174,7 @@
       self.from = from;
       self.to = to;
       self.ease = ease;
+      self.loop = loop;
       self.invert = invert;
       self.reverse = reverse;
       self.start = start;
