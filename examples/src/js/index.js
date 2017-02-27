@@ -221,6 +221,8 @@
       lowerLeftLegRotation: 0
     };
 
+    var steps = 0;
+
     var animation = new Slik.Animation({
       from: initialPerson
     })
@@ -279,8 +281,14 @@
         .duration(500 * SPEED)
         .ease(Slik.Easing.EaseIn)
         .then(function (result) {
+          steps += 1;
+
           animation
             .from(result);
+
+          if (steps > 0 && steps % 4 === 0) {
+            animation.invert();
+          }
 
           moveRightLegUp();
         })
