@@ -119,6 +119,7 @@
         if (lastTime - now >= frameRate) {
           function mapValues (fromValue, key) {
             if (Immutable.Iterable.isIterable(fromValue)) {
+              // Ease nested immutable objects
               return fromValue.map(mapValues);
             }
 
@@ -131,7 +132,13 @@
             return fromValue;
           }
 
-          currentValues = currentValues.map(mapValues);
+          if (Immutable.Iterable.isIterable(fromValues)) {
+            // Ease immutable objects
+            currentValues = currentValues.map(mapValues);
+          } else {
+            // Ease individual value
+            currentValues = easing(fromValues, toValues, progress);
+          }
         }
 
         lastTime = now;
