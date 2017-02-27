@@ -149,7 +149,16 @@
 
         lastTime = now;
 
-        raf = requestAnimationFrame(easeValues);
+        if (progress >= 1) {
+          if (shouldLoop) {
+            startTime = now;
+            raf = requestAnimationFrame(easeValues);
+          } else {
+            cancelAnimationFrame(raf);
+          }
+        } else {
+          raf = requestAnimationFrame(easeValues);
+        }
       }
 
       // Set the frameRate
