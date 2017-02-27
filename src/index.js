@@ -64,6 +64,7 @@
       var shouldLoop = false;
 
       var events = {
+        all: [],
         start: [],
         stop: [],
         pause: [],
