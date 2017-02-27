@@ -11,7 +11,8 @@
     cWidth,
     cHeight,
     person,
-    additionalPositions;
+    additionalPositions,
+    additionalPositions2;
 
   var SPEED = 0.3;
 
@@ -146,6 +147,10 @@
     canvas.fillStyle = 'black';
     canvas.rect(additionalPositions.get(0) - 5, additionalPositions.get(1) - 10, 10, 10);
     canvas.fill();
+
+    canvas.fillStyle = 'black';
+    canvas.rect(additionalPositions2.get(0) - 5, additionalPositions2.get(1) - 10, 10, 10);
+    canvas.fill();
   }
 
   function init () {
@@ -239,7 +244,7 @@
       loop: true
     })
     .on('start', function (values) {
-      person = values;
+      additionalPositions = values;
     })
     .on('update', function (values) {
       additionalPositions = values;
@@ -247,6 +252,25 @@
     })
     .on('loop', function () {
       additionalAnimation.reverse();
+    })
+    .start();
+
+    var additionalAnimation2 = new Slik.Animation({
+      from: [140, 240],
+      to: [140, 480],
+      duration: 2000,
+      ease: Slik.Easing.Spring,
+      loop: true
+    })
+    .on('start', function (values) {
+      additionalPositions2 = values;
+    })
+    .on('update', function (values) {
+      additionalPositions2 = values;
+      render();
+    })
+    .on('loop', function () {
+      additionalAnimation2.reverse();
     })
     .start();
 
