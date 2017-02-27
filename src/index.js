@@ -39,7 +39,7 @@
   function getSlik (Immutable) {
 
     function multiply (fromValue, toValue, multiplier) {
-      multiplier = Math.min(Math.max(multiplier, 0), 1);
+      // multiplier = Math.min(Math.max(multiplier, 0), 1);
       return fromValue * multiplier + toValue * (1 - multiplier);
     }
 
