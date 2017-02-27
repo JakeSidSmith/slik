@@ -142,6 +142,10 @@
           throw new Error('Unknown event: ' + type);
         }
 
+        if (typeof callback !== 'function') {
+          throw new Error('Callback must be a function, instead got: ' + (typeof callback));
+        }
+
         var index = events[type].indexOf(callback);
 
         if (index < 0) {
@@ -155,6 +159,10 @@
       function unbind (type, callback) {
         if (!(type in events)) {
           throw new Error('Unknown event: ' + type);
+        }
+
+        if (typeof callback !== 'function') {
+          throw new Error('Callback must be a function, instead got: ' + (typeof callback));
         }
 
         var index = events[type].indexOf(callback);
