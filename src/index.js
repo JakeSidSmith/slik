@@ -174,8 +174,19 @@
         return self;
       }
 
-      // Run on complete, automatically unbind
-      function then () {
+      // Run on complete and automatically unbind
+      function then (callback) {
+        if (typeof callback !== 'function') {
+          throw new Error('Callback must be a function, instead got: ' + (typeof callback));
+        }
+
+        function thenCallback () {
+          callback();
+          unbind('end', thenCallback);
+        }
+
+        bind('end', thenCallback);
+
         return self;
       }
 
