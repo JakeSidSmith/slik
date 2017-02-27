@@ -2,6 +2,6 @@
   "extends": [
     "jakesidsmith/base",
     "jakesidsmith/browser",
-    "jakesidsmith/commonsjs"
+    "jakesidsmith/commonjs"
   ]
 }
