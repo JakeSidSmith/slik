@@ -93,6 +93,7 @@
 
       var fromValues = Immutable.fromJS(initial);
       var toValues = Immutable.Map();
+      var durationMillis = 500;
       var frameRate = 1000 / 30;
       var easing = Linear;
       var shouldLoop = false;
@@ -122,6 +123,12 @@
       // Set to values
       function to (input) {
         toValues = Immutable.fromJS(input);
+        return self;
+      }
+
+      // Set animation duration
+      function duration (input) {
+        durationMillis = input;
         return self;
       }
 
@@ -231,6 +238,7 @@
       self.fps = self.frameRate = fps;
       self.from = from;
       self.to = to;
+      seld.duration = duration;
       self.ease = ease;
       self.loop = loop;
       self.invert = invert;
