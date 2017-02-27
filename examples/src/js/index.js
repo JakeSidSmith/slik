@@ -225,7 +225,6 @@
       from: initialPerson
     })
     .on('update', function (result) {
-      console.log('Update');
       person = result;
       render();
     });
@@ -281,7 +280,7 @@
 
           moveRightLegUp();
         })
-        // .start();
+        .start();
     };
 
     moveRightLegUp();

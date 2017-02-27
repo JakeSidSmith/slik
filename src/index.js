@@ -150,7 +150,7 @@
 
           if (Immutable.Iterable.isIterable(fromValues)) {
             // Ease immutable objects
-            currentValues = currentValues.map(mapValues);
+            currentValues = fromValues.map(mapValues);
           } else {
             // Ease individual value
             currentValues = easing(fromValues, toValues, progress);
