@@ -63,7 +63,7 @@
   function getSlik (Immutable) {
 
     function multiply (fromValue, toValue, multiplier) {
-      return fromValue * multiplier + toValue * (1 - multiplier);
+      return fromValue * (1 - multiplier) + toValue * multiplier;
     }
 
     function Linear (fromValue, toValue, progress) {
