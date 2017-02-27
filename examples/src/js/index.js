@@ -2,7 +2,9 @@
 
 (function () {
 
-  var slik = require('../../../src/index.js');
+  var Immutable = require('immutable');
+  var Canvasimo = require('canvasimo');
+  var Slik = require('../../../src/index.js');
 
   var canvasElement,
     canvas,
