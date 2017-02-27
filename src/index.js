@@ -130,7 +130,8 @@
         var now = performance.now();
         var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
-        if (lastTime - now >= frameRate) {
+        // Limit frame rate
+        if (now - lastTime >= frameRate) {
           function mapValues (fromValue, key) {
             if (Immutable.Iterable.isIterable(fromValue)) {
               // Ease nested immutable objects
@@ -139,6 +140,7 @@
 
             var toValue = toValues.get(key);
 
+            // Only ease values if the toValue exists
             if (typeof toValue !== 'undefined') {
               return easing(fromValue, toValue, progress);
             }
@@ -165,8 +167,8 @@
             triggerEvent('loop');
             raf = requestAnimationFrame(easeValues);
           } else {
-            triggerEvent('end');
             cancelAnimationFrame(raf);
+            triggerEvent('end');
           }
         } else {
           raf = requestAnimationFrame(easeValues);
@@ -308,8 +310,8 @@
           throw new Error('Callback must be a function, instead got: ' + (typeof callback));
         }
 
-        function thenCallback () {
-          callback();
+        function thenCallback (result) {
+          callback(result);
           unbind('end', thenCallback);
         }
 
