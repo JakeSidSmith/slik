@@ -82,7 +82,7 @@
     }
 
     function EaseOut (fromValue, toValue, progress) {
-      var multiplier = Math.cos((1 - progress) * Math.PI / 2);
+      var multiplier = Math.sin(progress * Math.PI / 2);
       return multiply(fromValue, toValue, multiplier);
     }
 
