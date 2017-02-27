@@ -104,15 +104,15 @@
 
       var currentValues = fromValues;
 
-      var events = {
-        all: [],
-        start: [],
-        stop: [],
-        pause: [],
-        end: [],
-        update: [],
-        loop: []
-      };
+      var events = Immutable.Map({
+        all: Immutable.List(),
+        start: Immutable.List(),
+        stop: Immutable.List(),
+        pause: Immutable.List(),
+        end: Immutable.List(),
+        update: Immutable.List(),
+        loop: Immutable.List()
+      });
 
       function easeValues () {
         cancelAnimationFrame(raf);
@@ -248,7 +248,7 @@
 
       // Add event listener
       function bind (type, callback) {
-        if (!(type in events)) {
+        if (!events.has(type)) {
           throw new Error('Unknown event: ' + type);
         }
 
@@ -256,10 +256,10 @@
           throw new Error('Callback must be a function, instead got: ' + (typeof callback));
         }
 
-        var index = events[type].indexOf(callback);
+        var eventsOfType = events.get(type, Immutable.List());
 
-        if (index < 0) {
-          events[type].push(callback);
+        if (!eventsOfType.includes(callback)) {
+          events = events.set(type, eventsOfType.push(callback));
         }
 
         return self;
@@ -267,7 +267,7 @@
 
       // Remove event listener
       function unbind (type, callback) {
-        if (!(type in events)) {
+        if (!events.has(type)) {
           throw new Error('Unknown event: ' + type);
         }
 
@@ -275,10 +275,10 @@
           throw new Error('Callback must be a function, instead got: ' + (typeof callback));
         }
 
-        var index = events[type].indexOf(callback);
+        var eventsOfType = events.get(type, Immutable.List());
 
-        if (index >= 0) {
-          events[type].splice(index, 1);
+        if (eventsOfType.includes(callback)) {
+          events = events.set(type, eventsOfType.delete(eventsOfType.indexOf(callback)));
         }
 
         return self;
