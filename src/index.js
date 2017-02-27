@@ -96,7 +96,7 @@
       var raf, startTime, lastTime, pausedAfter;
 
       var fromValues = Immutable.fromJS(getDefault(initial.from, {}));
-      var toValues = Immutable.Map(getDefault(initial.to, {}));
+      var toValues = Immutable.fromJS(getDefault(initial.to, {}));
       var durationMillis = getDefault(initial.duration, 500);
       var frameRate = 1000 / getDefault(initial.fps, 120);
       var easing = getDefault(initial.ease, Linear);
