@@ -36,6 +36,30 @@
 
   setupRequestAnimationFrame();
 
+  function setupPerformanceNow () {
+    if (!('performance' in window)) {
+      window.performance = {};
+    }
+
+    if (!('now' in window.performance)) {
+      var dateNow = Date.now || function () {
+        return new Date().getTime();
+      };
+
+      var nowOffset = dateNow();
+
+      if (performance.timing && performance.timing.navigationStart) {
+        nowOffset = performance.timing.navigationStart;
+      }
+
+      window.performance.now = function now () {
+        return dateNow() - nowOffset;
+      };
+    }
+  }
+
+  setupPerformanceNow();
+
   function getSlik (Immutable) {
 
     function multiply (fromValue, toValue, multiplier) {
