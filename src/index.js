@@ -86,6 +86,11 @@
       return multiply(fromValue, toValue, multiplier);
     }
 
+    function Spring (fromValue, toValue, progress) {
+      var multiplier = 1 - (Math.cos(progress * progress * Math.PI * 10) * (1 - progress));
+      return multiply(fromValue, toValue, multiplier);
+    }
+
     function getDefault (value, defaultValue) {
       return typeof value === 'undefined' ? defaultValue : value;
     }
@@ -342,7 +347,8 @@
         Linear: Linear,
         Ease: Ease,
         EaseIn: EaseIn,
-        EaseOut: EaseOut
+        EaseOut: EaseOut,
+        Spring: Spring
       }
     };
 
