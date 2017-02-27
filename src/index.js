@@ -117,12 +117,18 @@
         var progress = (now - startTime) / durationMillis;
 
         if (lastTime - now >= frameRate) {
-          function mapValues (value, key) {
-            if (Immutable.Iterable.isIterable(value)) {
-              return value.map(mapValues);
+          function mapValues (fromValue, key) {
+            if (Immutable.Iterable.isIterable(fromValue)) {
+              return fromValue.map(mapValues);
             }
 
-            return easing(value, toValues.get(key), progress);
+            var toValue = toValues.get(key);
+
+            if (typeof toValue !== 'undefined') {
+              return easing(fromValue, toValue, progress);
+            }
+
+            return fromValue;
           }
 
           currentValues = currentValues.map(mapValues);
