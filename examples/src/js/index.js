@@ -283,13 +283,6 @@
     slik().requestAnimationFrame(render);
   };
 
-  var enterFullscreen = function () {
-    slik().enterFullscreen(document.getElementById('canvas'));
-  };
-
-  var fullScreenButton = document.getElementById('full-screen');
-  fullScreenButton.addEventListener('click', enterFullscreen);
-
   slik().onDocumentReady(init);
 
 })();
