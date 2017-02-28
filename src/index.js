@@ -62,6 +62,54 @@
 
   function getSlik (Immutable) {
 
+    function getDefault (value, defaultValue) {
+      return typeof value === 'undefined' ? defaultValue : value;
+    }
+
+    /* @group loop */
+
+    var animationIndex = 0;
+    var raf;
+    var animations = Immutable.Map();
+
+    function doLoop () {
+      animations.forEach(function (animationLoop) {
+        animationLoop();
+      });
+
+      if (animations.count()) {
+        raf = requestAnimationFrame(doLoop);
+      }
+    }
+
+    function startLoop (animationId, animationLoop) {
+      var previousAnimationCount = animations.count();
+
+      if (!animations.has(animationId)) {
+        animations = animations.set(animationId, animationLoop);
+      }
+
+      if (!previousAnimationCount && animations.count()) {
+        raf = requestAnimationFrame(doLoop);
+      }
+    }
+
+    function stopLoop (animationId) {
+      var previousAnimationCount = animations.count();
+
+      if (animations.has(animationId)) {
+        animations = animations.delete(animationId);
+      }
+
+      if (previousAnimationCount && !animations.count()) {
+        cancelAnimationFrame(raf);
+      }
+    }
+
+    /* @end loop */
+
+    /* @group easing */
+
     function multiply (fromValue, toValue, multiplier) {
       return fromValue * (1 - multiplier) + toValue * multiplier;
     }
@@ -91,14 +139,15 @@
       return multiply(fromValue, toValue, multiplier);
     }
 
-    function getDefault (value, defaultValue) {
-      return typeof value === 'undefined' ? defaultValue : value;
-    }
+    /* @end easing */
 
     function Animation (initial) {
       var self = this;
 
-      var raf, startTime, lastTime, pausedAfter;
+      var startTime, lastTime, pausedAfter;
+
+      var animationId = animationIndex;
+      animationIndex += 1;
 
       var fromValues = Immutable.fromJS(getDefault(initial.from, {}));
       var toValues = Immutable.fromJS(getDefault(initial.to, {}));
@@ -129,9 +178,7 @@
         });
       }
 
-      function easeValues () {
-        cancelAnimationFrame(raf);
-
+      function animationLoop () {
         var now = performance.now();
         var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
@@ -170,13 +217,10 @@
           if (shouldLoop) {
             startTime = now;
             triggerEvent('loop');
-            raf = requestAnimationFrame(easeValues);
           } else {
-            cancelAnimationFrame(raf);
+            stopLoop(animationId);
             triggerEvent('end');
           }
-        } else {
-          raf = requestAnimationFrame(easeValues);
         }
       }
 
@@ -235,8 +279,6 @@
 
       // Start or resume animation
       function start () {
-        cancelAnimationFrame(raf);
-
         if (typeof pausedAfter !== 'undefined') {
           startTime = performance.now() - pausedAfter;
         } else {
@@ -248,7 +290,7 @@
 
         triggerEvent('start');
 
-        raf = requestAnimationFrame(easeValues);
+        startLoop(animationId, animationLoop);
 
         return self;
       }
@@ -256,7 +298,7 @@
       // Stop animation and resume from beginning
       function stop () {
         triggerEvent('stop');
-        cancelAnimationFrame(raf);
+        stopLoop(animationId);
         pausedAfter = undefined;
         startTime = undefined;
         return self;
@@ -265,7 +307,7 @@
       // Pause animation and resume from this point
       function pause () {
         triggerEvent('pause');
-        cancelAnimationFrame(raf);
+        stopLoop(animationId);
         pausedAfter = startTime - performance.now();
         startTime = undefined;
         return self;
