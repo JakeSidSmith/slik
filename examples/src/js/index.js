@@ -240,6 +240,7 @@
     var additionalAnimation = new Slik.Animation({
       from: [120, 240],
       to: [120, 480],
+      duration: 500,
       ease: Slik.Easing.Ease,
       loop: true
     })
