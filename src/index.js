@@ -62,13 +62,14 @@
 
   function getSlik (Immutable) {
 
+    var animationIndex = 0;
+
     function getDefault (value, defaultValue) {
       return typeof value === 'undefined' ? defaultValue : value;
     }
 
     /* @group loop */
 
-    var animationIndex = 0;
     var raf;
     var animations = Immutable.Map();
 
