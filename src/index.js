@@ -73,8 +73,10 @@
     var animations = Immutable.Map();
 
     function doLoop () {
+      var now = performance.now();
+
       animations.forEach(function (animationLoop) {
-        animationLoop();
+        animationLoop(now);
       });
 
       if (animations.count()) {
@@ -178,8 +180,7 @@
         });
       }
 
-      function animationLoop () {
-        var now = performance.now();
+      function animationLoop (now) {
         var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
         // Limit frame rate
