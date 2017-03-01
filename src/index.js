@@ -126,7 +126,7 @@
     }
 
     function EaseIn (progress) {
-      return (1 - Math.cos(progress * Math.PI / 2));
+      return 1 - Math.cos(progress * Math.PI / 2);
     }
 
     function EaseOut (progress) {
