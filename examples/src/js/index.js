@@ -10,113 +10,80 @@
   var SPEED = 0.3;
 
   function drawHead () {
-    canvas.save();
-    canvas.rotate(person.get('headRotation') * Math.PI / 180);
-    canvas.beginPath();
-    canvas.arc(0, -17, 15, 0, 2 * Math.PI);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
+    canvas
+      .save()
+      .rotate(person.get('headRotation') * Math.PI / 180)
+      .strokeCircle(0, -17, 15)
+      .restore();
   }
 
   function drawRightArm () {
-    canvas.save();
-    canvas.rotate(person.getIn(['rightArm', 'upper']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, 40);
-    // Lower right
-    canvas.rotate(person.getIn(['rightArm', 'lower']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
+    canvas
+      .save()
+      .rotate(person.getIn(['rightArm', 'upper']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 40)
+      .translate(0, 40)
+      // Lower right
+      .rotate(person.getIn(['rightArm', 'lower']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 40)
+      .restore();
   }
 
   function drawLeftArm () {
-    canvas.save();
-    canvas.rotate(person.getIn(['leftArm', 'upper']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, 40);
-    // Lower right
-    canvas.rotate(person.getIn(['leftArm', 'lower']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
+    canvas
+      .save()
+      .rotate(person.getIn(['leftArm', 'upper']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 40)
+      .translate(0, 40)
+      // Lower right
+      .rotate(person.getIn(['leftArm', 'lower']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 40)
+      .restore();
   }
 
   function drawUpperBody () {
-    canvas.rotate(person.get('bodyRotation') * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, -65);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, -65);
-    drawHead();
-    drawRightArm();
-    drawLeftArm();
+    canvas
+      .rotate(person.get('bodyRotation') * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, -65)
+      .translate(0, -65)
+      .tap(drawHead)
+      .tap(drawRightArm)
+      .tap(drawLeftArm);
   }
 
   function drawRightLeg () {
     // Right leg
-    canvas.save();
-    canvas.rotate(person.getIn(['rightLeg', 'upper']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    // Lower right
-    canvas.translate(0, 50);
-    canvas.rotate(person.getIn(['rightLeg', 'lower']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
+    canvas
+      .save()
+      .rotate(person.getIn(['rightLeg', 'upper']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 50)
+      // Lower right
+      .translate(0, 50)
+      .rotate(person.getIn(['rightLeg', 'lower']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 50)
+      .restore();
   }
 
   function drawLeftLeg () {
     // Left leg
-    canvas.save();
-    canvas.rotate(person.getIn(['leftLeg', 'upper']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    // Lower left
-    canvas.translate(0, 50);
-    canvas.rotate(person.getIn(['leftLeg', 'lower']) * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
+    canvas
+      .save()
+      .rotate(person.getIn(['leftLeg', 'upper']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 50)
+      // Lower left
+      .translate(0, 50)
+      .rotate(person.getIn(['leftLeg', 'lower']) * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, 50)
+      .restore();
   }
 
   function render () {
