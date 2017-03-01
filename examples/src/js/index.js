@@ -9,39 +9,25 @@
 
   var SPEED = 0.3;
 
+  function drawLimb (limb, length) {
+    canvas
+      .save()
+      .rotate(limb.get('upper') * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, length)
+      .translate(0, length)
+      // Lower right
+      .rotate(limb.get('lower') * Math.PI / 180)
+      .beginPath()
+      .strokeLine(0, 0, 0, length)
+      .restore();
+  }
+
   function drawHead () {
     canvas
       .save()
       .rotate(person.get('headRotation') * Math.PI / 180)
       .strokeCircle(0, -17, 15)
-      .restore();
-  }
-
-  function drawRightArm () {
-    canvas
-      .save()
-      .rotate(person.getIn(['rightArm', 'upper']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 40)
-      .translate(0, 40)
-      // Lower right
-      .rotate(person.getIn(['rightArm', 'lower']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 40)
-      .restore();
-  }
-
-  function drawLeftArm () {
-    canvas
-      .save()
-      .rotate(person.getIn(['leftArm', 'upper']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 40)
-      .translate(0, 40)
-      // Lower right
-      .rotate(person.getIn(['leftArm', 'lower']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 40)
       .restore();
   }
 
@@ -52,38 +38,8 @@
       .strokeLine(0, 0, 0, -65)
       .translate(0, -65)
       .tap(drawHead)
-      .tap(drawRightArm)
-      .tap(drawLeftArm);
-  }
-
-  function drawRightLeg () {
-    // Right leg
-    canvas
-      .save()
-      .rotate(person.getIn(['rightLeg', 'upper']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 50)
-      // Lower right
-      .translate(0, 50)
-      .rotate(person.getIn(['rightLeg', 'lower']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 50)
-      .restore();
-  }
-
-  function drawLeftLeg () {
-    // Left leg
-    canvas
-      .save()
-      .rotate(person.getIn(['leftLeg', 'upper']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 50)
-      // Lower left
-      .translate(0, 50)
-      .rotate(person.getIn(['leftLeg', 'lower']) * Math.PI / 180)
-      .beginPath()
-      .strokeLine(0, 0, 0, 50)
-      .restore();
+      .tap(drawLimb.bind(null, person.get('rightArm'), 40))
+      .tap(drawLimb.bind(null, person.get('leftArm'), 40));
   }
 
   function render () {
@@ -102,8 +58,8 @@
       // Draw legs
       .save()
       .translate(size.width / 2, size.height - 100)
-      .tap(drawRightLeg)
-      .tap(drawLeftLeg)
+      .tap(drawLimb.bind(null, person.get('rightLeg'), 50))
+      .tap(drawLimb.bind(null, person.get('leftLeg'), 50))
       .restore();
   }
 
@@ -216,6 +172,7 @@
       }
     };
 
+    var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
     var steps = 0;
 
     var animation = new Slik.Animation({
@@ -228,8 +185,6 @@
       person = values;
       render();
     });
-
-    var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
 
     function nextStepFromHere (result) {
       animation
