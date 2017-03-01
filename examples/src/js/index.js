@@ -241,7 +241,7 @@
       from: [120, 240],
       to: [120, 480],
       duration: 500,
-      ease: Slik.Easing.Ease,
+      ease: Slik.Easing.Dip,
       loop: true
     })
     .on('start', function (values) {
@@ -259,8 +259,8 @@
     var additionalAnimation2 = new Slik.Animation({
       from: [140, 240],
       to: [140, 480],
-      duration: 2000,
-      ease: Slik.Easing.Spring,
+      duration: 500,
+      ease: Slik.Easing.EaseOut,
       loop: true
     })
     .on('start', function (values) {
