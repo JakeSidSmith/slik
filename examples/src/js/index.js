@@ -322,8 +322,12 @@
         .from(result);
     }
 
+    function everyOther4Steps () {
+      return steps % 8 >= 4;
+    }
+
     function invertEvery4Steps () {
-      if (steps % 8 >= 4) {
+      if (everyOther4Steps()) {
         animation.invert();
       }
     }
