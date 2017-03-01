@@ -377,6 +377,22 @@
         return self;
       }
 
+      // Run on start and automatically unbind
+      function first (callback) {
+        if (typeof callback !== 'function') {
+          throw new Error('Callback must be a function, instead got: ' + (typeof callback));
+        }
+
+        function firstCallback (result) {
+          callback(result);
+          unbind('start', firstCallback);
+        }
+
+        bind('start', firstCallback);
+
+        return self;
+      }
+
       // Run on complete and automatically unbind
       function then (callback) {
         if (typeof callback !== 'function') {
@@ -406,6 +422,7 @@
       self.pause = pause;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
+      self.first = first;
       self.then = then;
     }
 
