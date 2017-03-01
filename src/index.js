@@ -137,6 +137,14 @@
       return 1 - (Math.cos(progress * progress * Math.PI * 10) * (1 - progress));
     }
 
+    var Easing = {
+      Linear: Linear,
+      Ease: Ease,
+      EaseIn: EaseIn,
+      EaseOut: EaseOut,
+      Spring: Spring
+    };
+
     /* @end easing */
 
     function Animation (initial) {
@@ -382,13 +390,7 @@
 
     return {
       Animation: Animation,
-      Easing: {
-        Linear: Linear,
-        Ease: Ease,
-        EaseIn: EaseIn,
-        EaseOut: EaseOut,
-        Spring: Spring
-      }
+      Easing: Easing
     };
 
   }
