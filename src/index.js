@@ -133,6 +133,10 @@
       return Math.sin(progress * Math.PI / 2);
     }
 
+    function Dip (progress) {
+      return (progress >= 0.5 ? 1 : 0) + (Math.sin(progress * Math.PI) / 2) * (progress >= 0.5 ? -1 : 1);
+    }
+
     function Spring (progress) {
       return 1 - (Math.cos(progress * progress * Math.PI * 10) * (1 - progress));
     }
@@ -142,6 +146,7 @@
       Ease: Ease,
       EaseIn: EaseIn,
       EaseOut: EaseOut,
+      Dip: Dip,
       Spring: Spring
     };
 
