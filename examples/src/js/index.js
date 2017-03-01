@@ -10,9 +10,7 @@
     canvas,
     cWidth,
     cHeight,
-    person,
-    additionalPositions,
-    additionalPositions2;
+    person;
 
   var SPEED = 0.3;
 
@@ -143,14 +141,6 @@
     drawRightLeg();
     drawLeftLeg();
     canvas.restore();
-
-    canvas.fillStyle = 'black';
-    canvas.rect(additionalPositions.get(0) - 5, additionalPositions.get(1) - 10, 10, 10);
-    canvas.fill();
-
-    canvas.fillStyle = 'black';
-    canvas.rect(additionalPositions2.get(0) - 5, additionalPositions2.get(1) - 10, 10, 10);
-    canvas.fill();
   }
 
   function init () {
@@ -276,44 +266,6 @@
       person = values;
       render();
     });
-
-    var additionalAnimation = new Slik.Animation({
-      from: [120, 240],
-      to: [120, 480],
-      duration: 500,
-      ease: Slik.Easing.Dip,
-      loop: true
-    })
-    .first(function (values) {
-      additionalPositions = values;
-    })
-    .on('update', function (values) {
-      additionalPositions = values;
-      render();
-    })
-    .on('loop', function () {
-      additionalAnimation.reverse();
-    })
-    .start();
-
-    var additionalAnimation2 = new Slik.Animation({
-      from: [140, 240],
-      to: [140, 480],
-      duration: 500,
-      ease: Slik.Easing.EaseOut,
-      loop: true
-    })
-    .first(function (values) {
-      additionalPositions2 = values;
-    })
-    .on('update', function (values) {
-      additionalPositions2 = values;
-      render();
-    })
-    .on('loop', function () {
-      additionalAnimation2.reverse();
-    })
-    .start();
 
     var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
 
