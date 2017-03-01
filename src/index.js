@@ -117,29 +117,24 @@
       return fromValue * (1 - multiplier) + toValue * multiplier;
     }
 
-    function Linear (fromValue, toValue, progress) {
-      var multiplier = progress;
-      return multiply(fromValue, toValue, multiplier);
+    function Linear (progress) {
+      return progress;
     }
 
-    function Ease (fromValue, toValue, progress) {
-      var multiplier = (1 - Math.cos(progress * Math.PI)) / 2;
-      return multiply(fromValue, toValue, multiplier);
+    function Ease (progress) {
+      return (1 - Math.cos(progress * Math.PI)) / 2;
     }
 
-    function EaseIn (fromValue, toValue, progress) {
-      var multiplier = (1 - Math.cos(progress * Math.PI / 2));
-      return multiply(fromValue, toValue, multiplier);
+    function EaseIn (progress) {
+      return (1 - Math.cos(progress * Math.PI / 2));
     }
 
-    function EaseOut (fromValue, toValue, progress) {
-      var multiplier = Math.sin(progress * Math.PI / 2);
-      return multiply(fromValue, toValue, multiplier);
+    function EaseOut (progress) {
+      return Math.sin(progress * Math.PI / 2);
     }
 
-    function Spring (fromValue, toValue, progress) {
-      var multiplier = 1 - (Math.cos(progress * progress * Math.PI * 10) * (1 - progress));
-      return multiply(fromValue, toValue, multiplier);
+    function Spring (progress) {
+      return 1 - (Math.cos(progress * progress * Math.PI * 10) * (1 - progress));
     }
 
     /* @end easing */
@@ -196,7 +191,7 @@
 
             // Only ease values if the toValue exists
             if (typeof toValue !== 'undefined') {
-              return easing(fromValue, toValue, progress);
+              return multiply(fromValue, toValue, easing(progress));
             }
 
             return fromValue;
@@ -207,7 +202,7 @@
             currentValues = fromValues.map(mapValues);
           } else {
             // Ease individual value
-            currentValues = easing(fromValues, toValues, progress);
+            currentValues = multiply(fromValues, toValues, easing(progress));
           }
 
           triggerEvent('update');
