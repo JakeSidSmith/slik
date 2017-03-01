@@ -189,30 +189,32 @@
         });
       }
 
+      function mapValues (progress, parentPath, fromValue, key) {
+        var path = parentPath.push(key);
+
+        if (Immutable.Iterable.isIterable(fromValue)) {
+          // Ease nested immutable objects
+          return fromValue.map(mapValues.bind(null, progress, path));
+        }
+
+        var toValue = toValues.getIn(path);
+
+        // Only ease values if the toValue exists
+        if (typeof toValue !== 'undefined') {
+          return multiply(fromValue, toValue, easing(progress));
+        }
+
+        return fromValue;
+      }
+
       function animationLoop (now) {
         var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
         // Limit frame rate
         if (now - lastTime >= frameRate) {
-          function mapValues (fromValue, key) {
-            if (Immutable.Iterable.isIterable(fromValue)) {
-              // Ease nested immutable objects
-              return fromValue.map(mapValues);
-            }
-
-            var toValue = toValues.get(key);
-
-            // Only ease values if the toValue exists
-            if (typeof toValue !== 'undefined') {
-              return multiply(fromValue, toValue, easing(progress));
-            }
-
-            return fromValue;
-          }
-
           if (Immutable.Iterable.isIterable(fromValues)) {
             // Ease immutable objects
-            currentValues = fromValues.map(mapValues);
+            currentValues = fromValues.map(mapValues.bind(null, progress, Immutable.List()));
           } else {
             // Ease individual value
             currentValues = multiply(fromValues, toValues, easing(progress));

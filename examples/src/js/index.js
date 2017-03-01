@@ -28,7 +28,7 @@
 
   function drawRightArm () {
     canvas.save();
-    canvas.rotate(person.get('upperRightArmRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['rightArm', 'upper']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 40);
@@ -37,7 +37,7 @@
     canvas.stroke();
     canvas.translate(0, 40);
     // Lower right
-    canvas.rotate(person.get('lowerRightArmRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['rightArm', 'lower']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 40);
@@ -49,7 +49,7 @@
 
   function drawLeftArm () {
     canvas.save();
-    canvas.rotate(person.get('upperLeftArmRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['leftArm', 'upper']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 40);
@@ -58,7 +58,7 @@
     canvas.stroke();
     canvas.translate(0, 40);
     // Lower right
-    canvas.rotate(person.get('lowerLeftArmRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['leftArm', 'lower']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 40);
@@ -85,7 +85,7 @@
   function drawRightLeg () {
     // Right leg
     canvas.save();
-    canvas.rotate(person.get('upperRightLegRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['rightLeg', 'upper']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 50);
@@ -94,7 +94,7 @@
     canvas.stroke();
     // Lower right
     canvas.translate(0, 50);
-    canvas.rotate(person.get('lowerRightLegRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['rightLeg', 'lower']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 50);
@@ -107,7 +107,7 @@
   function drawLeftLeg () {
     // Left leg
     canvas.save();
-    canvas.rotate(person.get('upperLeftLegRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['leftLeg', 'upper']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 50);
@@ -116,7 +116,7 @@
     canvas.stroke();
     // Lower left
     canvas.translate(0, 50);
-    canvas.rotate(person.get('lowerLeftLegRotation') * Math.PI / 180);
+    canvas.rotate(person.getIn(['leftLeg', 'lower']) * Math.PI / 180);
     canvas.beginPath();
     canvas.moveTo(0, 0);
     canvas.lineTo(0, 50);
@@ -162,66 +162,106 @@
     var initialPerson = {
       bodyRotation: 0,
       headRotation: 0,
-      upperRightArmRotation: 0,
-      lowerRightArmRotation: 0,
-      upperLeftArmRotation: 0,
-      lowerLeftArmRotation: 0,
-      upperRightLegRotation: 0,
-      lowerRightLegRotation: 0,
-      upperLeftLegRotation: 0,
-      lowerLeftLegRotation: 0
+      rightArm: {
+        upper: 0,
+        lower: 0
+      },
+      leftArm: {
+        upper: 0,
+        lower: 0
+      },
+      rightLeg: {
+        upper: 0,
+        lower: 0
+      },
+      leftLeg: {
+        upper: 0,
+        lower: 0
+      }
     };
 
     var rightLegUp = {
       bodyRotation: 5,
       headRotation: 10,
-      upperRightArmRotation: 70,
-      lowerRightArmRotation: -100,
-      upperLeftArmRotation: -45,
-      lowerLeftArmRotation: -100,
-      upperRightLegRotation: -40,
-      lowerRightLegRotation: 50,
-      upperLeftLegRotation: 20,
-      lowerLeftLegRotation: 25
+      rightArm: {
+        upper: 70,
+        lower: -100
+      },
+      leftArm: {
+        upper: -45,
+        lower: -100
+      },
+      rightLeg: {
+        upper: -40,
+        lower: 50
+      },
+      leftLeg: {
+        upper: 20,
+        lower: 25
+      }
     };
 
     var rightLegForward = {
       bodyRotation: 10,
       headRotation: 20,
-      upperRightArmRotation: 45,
-      lowerRightArmRotation: -70,
-      upperLeftArmRotation: -30,
-      lowerLeftArmRotation: -45,
-      upperRightLegRotation: -10,
-      lowerRightLegRotation: 0,
-      upperLeftLegRotation: 30,
-      lowerLeftLegRotation: 55
+      rightArm: {
+        upper: 45,
+        lower: -70
+      },
+      leftArm: {
+        upper: -30,
+        lower: -45
+      },
+      rightLeg: {
+        upper: -10,
+        lower: 0
+      },
+      leftLeg: {
+        upper: 30,
+        lower: 55
+      }
     };
 
     var leftLegUp = {
       bodyRotation: 5,
       headRotation: 10,
-      upperRightArmRotation: -45,
-      lowerRightArmRotation: -100,
-      upperLeftArmRotation: 70,
-      lowerLeftArmRotation: -100,
-      upperRightLegRotation: 20,
-      lowerRightLegRotation: 25,
-      upperLeftLegRotation: -40,
-      lowerLeftLegRotation: 50
+      rightArm: {
+        upper: -45,
+        lower: -100
+      },
+      leftArm: {
+        upper: 70,
+        lower: -100
+      },
+      rightLeg: {
+        upper: 20,
+        lower: 25
+      },
+      leftLeg: {
+        upper: -40,
+        lower: 50
+      }
     };
 
     var leftLegForward = {
       bodyRotation: 10,
       headRotation: 20,
-      upperRightArmRotation: -30,
-      lowerRightArmRotation: -45,
-      upperLeftArmRotation: 45,
-      lowerLeftArmRotation: -70,
-      upperRightLegRotation: 30,
-      lowerRightLegRotation: 55,
-      upperLeftLegRotation: -10,
-      lowerLeftLegRotation: 0
+      rightArm: {
+        upper: -30,
+        lower: -45
+      },
+      leftArm: {
+        upper: 45,
+        lower: -70
+      },
+      rightLeg: {
+        upper: 30,
+        lower: 55
+      },
+      leftLeg: {
+        upper: -10,
+        lower: 0
+      }
     };
 
     var steps = 0;
