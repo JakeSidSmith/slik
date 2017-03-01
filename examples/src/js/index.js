@@ -2,15 +2,10 @@
 
 (function () {
 
-  // var Immutable = require('immutable');
-  // var Canvasimo = require('canvasimo');
+  var Canvasimo = require('canvasimo');
   var Slik = require('../../../src/index.js');
 
-  var canvasElement,
-    canvas,
-    cWidth,
-    cHeight,
-    person;
+  var element, canvas, person;
 
   var SPEED = 0.3;
 
@@ -125,29 +120,29 @@
   }
 
   function render () {
-    canvas.clearRect(0, 0, cWidth, cHeight);
-    canvas.strokeStyle = 'black';
-    canvas.lineWidth = 4;
-    canvas.lineCap = 'round';
+    var size = canvas.getSize();
 
-    // Draw upper body
-    canvas.save();
-    canvas.translate(cWidth / 2, cHeight - 100);
-    drawUpperBody();
-    canvas.restore();
-    // Draw legs
-    canvas.save();
-    canvas.translate(cWidth / 2, cHeight - 100);
-    drawRightLeg();
-    drawLeftLeg();
-    canvas.restore();
+    canvas
+      .clearCanvas()
+      .setStroke('black')
+      .setStrokeWidth(4)
+      .setStrokeCap('round')
+      // Draw upper body
+      .save()
+      .translate(size.width / 2, size.height - 100)
+      .tap(drawUpperBody)
+      .restore()
+      // Draw legs
+      .save()
+      .translate(size.width / 2, size.height - 100)
+      .tap(drawRightLeg)
+      .tap(drawLeftLeg)
+      .restore();
   }
 
   function init () {
-    canvasElement = document.getElementById('canvas');
-    canvas = canvasElement.getContext('2d');
-    cWidth = canvasElement.width;
-    cHeight = canvasElement.height;
+    element = document.getElementById('canvas');
+    canvas = new Canvasimo(element);
 
     var initialPerson = {
       bodyRotation: 0,
