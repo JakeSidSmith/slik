@@ -317,65 +317,63 @@
 
     var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
 
+    function nextStepFromHere (result) {
+      animation
+        .from(result);
+    }
+
+    function invertEvery4Steps () {
+      if (steps % 8 >= 4) {
+        animation.invert();
+      }
+    }
+
+    function incrementStep () {
+      steps += 1;
+    }
+
     moveRightLegUp = function () {
       animation
+        .first(invertEvery4Steps)
         .to(rightLegUp)
         .duration(700 * SPEED)
         .ease(Slik.Easing.EaseOut)
-        .then(function (result) {
-          animation
-            .from(result);
-
-          moveRightLegForward();
-        })
+        .then(nextStepFromHere)
+        .then(moveRightLegForward)
         .start();
     };
 
     moveRightLegForward = function () {
       animation
+        .first(invertEvery4Steps)
         .to(rightLegForward)
         .duration(500 * SPEED)
         .ease(Slik.Easing.EaseIn)
-        .then(function (result) {
-          animation
-            .from(result);
-
-          moveLeftLegUp();
-        })
+        .then(nextStepFromHere)
+        .then(moveLeftLegUp)
         .start();
     };
 
     moveLeftLegUp = function () {
       animation
+        .first(invertEvery4Steps)
         .to(leftLegUp)
         .duration(700 * SPEED)
         .ease(Slik.Easing.EaseOut)
-        .then(function (result) {
-          animation
-            .from(result);
-
-          moveLeftLegForward();
-        })
+        .then(nextStepFromHere)
+        .then(moveLeftLegForward)
         .start();
     };
 
     moveLeftLegForward = function () {
       animation
+        .first(invertEvery4Steps)
         .to(leftLegForward)
         .duration(500 * SPEED)
         .ease(Slik.Easing.EaseIn)
-        .then(function (result) {
-          steps += 1;
-
-          animation
-            .from(result);
-
-          if (steps > 0 && steps % 4 === 0) {
-            animation.invert();
-          }
-
-          moveRightLegUp();
-        })
+        .then(incrementStep)
+        .then(nextStepFromHere)
+        .then(moveRightLegUp)
         .start();
     };
 
