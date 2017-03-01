@@ -269,7 +269,7 @@
     var animation = new Slik.Animation({
       from: initialPerson
     })
-    .on('start', function (values) {
+    .first(function (values) {
       person = values;
     })
     .on('update', function (values) {
@@ -284,7 +284,7 @@
       ease: Slik.Easing.Dip,
       loop: true
     })
-    .on('start', function (values) {
+    .first(function (values) {
       additionalPositions = values;
     })
     .on('update', function (values) {
@@ -303,7 +303,7 @@
       ease: Slik.Easing.EaseOut,
       loop: true
     })
-    .on('start', function (values) {
+    .first(function (values) {
       additionalPositions2 = values;
     })
     .on('update', function (values) {
