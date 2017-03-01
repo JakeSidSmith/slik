@@ -276,8 +276,22 @@
         return self;
       }
 
+      function mapInvertValues (value) {
+        if (Immutable.Iterable.isIterable(value)) {
+          return value.map(mapInvertValues);
+        }
+
+        return value * -1;
+      }
+
       // Invert animation values
       function invert () {
+        if (Immutable.Iterable.isIterable(toValues)) {
+          toValues = toValues.map(mapInvertValues);
+        } else {
+          toValues = mapInvertValues(toValues);
+        }
+
         return self;
       }
 
