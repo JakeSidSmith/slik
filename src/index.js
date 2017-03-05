@@ -409,6 +409,7 @@
         }
 
         bind('start', firstCallback);
+        bind('stop', unbind.bind(null, 'end', firstCallback));
 
         return self;
       }
@@ -425,6 +426,7 @@
         }
 
         bind('end', thenCallback);
+        bind('stop', unbind.bind(null, 'end', thenCallback));
 
         return self;
       }
