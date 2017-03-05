@@ -420,7 +420,7 @@
       self.invert = invert;
       self.reverse = reverse;
       self.start = start;
-      self.stop = self.reset = stop;
+      self.stop = stop;
       self.pause = pause;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
