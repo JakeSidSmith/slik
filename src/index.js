@@ -314,10 +314,12 @@
 
       // Start or resume animation
       function start () {
+        var now = performance.now();
+
         if (typeof pausedAfter !== 'undefined') {
-          startTime = performance.now() + pausedAfter;
+          startTime = now + pausedAfter;
         } else {
-          startTime = performance.now();
+          startTime = now;
         }
 
         lastTime = startTime;
