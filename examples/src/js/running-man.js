@@ -180,6 +180,7 @@
     })
     .first(function (values) {
       person = values;
+      render();
     })
     .on('update', function (values) {
       person = values;
