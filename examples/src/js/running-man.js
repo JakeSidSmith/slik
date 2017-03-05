@@ -260,7 +260,7 @@
       } else {
         animation.start();
       }
-    })
+    });
 
   }
 
