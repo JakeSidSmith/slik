@@ -261,6 +261,23 @@
       return values;
     }
 
+    function randomlySwapLeftAndRight (values) {
+      if (Math.random() >= 0.5) {
+        var rightArm = values.get('rightArm');
+        var leftArm = values.get('leftArm');
+        var rightLeg = values.get('rightLeg');
+        var leftLeg = values.get('leftLeg');
+
+        return values
+          .set('rightArm', leftArm)
+          .set('leftArm', rightArm)
+          .set('rightLeg', leftLeg)
+          .set('leftLeg', rightLeg);
+      }
+
+      return values;
+    }
+
     function incrementStep () {
       steps += 1;
     }
@@ -313,7 +330,7 @@
     jumpUp = function () {
       animation
         .stop()
-        .to(invertJumpDirection(jumpUpValues))
+        .to(randomlySwapLeftAndRight(invertJumpDirection(jumpUpValues)))
         .first(nextStepFromHere)
         .first(invertEvery4Steps)
         .duration(800 * SPEED)
@@ -324,7 +341,7 @@
 
     jumpDown = function () {
       animation
-        .to(invertJumpDirection(jumpDownValues))
+        .to(randomlySwapLeftAndRight(invertJumpDirection(jumpDownValues)))
         .first(nextStepFromHere)
         .first(invertEvery4Steps)
         .duration(800 * SPEED)
