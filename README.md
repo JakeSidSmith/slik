@@ -1,107 +1,200 @@
-# Slik [![Build Status](https://travis-ci.org/JakeSidSmith/slik.svg?branch=master)](https://travis-ci.org/JakeSidSmith/slik)
+# Slik [![CircleCI](https://circleci.com/gh/JakeSidSmith/slik.svg?style=svg)](https://circleci.com/gh/JakeSidSmith/slik)
 
-### __Animation library for use with HTML5 canvas__ - [Demo](http://jakesidsmith.github.io/slik/)
+**Animation / tweening library, ideal for use with HTML5 canvas and or React** - [Demo](http://jakesidsmith.github.io/slik/)
 
-## Setup
+## About
 
-### Installation
+Slik uses requestAnimationFrame to tween values over time. You can give it a single value, an array, or an object. Internally Slik converts these values to [ImmutableJS](https://facebook.github.io/immutable-js/) ones, and returns the tweened values as ImmutableJS objects (unless only a single value is supplied).
 
-1. Use npm or bower to install slik.
 
-    1. Using npm
+Slik uses ImmutableJS so that when used with [React](https://facebook.github.io/react/) you can keep your components pure (preventing updates if values have not changed) as ImmutableJS returns a new reference when updated, allowing quick checks for changes using [PureRenderMixin](https://facebook.github.io/react/docs/pure-render-mixin.html) for example.
 
-            npm install slik --save
+## Installation
 
-        I'd recommend pinning to a specific version and using `--save` to add this to your package.json automatically.
+Use npm to install slik.
 
-    1. Using bower
+```shell
+npm install slik --save --save-exact
+```
 
-            bower install slik -S
+I'd recommend pinning to a specific version and using `--save-exact` and `--save` to add this to your package.json automatically.
 
-        I'd recommend pinning to a specific version and using `-S` to add this to your bower.json automatically.
-
-### Getting started
+## Getting started
 
 1. Require slik in the file where you'll be animating.
 
-        var slik = require('slik');
+  ```javascript
+  import Slik from 'slik';
+  ```
 
-1. Setup an object containing the positions you want to animate. These values can be contained in arrays but I'd highly recommend using objects as it makes it easier to refer to your values later.
+1. Setup an object containing the positions you want to animate. These values can be contained in objects, arrays, or single values. If you're animating a lot of values I'd highly recommend using objects as it makes it easier to refer to your values later.
 
-        var myPosition = {
-            headRotation: 0,
-            leftArmRotation: 0,
-            rightArmRotation: 0,
-            leftLegRotation: 0,
-            rightLegRotation: 0
-        };
+  Note: these can be nested values.
 
-1. Create a slik object. You'll be passing the position-object you want to animate here. You can create as many slik objects as you like (preferably for entirely different animation groups).
+  ```javascript
+  const initialValues = {
+    headRotation: 0,
+    leftArm: {
+      upper: 0,
+      lower: 0
+    }
+  };
+  ```
 
-        var mySlik = slik(myPosition);
+1. Create an Animation.
 
-1. Add some animations to your slik objects (this is where it gets a bit more complicated). You'll first want to name an animation. In this example we'll do a multi-step walking animation.
+  1. Initial options: You can pass most of your config in here if you like, or add them using the methods with matching names.
 
-        mySlik.animation('rightLegForward')
+    ```javascript
+    const animation = new Slik.Animation({
+      from: initialValues,
+      to: nextValues
+      // Defaults below
 
-    Animation names must not contain special characters or spaces, and should be camelcase.
+      // duration: 500 (milliseconds)
+      // delay: 0 (milliseconds)
+      // fps: 120 (frames per second) I would not recommend changing the frame rate
+      // ease: Slik.Easing.Linear
+      // loop: false
+    });
+    ```
 
-1. Start adjusting the properties of this animation. There's a full list of methods below.
+  1. Using methods: Note: fluent API returns the same object for each method (except the playing method which returns a boolean). More info below.
 
-        mySlik.animation('rightLegForward')
-            .duration(500)
-            .nextPosition({
-                rightLegRotation: 45
-            })
-            .onComplete('leftLegForward')
-            .do(); // Trigger animation
+    ```javascript
+    const animation = new Slik.Animation()
+      .from(initialValues)
+      .to(nextValues)
+      .duration(1000)
+      .delay(2000)
+      .ease(Slik.Easing.EaseInOutSine)
+      .loop(true)
+    ```
 
-#### Animation Properties
+1. Handle changes in values. Bind a callback to the `update` event & update your component or redraw your canvas.
 
-1. Duration - In milliseconds.
+  ```javascript
+  animation.bind('update', function (value) {
+    canvas.render(values);
+  });
+  ```
 
-        mySlik.animation('rightLegForward')
-            .duration(500)
+## Animation methods
 
-1. Next position - object containing the values you want to animate to.
+1. Set the values to tween from. Default: `Immutable.Map()`.
 
-        .nextPosition({
-            rightLegRotation: 45
-        })
+  ```javascript
+  animation.from({hello: 0});
+  ```
 
-    **Note: you don't have to animate every value.**
+1. Set the values to tween to. Default: `Immutable.Map()`.
 
-1. Previous position - you can manually set the position at the start of the animation. This is especially useful when animating full rotations. This example would be suitable for having a character perform a flip without ending up rotated 360 degrees.
+  ```javascript
+  animation.to({hello: 1});
+  ```
 
-        .previousPosition({
-            bodyRotation: -360
-        })
+1. Set the duration of the animation in milliseconds. Default: `500`.
 
-    **Note: you don't have to animate every value.**
+  ```javascript
+  animation.duration(500);
+  ```
 
-1. On complete - action to perform once animation completes. onComplete can take a string (the name of the next animation to perform) or a function (which you may want to trigger the next animation in also).
+1. Set a delay in milliseconds before the animation begins. Default: `0`.
 
-        .onComplete('leftLegForward')
+  ```javascript
+  animation.delay(1000);
+  ```
 
-1. Ease - define the easing of the animation. In, out, both (inout) or none (linear). The default easing is none.
+1. Set the frame rate of the animation (fps). Default: `120`.
+  I would not recommend changing this unless you intentionally want a less smooth animation.
 
-        .ease('in')
+  ```javascript
+  animation.fps(120);
+  ```
 
-1. Invert - invert an animation's values at any point
+1. Set the easing function to use for the animation. Default: `Slik.Easing.Linear`.
+  Note: you can easily create your own easing functions. More info on this below.
 
-        .invert()
+  ```javascript
+  animation.ease(Slik.Easing.Linear);
+  ```
 
-1. Clear - used to clear an entire animation, or a specific property of an animation if one is specified.
+1. Set whether the animation should automatically loop. Default: `false`.
 
-        .clear('duration');
+  ```javascript
+  animation.loop(false);
+  ```
 
-1. Do - trigger an animation. This can be called on an individual animation or directly on your slik object and specifying the name of the animation to trigger.
+1. Invert the values that you are tweening to. E.g. `{value: 1}` would become `{value: -1}`
 
-        // On slik object
-        mySlik.do('rightLegForward');
+  ```javascript
+  animation.invert();
+  ```
 
-        // On animation
-        mySlik.animation('rightLegForward').do();
+1. Swap the from & to values to play in reverse.
 
-        // Trigger separate animation from animation
-        mySlik.animation('rightLegForward').do('leftLegForward');
+  ```javascript
+  animation.reverse();
+  ```
+
+1. Start the animation.
+
+  ```javascript
+  animation.start();
+  ```
+
+1. Stop the animation, allowing you to restart from the beginning.
+
+  ```javascript
+  animation.stop();
+  ```
+
+1. Pause the animation, allowing you to resume from this point.
+
+  ```javascript
+  animation.pause();
+  ```
+
+1. Return whether the animation is currently playing.
+
+  ```javascript
+  animation.playing();
+  ```
+
+1. Run a callback once before the animation is initially started. Receives the animation's current values.
+
+  ```javascript
+  animation.first(function () {});
+  ```
+
+1. Run a callback once after the animation has completed (excluding loops). Receives the animation's current values.
+
+  ```javascript
+  animation.then(function () {});
+  ```
+
+1. Bind a callback to a specific animation event (or all events). Alias: `on`
+  More info on events below.
+
+  ```javascript
+  animation.bind('type', function () {});
+  ```
+
+1. Unbind a callback from a specific animation event (or events). Alias: `off`
+  More info on events below.
+
+  ```javascript
+  animation.unbind('type', function () {});
+  ```
+
+## Events
+
+All events are called with the current values. These may be the initial values or next values if the animation has only just begun, or has ended.
+
+* all - called any time another event is triggered
+* start - called when an animation is started
+* stop - celled when an animation is stopped
+* pause - called when an animation is paused
+* end - called when an animation completes (excluding loops)
+* update - called every frame an animation updates
+* loop - called every time an animation loops (if looping)
