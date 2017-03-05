@@ -315,7 +315,7 @@
       // Start or resume animation
       function start () {
         if (typeof pausedAfter !== 'undefined') {
-          startTime = performance.now() - pausedAfter;
+          startTime = performance.now() + pausedAfter;
         } else {
           startTime = performance.now();
         }
