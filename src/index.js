@@ -348,6 +348,11 @@
         return self;
       }
 
+      // Return wether the animation is playing
+      function playing () {
+        return typeof startTime !== 'undefined' && typeof pausedAfter === 'undefined';
+      }
+
       // Add event listener
       function bind (type, callback) {
         if (!events.has(type)) {
@@ -430,6 +435,7 @@
       self.start = start;
       self.stop = stop;
       self.pause = pause;
+      self.playing = playing;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
       self.first = first;
