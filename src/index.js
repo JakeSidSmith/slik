@@ -121,15 +121,15 @@
       return progress;
     }
 
-    function Ease (progress) {
+    function EaseInOutSine (progress) {
       return (1 - Math.cos(progress * Math.PI)) / 2;
     }
 
-    function EaseIn (progress) {
+    function EaseInSine (progress) {
       return 1 - Math.cos(progress * Math.PI / 2);
     }
 
-    function EaseOut (progress) {
+    function EaseOutSine (progress) {
       return Math.sin(progress * Math.PI / 2);
     }
 
@@ -143,9 +143,9 @@
 
     var Easing = {
       Linear: Linear,
-      Ease: Ease,
-      EaseIn: EaseIn,
-      EaseOut: EaseOut,
+      EaseInOutSine: EaseInOutSine,
+      EaseInSine: EaseInSine,
+      EaseOutSine: EaseOutSine,
       Dip: Dip,
       Spring: Spring
     };

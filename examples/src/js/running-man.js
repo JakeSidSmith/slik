@@ -210,7 +210,7 @@
         .first(invertEvery4Steps)
         .to(rightLegUp)
         .duration(700 * SPEED)
-        .ease(Slik.Easing.EaseOut)
+        .ease(Slik.Easing.EaseOutSine)
         .then(nextStepFromHere)
         .then(moveRightLegForward)
         .start();
@@ -221,7 +221,7 @@
         .first(invertEvery4Steps)
         .to(rightLegForward)
         .duration(500 * SPEED)
-        .ease(Slik.Easing.EaseIn)
+        .ease(Slik.Easing.EaseInSine)
         .then(nextStepFromHere)
         .then(moveLeftLegUp)
         .start();
@@ -232,7 +232,7 @@
         .first(invertEvery4Steps)
         .to(leftLegUp)
         .duration(700 * SPEED)
-        .ease(Slik.Easing.EaseOut)
+        .ease(Slik.Easing.EaseOutSine)
         .then(nextStepFromHere)
         .then(moveLeftLegForward)
         .start();
@@ -243,7 +243,7 @@
         .first(invertEvery4Steps)
         .to(leftLegForward)
         .duration(500 * SPEED)
-        .ease(Slik.Easing.EaseIn)
+        .ease(Slik.Easing.EaseInSine)
         .then(incrementStep)
         .then(nextStepFromHere)
         .then(moveRightLegUp)
