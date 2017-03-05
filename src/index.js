@@ -189,19 +189,20 @@
         });
       }
 
-      function mapValues (progress, parentPath, fromValue, key) {
+      function mapValues (progress, parentPath, now, fromValue, key) {
         var path = parentPath.push(key);
 
         if (Immutable.Iterable.isIterable(fromValue)) {
           // Ease nested immutable objects
-          return fromValue.map(mapValues.bind(null, progress, path));
+          return fromValue.map(mapValues.bind(null, progress, path, now));
         }
 
         var toValue = toValues.getIn(path);
 
         // Only ease values if the toValue exists
         if (typeof toValue !== 'undefined') {
-          return multiply(fromValue, toValue, easing(progress));
+          var multiplier = easing(progress, startTime, now, durationMillis, fromValue, toValue);
+          return multiply(fromValue, toValue, multiplier);
         }
 
         return fromValue;
@@ -214,10 +215,11 @@
         if (now - lastTime >= frameRate) {
           if (Immutable.Iterable.isIterable(fromValues)) {
             // Ease immutable objects
-            currentValues = fromValues.map(mapValues.bind(null, progress, Immutable.List()));
+            currentValues = fromValues.map(mapValues.bind(null, progress, Immutable.List(), now));
           } else {
             // Ease individual value
-            currentValues = multiply(fromValues, toValues, easing(progress));
+            var multiplier = easing(progress, startTime, now, durationMillis, fromValues, toValues);
+            currentValues = multiply(fromValues, toValues, multiplier);
           }
 
           triggerEvent('update');
