@@ -210,6 +210,10 @@
       }
 
       function animationLoop (now) {
+        if (now < startTime) {
+          return;
+        }
+
         var progress = Math.min(Math.max((now - startTime) / durationMillis, 0), 1);
 
         // Limit frame rate
