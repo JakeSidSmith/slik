@@ -228,9 +228,9 @@
           }
 
           triggerEvent('update');
-        }
 
-        lastTime = now;
+          lastTime = now;
+        }
 
         if (progress >= 1) {
           if (shouldLoop) {
