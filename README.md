@@ -191,10 +191,40 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
 
 All events are called with the current values. These may be the initial values or next values if the animation has only just begun, or has ended.
 
-* all - called any time another event is triggered
-* start - called when an animation is started
-* stop - celled when an animation is stopped
-* pause - called when an animation is paused
-* end - called when an animation completes (excluding loops)
-* update - called every frame an animation updates
-* loop - called every time an animation loops (if looping)
+* `all` - called any time another event is triggered
+* `start` - called when an animation is started
+* `stop` - celled when an animation is stopped
+* `pause` - called when an animation is paused
+* `end` - called when an animation completes (excluding loops)
+* `update` - called every frame an animation updates
+* `loop` - called every time an animation loops (if looping)
+
+## Custom easing functions
+
+You can provide a custom easing function to ease your values.
+This function is provided with the following values:
+
+* `progress` - a value from 0 to 1 as to how complete the animation is
+* `startTime` - the time in milliseconds that the animation began (from `performance.now`)
+* `now` - the current time in milliseconds (from `performance.now`)
+* `duration` - the duration of the animation in milliseconds
+* `fromValue` - the value to tween from (single values, not objects)
+* `toValue` - the value to tween to (single values, not objects)
+
+This function simply returns a value from 0 to 1 (or a number outside of this range if you are so inclined), that is used as a multiplier for the values in your animation.
+
+For example a linear easing function simply returns the progress of the animation.
+
+```javascript
+function Linear (progress, startTime, now, duration, fromValue, toValue) {
+  return progress;
+}
+```
+
+Most easing functions can be accomplished simply by returning a variation of the progress value. E.g.
+
+```javascript
+function EaseOutSine (progress) {
+  return Math.sin(progress * Math.PI / 2);
+}
+```
