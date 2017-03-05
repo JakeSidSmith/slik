@@ -176,7 +176,8 @@
     var steps = 0;
 
     var animation = new Slik.Animation({
-      from: initialPerson
+      from: initialPerson,
+      wait: 1000
     })
     .first(function (values) {
       person = values;
@@ -251,6 +252,15 @@
     };
 
     moveRightLegUp();
+
+    var playPauseButton = document.getElementById('play-pause');
+    playPauseButton.addEventListener('click', function () {
+      if (animation.playing()) {
+        animation.pause();
+      } else {
+        animation.start();
+      }
+    })
 
   }
 
