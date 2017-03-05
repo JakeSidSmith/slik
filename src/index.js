@@ -319,7 +319,7 @@
         if (typeof pausedAfter !== 'undefined') {
           startTime = now + pausedAfter;
         } else {
-          startTime = now;
+          startTime = now + delayMillis;
         }
 
         lastTime = startTime;
@@ -429,6 +429,7 @@
       self.from = from;
       self.to = to;
       self.duration = duration;
+      self.delay = delay;
       self.ease = ease;
       self.loop = loop;
       self.invert = invert;
