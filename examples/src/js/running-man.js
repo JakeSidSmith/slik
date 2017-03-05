@@ -2,6 +2,7 @@
 
 (function () {
 
+  var Immutable = require('immutable');
   var Canvasimo = require('canvasimo');
   var Slik = require('../../../src/index.js');
 
@@ -52,12 +53,12 @@
       .setStrokeCap('round')
       // Draw upper body
       .save()
-      .translate(size.width / 2, size.height - 100)
+      .translate(size.width / 2, size.height - 100 + person.get('yOffset'))
       .tap(drawUpperBody)
       .restore()
       // Draw legs
       .save()
-      .translate(size.width / 2, size.height - 100)
+      .translate(size.width / 2, size.height - 100 + person.get('yOffset'))
       .tap(drawLimb.bind(null, person.get('rightLeg'), 50))
       .tap(drawLimb.bind(null, person.get('leftLeg'), 50))
       .restore();
@@ -67,7 +68,8 @@
     element = document.getElementById('running-man');
     canvas = new Canvasimo(element);
 
-    var initialPerson = {
+    var initialPerson = Immutable.fromJS({
+      yOffset: 0,
       bodyRotation: 0,
       headRotation: 0,
       rightArm: {
@@ -86,9 +88,10 @@
         upper: 0,
         lower: 0
       }
-    };
+    });
 
-    var rightLegUp = {
+    var rightLegUp = Immutable.fromJS({
+      yOffset: 0,
       bodyRotation: 5,
       headRotation: 10,
       rightArm: {
@@ -107,9 +110,10 @@
         upper: 20,
         lower: 25
       }
-    };
+    });
 
-    var rightLegForward = {
+    var rightLegForward = Immutable.fromJS({
+      yOffset: 0,
       bodyRotation: 10,
       headRotation: 20,
       rightArm: {
@@ -128,9 +132,10 @@
         upper: 30,
         lower: 55
       }
-    };
+    });
 
-    var leftLegUp = {
+    var leftLegUp = Immutable.fromJS({
+      yOffset: 0,
       bodyRotation: 5,
       headRotation: 10,
       rightArm: {
@@ -149,9 +154,10 @@
         upper: -40,
         lower: 50
       }
-    };
+    });
 
-    var leftLegForward = {
+    var leftLegForward = Immutable.fromJS({
+      yOffset: 0,
       bodyRotation: 10,
       headRotation: 20,
       rightArm: {
@@ -170,10 +176,55 @@
         upper: -10,
         lower: 0
       }
-    };
+    });
 
-    var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward;
+    var jumpUpValues = Immutable.fromJS({
+      yOffset: -100,
+      bodyRotation: 10,
+      headRotation: 20,
+      rightArm: {
+        upper: 0,
+        lower: -105
+      },
+      leftArm: {
+        upper: 5,
+        lower: -120
+      },
+      rightLeg: {
+        upper: -70,
+        lower: 90
+      },
+      leftLeg: {
+        upper: -65,
+        lower: 105
+      }
+    });
+
+    var jumpDownValues = Immutable.fromJS({
+      yOffset: 0,
+      bodyRotation: 10,
+      headRotation: 20,
+      rightArm: {
+        upper: -10,
+        lower: -70
+      },
+      leftArm: {
+        upper: -5,
+        lower: -80
+      },
+      rightLeg: {
+        upper: -20,
+        lower: 20
+      },
+      leftLeg: {
+        upper: -10,
+        lower: 10
+      }
+    });
+
+    var moveRightLegUp, moveRightLegForward, moveLeftLegUp, moveLeftLegForward, jumpUp, jumpDown;
     var steps = 0;
+    var jumping = false;
 
     var animation = new Slik.Animation({
       from: initialPerson
@@ -200,6 +251,14 @@
       if (everyOther4Steps()) {
         animation.invert();
       }
+    }
+
+    function invertJumpDirection (values) {
+      if (everyOther4Steps()) {
+        return values.set('yOffset', values.get('yOffset') * -1);
+      }
+
+      return values;
     }
 
     function incrementStep () {
@@ -251,14 +310,50 @@
         .start();
     };
 
+    jumpUp = function () {
+      animation
+        .stop()
+        .to(invertJumpDirection(jumpUpValues))
+        .first(nextStepFromHere)
+        .first(invertEvery4Steps)
+        .duration(800 * SPEED)
+        .ease(Slik.Easing.EaseOutSine)
+        .then(jumpDown)
+        .start();
+    };
+
+    jumpDown = function () {
+      animation
+        .to(invertJumpDirection(jumpDownValues))
+        .first(nextStepFromHere)
+        .first(invertEvery4Steps)
+        .duration(800 * SPEED)
+        .ease(Slik.Easing.EaseInSine)
+        .then(nextStepFromHere)
+        .then(function () {
+          jumping = false;
+        })
+        .then(moveRightLegUp)
+        .start()
+    }
+
     moveRightLegUp();
 
     var playPauseButton = document.getElementById('play-pause');
+    var jumpButton = document.getElementById('jump');
+
     playPauseButton.addEventListener('click', function () {
       if (animation.playing()) {
         animation.pause();
       } else {
         animation.start();
+      }
+    });
+
+    jumpButton.addEventListener('click', function () {
+      if (!jumping && animation.playing()) {
+        jumping = true;
+        jumpUp();
       }
     });
 

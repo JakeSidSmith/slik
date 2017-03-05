@@ -175,13 +175,15 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
   animation.playing();
   ```
 
-1. Run a callback once before the animation is initially started. Receives the animation's current values.
+1. Run a callback once before the animation is initially started (`start` event). Receives the animation's current values.
+  Automatically unbound after triggered or animation stopped.
 
   ```javascript
   animation.first(function () {});
   ```
 
-1. Run a callback once after the animation has completed (excluding loops). Receives the animation's current values.
+1. Run a callback once after the animation has completed (`end` event). Receives the animation's current values.
+  Automatically unbound after triggered or animation stopped.
 
   ```javascript
   animation.then(function () {});
