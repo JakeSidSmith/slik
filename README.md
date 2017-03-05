@@ -68,7 +68,7 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
       .duration(1000)
       .delay(2000)
       .ease(Slik.Easing.EaseInOutSine)
-      .loop(true)
+      .loop(true);
     ```
 
 1. Handle changes in values. Bind a callback to the `update` event & update your component or redraw your canvas.
