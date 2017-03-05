@@ -427,7 +427,6 @@
       self.from = from;
       self.to = to;
       self.duration = duration;
-      self.delay = delay;
       self.ease = ease;
       self.loop = loop;
       self.invert = invert;
