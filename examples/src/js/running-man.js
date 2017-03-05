@@ -180,7 +180,7 @@
 
     var jumpUpValues = Immutable.fromJS({
       yOffset: -100,
-      bodyRotation: 10,
+      bodyRotation: 30,
       headRotation: 20,
       rightArm: {
         upper: 0,
@@ -213,12 +213,12 @@
         lower: -80
       },
       rightLeg: {
-        upper: -20,
-        lower: 20
-      },
-      leftLeg: {
         upper: -10,
         lower: 10
+      },
+      leftLeg: {
+        upper: -20,
+        lower: 20
       }
     });
 
