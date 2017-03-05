@@ -163,6 +163,7 @@
       var fromValues = Immutable.fromJS(getDefault(initial.from, {}));
       var toValues = Immutable.fromJS(getDefault(initial.to, {}));
       var durationMillis = getDefault(initial.duration, 500);
+      var delayMillis = getDefault(initial.delay, 0);
       var frameRate = 1000 / getDefault(initial.fps, 120);
       var easing = getDefault(initial.ease, Linear);
       var shouldLoop = getDefault(initial.loop, false);
@@ -259,6 +260,12 @@
       // Set animation duration
       function duration (input) {
         durationMillis = input;
+        return self;
+      }
+
+      // Set delay before animation begins
+      function delay (input) {
+        delayMillis = input;
         return self;
       }
 
@@ -415,6 +422,7 @@
       self.from = from;
       self.to = to;
       self.duration = duration;
+      self.delay = delay;
       self.ease = ease;
       self.loop = loop;
       self.invert = invert;
