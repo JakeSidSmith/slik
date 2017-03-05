@@ -176,8 +176,7 @@
     var steps = 0;
 
     var animation = new Slik.Animation({
-      from: initialPerson,
-      wait: 1000
+      from: initialPerson
     })
     .first(function (values) {
       person = values;
