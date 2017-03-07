@@ -2,294 +2,111 @@
 
 (function () {
 
-  var slik = require('../../../src/index.js');
+  var Slik = require('../../../src/index');
+  var Canvasimo = require('canvasimo');
 
-  var canvasElement,
-  canvas,
-  cWidth,
-  cHeight,
-  person,
-  speed,
-  additionalPositions,
-  additionalAnimations;
+  var element = document.getElementById('canvas');
+  var canvas = new Canvasimo(element);
 
-  speed = 0.3;
+  var playPauseButton = document.getElementById('play-pause');
+  var stopButton = document.getElementById('stop');
+  var easingSelect = document.getElementById('easing');
+  var animatedSelect = document.getElementById('animated');
+  var durationSelect = document.getElementById('duration');
+  var loopInput = document.getElementById('loop');
+  var reverseInput = document.getElementById('reverse');
 
-  var drawUpperBody = function () {
-    canvas.rotate(person.position.bodyRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, -65);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, -65);
-    drawHead();
-    drawRightArm();
-    drawLeftArm();
-  };
+  var animation;
 
-  var drawHead = function () {
-    canvas.save();
-    canvas.rotate(person.position.headRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.arc(0, -17, 15, 0, 2 * Math.PI);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
-  };
+  var animate = 'position';
+  var SQUARE_SIZE = 50;
+  var size = canvas.getSize();
+  var width = size.width - SQUARE_SIZE * 4;
 
-  var drawRightArm = function () {
-    canvas.save();
-    canvas.rotate(person.position.upperRightArmRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, 40);
-    // Lower right
-    canvas.rotate(person.position.lowerRightArmRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
-  };
+  function render (value) {
+    var position = animate === 'position' ? width * value : width / 2;
+    var rotation = animate === 'rotation' ? value * Math.PI : 0;
+    var scale = animate === 'scale' ? 1 + value * 2 : 1;
 
-  var drawLeftArm = function () {
-    canvas.save();
-    canvas.rotate(person.position.upperLeftArmRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.translate(0, 40);
-    // Lower right
-    canvas.rotate(person.position.lowerLeftArmRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 40);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
-  };
+    canvas
+      .clearCanvas()
+      .setFill('#000')
+      .translate(size.width / 2, size.height / 2)
+      .translate(-width / 2, 0)
+      .translate(position, 0)
+      .rotate(rotation)
+      .scale(scale, scale)
+      .fillRect(-SQUARE_SIZE / 2, -SQUARE_SIZE / 2, SQUARE_SIZE, SQUARE_SIZE);
+  }
 
-  var drawRightLeg = function () {
-    // Right leg
-    canvas.save();
-    canvas.rotate(person.position.upperRightLegRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    // Lower right
-    canvas.translate(0, 50);
-    canvas.rotate(person.position.lowerRightLegRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
-  };
+  render();
 
-  var drawLeftLeg = function () {
-    // Left leg
-    canvas.save();
-    canvas.rotate(person.position.upperLeftLegRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    // Lower left
-    canvas.translate(0, 50);
-    canvas.rotate(person.position.lowerLeftLegRotation * Math.PI / 180);
-    canvas.beginPath();
-    canvas.moveTo(0, 0);
-    canvas.lineTo(0, 50);
-    canvas.moveTo(0, 0);
-    canvas.closePath();
-    canvas.stroke();
-    canvas.restore();
-  };
+  function reverseEachLoop () {
+    animation.reverse();
+  }
 
-  var render = function () {
-    canvas.clearRect(0, 0, cWidth, cHeight);
-    canvas.strokeStyle = 'black';
-    canvas.lineWidth = 4;
-    canvas.lineCap = 'round';
+  function stopIfNotLooping () {
+    animation.reset();
+  }
 
-    // Draw upper body
-    canvas.save();
-    canvas.translate(cWidth / 2, cHeight - 100);
-    drawUpperBody();
-    canvas.restore();
-    // Draw legs
-    canvas.save();
-    canvas.translate(cWidth / 2, cHeight - 100);
-    drawRightLeg();
-    drawLeftLeg();
-    canvas.restore();
+  animation = new Slik.Animation({
+    from: 0,
+    to: 1,
+    loop: true,
+    duration: 1000,
+    ease: Slik.Easing.EaseInOutSine
+  })
+    .on('loop', reverseEachLoop)
+    .on('end', stopIfNotLooping)
+    .on('update', render)
+    .start();
 
-    person.slik.animate();
-    additionalAnimations.animate();
-
-    canvas.fillStyle = 'black';
-    canvas.rect(additionalPositions[0] - 5, additionalPositions[1] - 10, 10, 10);
-    canvas.fill();
-
-    if (person.slik.currentAnimation === undefined) {
-      person.slik.do('rightLegUp');
+  function playPauseButtonClicked () {
+    if (animation.playing()) {
+      animation.pause();
+    } else {
+      animation.start();
     }
+  }
 
-    slik().requestAnimationFrame(render);
-  };
+  function stopButtonClicked () {
+    animation.stop();
+  }
 
-  var init = function () {
-    canvasElement = document.getElementById('canvas');
-    canvas = canvasElement.getContext('2d');
-    cWidth = canvasElement.width;
-    cHeight = canvasElement.height;
+  function easingSelectChanged (event) {
+    animation.ease(Slik.Easing[event.target.value]);
+  }
 
-    person = {
-      position: {
-        bodyRotation: 0,
-        headRotation: 0,
-        upperRightArmRotation: 0,
-        lowerRightArmRotation: 0,
-        upperLeftArmRotation: 0,
-        lowerLeftArmRotation: 0,
-        upperRightLegRotation: 0,
-        lowerRightLegRotation: 0,
-        upperLeftLegRotation: 0,
-        lowerLeftLegRotation: 0
-      }
-    };
+  function animatedSelectChanged (event) {
+    animate = event.target.value;
+  }
 
-    person.slik = slik(person.position);
+  function durationSelectChanged (event) {
+    animation.duration(event.target.value);
+  }
 
-    additionalPositions = [120, 240];
+  function loopInputChanged (event) {
+    if (event.target.checked) {
+      animation.loop(true);
+    } else {
+      animation.loop(false);
+    }
+  }
 
-    additionalAnimations = slik(additionalPositions);
+  function reverseInputChanged (event) {
+    if (event.target.checked) {
+      animation.on('loop', reverseEachLoop);
+    } else {
+      animation.off('loop', reverseEachLoop);
+    }
+  }
 
-    additionalAnimations.animation('moveDown')
-      .duration(1000)
-      .nextPosition([120, 480])
-      .ease('in')
-      .onComplete('moveUp')
-      .do();
-
-    additionalAnimations.animation('moveUp')
-      .duration(1000)
-      .nextPosition([120, 240])
-      .ease('out')
-      .onComplete('moveDown');
-
-    person.slik.animation('rightLegUp')
-      .duration(700 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 5,
-          headRotation: 10,
-          upperRightArmRotation: 70,
-          lowerRightArmRotation: -100,
-          upperLeftArmRotation: -45,
-          lowerLeftArmRotation: -100,
-          upperRightLegRotation: -40,
-          lowerRightLegRotation: 50,
-          upperLeftLegRotation: 20,
-          lowerLeftLegRotation: 25
-        }
-      )
-      .onComplete('rightLegForward');
-
-    person.slik.animation('rightLegForward')
-      .duration(500 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 10,
-          headRotation: 20,
-          upperRightArmRotation: 45,
-          lowerRightArmRotation: -70,
-          upperLeftArmRotation: -30,
-          lowerLeftArmRotation: -45,
-          upperRightLegRotation: -10,
-          lowerRightLegRotation: 0,
-          upperLeftLegRotation: 30,
-          lowerLeftLegRotation: 55
-        }
-      )
-      .onComplete('leftLegUp');
-
-    person.slik.animation('leftLegUp')
-      .duration(700 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 5,
-          headRotation: 10,
-          upperRightArmRotation: -45,
-          lowerRightArmRotation: -100,
-          upperLeftArmRotation: 70,
-          lowerLeftArmRotation: -100,
-          upperRightLegRotation: 20,
-          lowerRightLegRotation: 25,
-          upperLeftLegRotation: -40,
-          lowerLeftLegRotation: 50
-        }
-      )
-      .onComplete('leftLegForward');
-
-    var steps = 0;
-
-    person.slik.animation('leftLegForward')
-      .duration(500 * speed)
-      .nextPosition(
-        {
-          bodyRotation: 10,
-          headRotation: 20,
-          upperRightArmRotation: -30,
-          lowerRightArmRotation: -45,
-          upperLeftArmRotation: 45,
-          lowerLeftArmRotation: -70,
-          upperRightLegRotation: 30,
-          lowerRightLegRotation: 55,
-          upperLeftLegRotation: -10,
-          lowerLeftLegRotation: 0
-        }
-      )
-      .onComplete(function () {
-        steps += 1;
-        if (steps % 5 === 0) {
-          person.slik.animation('rightLegUp').invert();
-          person.slik.animation('rightLegForward').invert();
-          person.slik.animation('leftLegUp').invert();
-          person.slik.animation('leftLegForward').invert();
-        }
-        person.slik.do('rightLegUp');
-      });
-
-    slik().requestAnimationFrame(render);
-  };
-
-  var enterFullscreen = function () {
-    slik().enterFullscreen(document.getElementById('canvas'));
-  };
-
-  var fullScreenButton = document.getElementById('full-screen');
-  fullScreenButton.addEventListener('click', enterFullscreen);
-
-  slik().onDocumentReady(init);
+  playPauseButton.addEventListener('click', playPauseButtonClicked);
+  stopButton.addEventListener('click', stopButtonClicked);
+  easingSelect.addEventListener('change', easingSelectChanged);
+  animatedSelect.addEventListener('change', animatedSelectChanged);
+  durationSelect.addEventListener('change', durationSelectChanged);
+  loopInput.addEventListener('change', loopInputChanged);
+  reverseInput.addEventListener('change', reverseInputChanged);
 
 })();
