@@ -157,7 +157,7 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
   animation.start();
   ```
 
-1. Stop the animation, allowing you to restart from the beginning.
+1. Stop the animation, allowing you to restart from the beginning. Alias: `reset`
 
   ```javascript
   animation.stop();
