@@ -9,7 +9,8 @@
     -moz-box-sizing: border-box;
   }
 
-  html, body {
+  html,
+  body {
     position: absolute;
     margin: 0;
     padding: 0;
@@ -47,6 +48,51 @@
     border-radius: 5px;
   }
 
+  button,
+  input,
+  select {
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  button:hover {
+    background-color: #ddd;
+    box-shadow: 0 0 3px 0 #aaa;
+  }
+
+  button:active {
+    background-color: #ddd;
+    box-shadow: inset 0 0 3px 0 #aaa;
+  }
+
+  label {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    margin: 10px auto;
+    line-height: 20px;
+  }
+
+  label .text,
+  label .input {
+    display: table-cell;
+    width: 60%;
+  }
+
+  label .text {
+    width: 40%;
+    padding-right: 10px;
+  }
+
+  label select {
+    width: 100%;
+  }
+
   .container {
     position: relative;
     display: block;
@@ -63,6 +109,7 @@
 <body>
 
   <div class="container">
+
     <h1>
       Slik
     </h1>
@@ -71,19 +118,107 @@
       Animation / tweening library, ideal for use with HTML5 canvas and or React
     </p>
 
-    <canvas id="running-man" width="640" height="480">
+    <canvas id="canvas" width="640" height="480">
       <p>
         Sorry, it looks like your browser doesn't support the canvas element.
       </p>
     </canvas>
 
-    <button id="play-pause" type="button" name="button">
+    <button type="button" id="play-pause">
       Play / Pause
     </button>
 
-    <button id="jump" type="button" name="button">
-      Jump
+    <button type="button" id="stop">
+      Stop
     </button>
+
+    <label>
+      <span class="text">
+        Easing
+      </span>
+      <span class="input">
+        <select id="easing">
+          <option value="Linear">
+            Linear
+          </option>
+          <option value="EaseInOutSine" selected="selected">
+            EaseInOutSine
+          </option>
+          <option value="EaseInSine">
+            EaseInSine
+          </option>
+          <option value="EaseOutSine">
+            EaseOutSine
+          </option>
+          <option value="Dip">
+            Dip
+          </option>
+          <option value="Spring">
+            Spring
+          </option>
+        </select>
+      </span>
+    </label>
+
+    <label>
+      <span class="text">
+        Animated value
+      </span>
+      <span class="input">
+        <select id="animated">
+          <option value="position" selected="selected">
+            Position
+          </option>
+          <option value="scale">
+            Scale
+          </option>
+          <option value="rotation">
+            Rotation
+          </option>
+        </select>
+      </span>
+    </label>
+
+    <label>
+      <span class="text">
+        Duration (milliseconds)
+      </span>
+      <span class="input">
+        <select id="duration">
+          <option value="500">
+            500
+          </option>
+          <option value="1000" selected="selected">
+            1000
+          </option>
+          <option value="2000">
+            2000
+          </option>
+          <option value="4000">
+            4000
+          </option>
+        </select>
+      </span>
+    </label>
+
+    <label>
+      <span class="text">
+        Loop
+      </span>
+      <span class="input">
+        <input type="checkbox" checked="false" id="loop" />
+      </span>
+    </label>
+
+    <label>
+      <span class="text">
+        Reverse each loop
+      </span>
+      <span class="input">
+        <input type="checkbox" checked="false" id="reverse" />
+      </span>
+    </label>
+
   </div>
 
   <script charset="utf-8" type="text/javascript" src="build/js/index.js"></script>
