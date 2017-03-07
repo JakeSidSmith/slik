@@ -1,30 +1,46 @@
 #!/usr/bin/env bash
 
-BRANCH=gh-pages
-TARGET_REPO=jakesidsmith/slik
-DIST_FOLDER=examples
+BRANCH=gh-pages # Branch to deploy to, probably gh-pages
+DIST_DIR=examples  # Location of build static files to deploy
+DEPLOY_DIR=site_deploy/  # Temp directory to clone to during deployment
+USERNAME=JakeSidSmith  # Repo account username
+REPO=slik  # repo name
 
-if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-    echo -e "Starting deployment to Github Pages\n"
 
-    if [ "$TRAVIS" == "true" ]; then
-        git config --global user.email "jake@dabapps.com"
-        git config --global user.name "jakesidsmith"
-    fi
-
-    # Using token clone gh-pages branch
-    git clone --quiet --branch=$BRANCH https://${GH_TOKEN}@github.com/$TARGET_REPO built_website > /dev/null
-
-    # Go into directory and copy data we're interested in to that directory
-    cd built_website
-    rsync -rv --exclude=.git  ../$DIST_FOLDER/* .
-
-    # Add, commit and push files
-    git add -f .
-    git commit -m "Deployment - Travis build $TRAVIS_BUILD_NUMBER"
-    git push -fq origin $BRANCH > /dev/null
-
-    echo -e "Deployment completed.\n"
-else
-  echo -e "Deployment cancelled. It's either a PR or not the master branch.\n"
+if [[ -z "$GH_TOKEN" ]]; then
+  echo "> No Github token found!"
+  exit 1
 fi
+
+if [ ! -d "$DIST_DIR" ]; then
+  echo "> Can't find dist directory, aborting..."
+  exit
+fi
+
+set -e
+
+echo "> Starting deployment to Github Pages"
+
+# Setup Details for deploy commit
+
+# Clone existing deployment branch into temp directory
+mkdir $DEPLOY_DIR
+git clone --depth=1 --quiet --branch=$BRANCH --single-branch https://${GH_TOKEN}@github.com/${USERNAME}/${REPO}.git $DEPLOY_DIR
+
+# Copy new static build into temp directory
+rsync -rv $DIST_DIR/* circle.yml --exclude=.eslintrc $DEPLOY_DIR
+
+# Commit changes
+cd $DEPLOY_DIR
+git config user.email "jake@dabapps.com"
+git config user.name "Automated Example Deployer"
+git add -f .
+git commit -m "Deployment - build $CIRCLE_BUILD_NUM"
+
+# Deploy to branch
+git push -fq origin $BRANCH
+
+echo "> Deployment completed."
+
+# Cleanup
+rm -rf $DEPLOY_DIR
