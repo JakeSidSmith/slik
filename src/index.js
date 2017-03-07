@@ -440,7 +440,7 @@
       self.loop = loop;
       self.invert = invert;
       self.reverse = reverse;
-      self.start self.play = start;
+      self.start = self.play = start;
       self.stop = stop;
       self.pause = pause;
       self.playing = playing;
