@@ -359,6 +359,11 @@
         return typeof startTime !== 'undefined' && typeof pausedAfter === 'undefined';
       }
 
+      // Return wether the animation should loop
+      function looping () {
+        return shouldLoop;
+      }
+
       // Add event listener
       function bind (type, callback) {
         if (!events.has(type)) {
@@ -444,6 +449,7 @@
       self.stop = stop;
       self.pause = pause;
       self.playing = playing;
+      self.looping = looping;
       self.bind = self.on = bind;
       self.unbind = self.off = unbind;
       self.first = first;
