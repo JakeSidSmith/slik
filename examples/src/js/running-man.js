@@ -351,8 +351,8 @@
           jumping = false;
         })
         .then(moveRightLegUp)
-        .start()
-    }
+        .start();
+    };
 
     moveRightLegUp();
 
