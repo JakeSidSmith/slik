@@ -23,10 +23,6 @@
   var size = canvas.getSize();
   var width = size.width - SQUARE_SIZE * 4;
 
-  function reverseEachLoop () {
-    animation.reverse();
-  }
-
   function render (value) {
     var position = animate === 'position' ? width * value : width / 2;
     var rotation = animate === 'rotation' ? value * Math.PI : 0;
@@ -45,6 +41,14 @@
 
   render();
 
+  function reverseEachLoop () {
+    animation.reverse();
+  }
+
+  function stopIfNotLooping () {
+    animation.reset();
+  }
+
   animation = new Slik.Animation({
     from: 0,
     to: 1,
@@ -53,6 +57,7 @@
     ease: Slik.Easing.EaseInOutSine
   })
     .on('loop', reverseEachLoop)
+    .on('end', stopIfNotLooping)
     .on('update', render)
     .start();
 
