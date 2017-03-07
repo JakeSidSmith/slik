@@ -151,7 +151,7 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
   animation.reverse();
   ```
 
-1. Start the animation.
+1. Start the animation. Alias: `play`
 
   ```javascript
   animation.start();
@@ -173,6 +173,12 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
 
   ```javascript
   animation.playing();
+  ```
+
+1. Return whether the animation is going to loop.
+
+  ```javascript
+  animation.looping();
   ```
 
 1. Run a callback once before the animation is initially started (`start` event). Receives the animation's current values.
