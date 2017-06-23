@@ -6714,6 +6714,13 @@
         return currentValues;
       }
 
+      function subscribe (type, callback) {
+        bind(type, callback);
+        return function unsubscribe () {
+          unbind(type, callback);
+        };
+      }
+
       self.fps = fps;
       self.from = from;
       self.to = to;
@@ -6733,6 +6740,7 @@
       self.first = first;
       self.then = then;
       self.values = this.value = values;
+      self.subscribe = subscribe;
     }
 
     return {
