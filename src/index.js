@@ -436,6 +436,11 @@
         return self;
       }
 
+      function subscribe (type, callback) {
+        bind(type, callback);
+        return unbind(type, callback);
+      }
+
       self.fps = fps;
       self.from = from;
       self.to = to;
@@ -454,6 +459,7 @@
       self.unbind = self.off = unbind;
       self.first = first;
       self.then = then;
+      self.subscribe = subscribe;
     }
 
     return {
