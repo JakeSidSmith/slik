@@ -442,7 +442,9 @@
 
       function subscribe (type, callback) {
         bind(type, callback);
-        return unbind(type, callback);
+        return function unsubscribe () {
+          unbind(type, callback);
+        };
       }
 
       self.fps = fps;
