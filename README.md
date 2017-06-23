@@ -209,6 +209,12 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
   animation.unbind('type', function () {});
   ```
 
+1. Get the current value / values. Alias: `value`
+
+  ```javascript
+  animation.values();
+  ```
+
 ## Easing functions
 
 There are a few easing functions available on `Slik.Easing`.
