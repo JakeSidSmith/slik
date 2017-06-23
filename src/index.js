@@ -436,6 +436,10 @@
         return self;
       }
 
+      function values () {
+        return currentValues;
+      }
+
       function subscribe (type, callback) {
         bind(type, callback);
         return unbind(type, callback);
@@ -459,6 +463,7 @@
       self.unbind = self.off = unbind;
       self.first = first;
       self.then = then;
+      self.values = this.value = values;
       self.subscribe = subscribe;
     }
 
