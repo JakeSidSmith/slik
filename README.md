@@ -23,197 +23,197 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
 
 1. Require slik in the file where you'll be animating.
 
-  ```javascript
-  import Slik from 'slik';
-  ```
+    ```javascript
+    import Slik from 'slik';
+    ```
 
 1. Setup the values you want to animate. These values can be contained in objects, arrays, or simply be single values. If you're animating a lot of values I'd highly recommend using objects as it makes it easier to refer to your values later.
 
-  Note: these can be nested values.
+    Note: these can be nested values.
 
-  ```javascript
-  const initialValues = {
-    headRotation: 0,
-    leftArm: {
-      upper: 0,
-      lower: 0
-    }
-  };
-  ```
+    ```javascript
+    const initialValues = {
+      headRotation: 0,
+      leftArm: {
+        upper: 0,
+        lower: 0
+      }
+    };
+    ```
 
 1. Create an Animation.
 
   1. Initial options: You can pass most of your config in here if you like, or add them using the methods with matching names.
 
-    ```javascript
-    const animation = new Slik.Animation({
-      from: initialValues,
-      to: nextValues
-      // Defaults below
+      ```javascript
+      const animation = new Slik.Animation({
+        from: initialValues,
+        to: nextValues
+        // Defaults below
 
-      // duration: 500 (milliseconds)
-      // delay: 0 (milliseconds)
-      // fps: 120 (frames per second) I would not recommend changing the frame rate
-      // ease: Slik.Easing.Linear
-      // loop: false
-    });
-    ```
+        // duration: 500 (milliseconds)
+        // delay: 0 (milliseconds)
+        // fps: 120 (frames per second) I would not recommend changing the frame rate
+        // ease: Slik.Easing.Linear
+        // loop: false
+      });
+      ```
 
   1. Using methods: Note: fluent API returns the same object for each method (except the `playing` method which returns a boolean). More info below.
 
-    ```javascript
-    const animation = new Slik.Animation()
-      .from(initialValues)
-      .to(nextValues)
-      .duration(1000)
-      .delay(2000)
-      .ease(Slik.Easing.EaseInOutSine)
-      .loop(true);
-    ```
+      ```javascript
+      const animation = new Slik.Animation()
+        .from(initialValues)
+        .to(nextValues)
+        .duration(1000)
+        .delay(2000)
+        .ease(Slik.Easing.EaseInOutSine)
+        .loop(true);
+      ```
 
 1. Handle changes in values. Bind a callback to the `update` event & update your component or redraw your canvas.
 
   1. Canvas example
 
-    ```javascript
-    animation.bind('update', function (values) {
-      canvas.render(values);
-    });
-    ```
+      ```javascript
+      animation.bind('update', function (values) {
+        canvas.render(values);
+      });
+      ```
 
   1. React example
 
-    ```javascript
-    componentWillMount () {
-      animation.bind('update', function (values) {
-        this.setState({
-          values: values
+      ```javascript
+      componentWillMount () {
+        animation.bind('update', function (values) {
+          this.setState({
+            values: values
+          });
         });
-      });
-    }
-    ```
+      }
+      ```
 
 ## Animation methods
 
 1. Set the values to tween from. Default: `Immutable.Map()`.
 
-  ```javascript
-  animation.from({hello: 0});
-  ```
+    ```javascript
+    animation.from({hello: 0});
+    ```
 
 1. Set the values to tween to. Default: `Immutable.Map()`.
 
-  ```javascript
-  animation.to({hello: 1});
-  ```
+    ```javascript
+    animation.to({hello: 1});
+    ```
 
 1. Set the duration of the animation in milliseconds. Default: `500`.
 
-  ```javascript
-  animation.duration(500);
-  ```
+    ```javascript
+    animation.duration(500);
+    ```
 
 1. Set a delay in milliseconds before the animation begins. Default: `0`.
 
-  ```javascript
-  animation.delay(1000);
-  ```
+    ```javascript
+    animation.delay(1000);
+    ```
 
 1. Set the frame rate of the animation (fps). Default: `120`.
   I would not recommend changing this unless you intentionally want a less smooth animation.
 
-  ```javascript
-  animation.fps(120);
-  ```
+    ```javascript
+    animation.fps(120);
+    ```
 
 1. Set the easing function to use for the animation. Default: `Slik.Easing.Linear`.
   Note: you can easily create your own easing functions. More info on this below.
 
-  ```javascript
-  animation.ease(Slik.Easing.Linear);
-  ```
+    ```javascript
+    animation.ease(Slik.Easing.Linear);
+    ```
 
 1. Set whether the animation should automatically loop. Default: `false`.
 
-  ```javascript
-  animation.loop(false);
-  ```
+    ```javascript
+    animation.loop(false);
+    ```
 
 1. Invert the values that you are tweening to. E.g. `{value: 1}` would become `{value: -1}`
 
-  ```javascript
-  animation.invert();
-  ```
+    ```javascript
+    animation.invert();
+    ```
 
 1. Swap the from & to values to play in reverse.
 
-  ```javascript
-  animation.reverse();
-  ```
+    ```javascript
+    animation.reverse();
+    ```
 
 1. Start the animation. Alias: `play`
 
-  ```javascript
-  animation.start();
-  ```
+    ```javascript
+    animation.start();
+    ```
 
 1. Stop the animation, allowing you to restart from the beginning. Alias: `reset`
 
-  ```javascript
-  animation.stop();
-  ```
+    ```javascript
+    animation.stop();
+    ```
 
 1. Pause the animation, allowing you to resume from this point.
 
-  ```javascript
-  animation.pause();
-  ```
+    ```javascript
+    animation.pause();
+    ```
 
 1. Return whether the animation is currently playing.
 
-  ```javascript
-  animation.playing();
-  ```
+    ```javascript
+    animation.playing();
+    ```
 
 1. Return whether the animation is going to loop.
 
-  ```javascript
-  animation.looping();
-  ```
+    ```javascript
+    animation.looping();
+    ```
 
 1. Run a callback once before the animation is initially started (`start` event). Receives the animation's current values.
   Automatically unbound after triggered or animation stopped.
 
-  ```javascript
-  animation.first(function () {});
-  ```
+    ```javascript
+    animation.first(function () {});
+    ```
 
 1. Run a callback once after the animation has completed (`end` event). Receives the animation's current values.
   Automatically unbound after triggered or animation stopped.
 
-  ```javascript
-  animation.then(function () {});
-  ```
+    ```javascript
+    animation.then(function () {});
+    ```
 
 1. Bind a callback to a specific animation event (or all events). Alias: `on`
   More info on events below.
 
-  ```javascript
-  animation.bind('type', function () {});
-  ```
+    ```javascript
+    animation.bind('type', function () {});
+    ```
 
 1. Unbind a callback from a specific animation event (or events). Alias: `off`
   More info on events below.
 
-  ```javascript
-  animation.unbind('type', function () {});
-  ```
+    ```javascript
+    animation.unbind('type', function () {});
+    ```
 
 1. Get the current value / values. Alias: `value`
 
-  ```javascript
-  animation.values();
-  ```
+    ```javascript
+    animation.values();
+    ```
 
 ## Easing functions
 
