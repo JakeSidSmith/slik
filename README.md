@@ -209,6 +209,14 @@ I'd recommend pinning to a specific version and using `--save-exact` and `--save
     animation.unbind('type', function () {});
     ```
 
+1. Subscribe to an event (like `bind`), and return an unsubscribe function (`unbind`).
+
+    ```javascript
+    var unsubscribe = animation.subscribe('type', function () {});
+
+    unsubscribe();
+    ```
+
 1. Get the current value / values. Alias: `value`
 
     ```javascript
