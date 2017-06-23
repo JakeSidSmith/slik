@@ -1,6 +1,6 @@
 {
   "name": "slik",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Animation / tweening library, ideal for use with HTML5 canvas and or React",
   "main": "src/index.js",
   "scripts": {
