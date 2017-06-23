@@ -436,6 +436,10 @@
         return self;
       }
 
+      function values () {
+        return currentValues;
+      }
+
       self.fps = fps;
       self.from = from;
       self.to = to;
@@ -454,6 +458,7 @@
       self.unbind = self.off = unbind;
       self.first = first;
       self.then = then;
+      self.values = this.value = values;
     }
 
     return {
