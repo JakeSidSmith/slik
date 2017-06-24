@@ -1,13 +1,13 @@
 {
   "name": "slik",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Animation / tweening library, ideal for use with HTML5 canvas and or React",
   "main": "src/index.js",
   "scripts": {
     "start": "http-server examples/ -c-0 -o",
     "watch": "mkdir -p examples/build/js && watchify examples/src/js/index.js -o examples/build/js/index.js -v",
     "build": "mkdir -p examples/build/js && browserify examples/src/js/index.js -o examples/build/js/index.js",
-    "lint": "eslint src/ && eslint -c .eslintrc-examples.json examples/src/js/",
+    "lint": "eslint src/ examples/src/js/",
     "test": "npm run lint"
   },
   "repository": {
