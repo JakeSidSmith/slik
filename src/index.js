@@ -338,6 +338,7 @@
 
       // Stop animation and resume from beginning
       function stop () {
+        currentValues = fromValues;
         triggerEvent('stop');
         stopLoop(animationId);
         pausedAfter = undefined;
