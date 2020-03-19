@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
 (function () {
@@ -1292,12 +1292,10 @@
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
 /**
- *  Copyright (c) 2014-2015, Facebook, Inc.
- *  All rights reserved.
+ * Copyright (c) 2014-present, Facebook, Inc.
  *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 (function (global, factory) {
@@ -6311,19 +6309,19 @@
   setupRequestAnimationFrame();
 
   function setupPerformanceNow () {
-    if (!('performance' in window)) {
+    if (!window.performance) {
       window.performance = {};
     }
 
-    if (!('now' in window.performance)) {
+    if (!window.performance.now) {
       var dateNow = Date.now || function () {
         return new Date().getTime();
       };
 
       var nowOffset = dateNow();
 
-      if (performance.timing && performance.timing.navigationStart) {
-        nowOffset = performance.timing.navigationStart;
+      if (window.performance.timing && window.performance.timing.navigationStart) {
+        nowOffset = window.performance.timing.navigationStart;
       }
 
       window.performance.now = function now () {
@@ -6348,7 +6346,7 @@
     var animations = Immutable.Map();
 
     function doLoop () {
-      var now = performance.now();
+      var now = window.performance.now();
 
       animations.forEach(function (animationLoop) {
         animationLoop(now);
@@ -6592,7 +6590,7 @@
 
       // Start or resume animation
       function start () {
-        var now = performance.now();
+        var now = window.performance.now();
 
         if (typeof pausedAfter !== 'undefined') {
           startTime = now + pausedAfter;
@@ -6624,7 +6622,7 @@
       function pause () {
         triggerEvent('pause');
         stopLoop(animationId);
-        pausedAfter = startTime - performance.now();
+        pausedAfter = startTime - window.performance.now();
         startTime = undefined;
         return self;
       }
