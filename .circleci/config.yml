@@ -40,14 +40,24 @@ jobs:
           name: Test
           command: npm test
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
   deploy:
     docker:
       - image: circleci/node:12.13
     steps:
       - checkout
+
+      - attach_workspace:
+          at: .
+
       - run:
           name: Build
           command: npm run build
+
       - run:
           name: Deploy
           command: ./scripts/deploy
