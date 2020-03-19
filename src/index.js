@@ -37,19 +37,19 @@
   setupRequestAnimationFrame();
 
   function setupPerformanceNow () {
-    if (!('performance' in window)) {
+    if (!window.performance) {
       window.performance = {};
     }
 
-    if (!('now' in window.performance)) {
+    if (!window.performance.now) {
       var dateNow = Date.now || function () {
         return new Date().getTime();
       };
 
       var nowOffset = dateNow();
 
-      if (performance.timing && performance.timing.navigationStart) {
-        nowOffset = performance.timing.navigationStart;
+      if (window.performance.timing && window.performance.timing.navigationStart) {
+        nowOffset = window.performance.timing.navigationStart;
       }
 
       window.performance.now = function now () {
@@ -74,7 +74,7 @@
     var animations = Immutable.Map();
 
     function doLoop () {
-      var now = performance.now();
+      var now = window.performance.now();
 
       animations.forEach(function (animationLoop) {
         animationLoop(now);
@@ -318,7 +318,7 @@
 
       // Start or resume animation
       function start () {
-        var now = performance.now();
+        var now = window.performance.now();
 
         if (typeof pausedAfter !== 'undefined') {
           startTime = now + pausedAfter;
@@ -350,7 +350,7 @@
       function pause () {
         triggerEvent('pause');
         stopLoop(animationId);
-        pausedAfter = startTime - performance.now();
+        pausedAfter = startTime - window.performance.now();
         startTime = undefined;
         return self;
       }
