@@ -39,7 +39,7 @@ git add -f .
 git commit -m "Deployment - build $CIRCLE_BUILD_NUM"
 
 # Deploy to branch
-git push -fq origin $BRANCH
+git push -f origin $BRANCH
 
 echo "> Deployment completed."
 
