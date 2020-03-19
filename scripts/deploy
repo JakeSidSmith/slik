@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 BRANCH=gh-pages # Branch to deploy to, probably gh-pages
 DIST_DIR=examples  # Location of build static files to deploy
@@ -14,7 +14,7 @@ fi
 
 if [ ! -d "$DIST_DIR" ]; then
   echo "> Can't find dist directory, aborting..."
-  exit
+  exit 1
 fi
 
 set -e
@@ -28,12 +28,13 @@ mkdir $DEPLOY_DIR
 git clone --depth=1 --quiet --branch=$BRANCH --single-branch https://${GH_TOKEN}@github.com/${USERNAME}/${REPO}.git $DEPLOY_DIR
 
 # Copy new static build into temp directory
-rsync -rv $DIST_DIR/* circle.yml --exclude=.eslintrc $DEPLOY_DIR
+cp -r $DIST_DIR/* $DEPLOY_DIR
+cp -r .circleci $DEPLOY_DIR
 
 # Commit changes
 cd $DEPLOY_DIR
 git config user.email "jake@dabapps.com"
-git config user.name "Automated Example Deployer"
+git config user.name "Automated deployment"
 git add -f .
 git commit -m "Deployment - build $CIRCLE_BUILD_NUM"
 
